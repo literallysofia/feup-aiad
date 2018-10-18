@@ -1,12 +1,9 @@
 package agentbehaviours;
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import jade.core.Agent;
 
-
-
-
-public class Asking extends CyclicBehaviour{
+public class Asking extends Behaviour{
 	
 	private Agent agent;
 	
@@ -15,17 +12,12 @@ public class Asking extends CyclicBehaviour{
 	}
 
 	public void action(){
-		ACLMessage msg = this.agent.receive();
-		if(msg != null){
-			System.out.println(msg.getContent());
-			System.out.println(this.agent.getLocalName() + "I can't go back to being the First-Lady, " + msg.getSender().getLocalName() );
-			ACLMessage reply = msg.createReply();
-			reply.setPerformative(ACLMessage.INFORM);
-			reply.setContent("I see.");
-			this.agent.send(reply);
-		}
-		else {
-			block();
-		}
+		System.out.println("Weelellele");
+		
+	}
+
+	@Override
+	public boolean done() {
+		return false;
 	}
 }
