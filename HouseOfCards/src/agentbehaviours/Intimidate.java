@@ -47,7 +47,6 @@ public class Intimidate extends Behaviour{
 		    		msg.addReceiver(agentId);
 		    		this.agent.send(msg);
 	    		}
-	    	//	AID dest = new AID("ClaireUnderwood", AID.ISLOCALNAME);
 	    		
 	    	break;
 	    	}
