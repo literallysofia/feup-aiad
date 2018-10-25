@@ -1,4 +1,4 @@
-package agents;
+package elections;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
