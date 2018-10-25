@@ -13,6 +13,7 @@ public class Voter extends Agent{
 	
 	private float passivity;
 	private float assertiveness;
+	private int minCredibility;
 	private HashMap<String, ArrayList<Float>> beliefs = new HashMap<>(); 
 	
 	public Voter() {
@@ -56,5 +57,13 @@ public class Voter extends Agent{
 	public void takeDown(){
         System.out.println(getLocalName()+ ": You won, Frank.");
     }
+
+	public int getMinCredibility() {
+		return minCredibility;
+	}
+
+	public void setMinCredibility(int minCredibility) {
+		this.minCredibility = minCredibility;
+	}
 
 }
