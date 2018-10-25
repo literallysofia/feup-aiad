@@ -2,6 +2,9 @@
 
 # User-specific stuff:
 *.DS_Store
+*HouseOfCards/.classpath
+*HouseOfCards/APDescription.txt
+*HouseOfCards/MTPs-Main-Container.txt
 
 ### Eclipse ###
 
