@@ -14,10 +14,11 @@ public class Voter extends Agent{
 	private float passivity;
 	private float assertiveness;
 	private int minCredibility;
+	int id;
 	private HashMap<String, ArrayList<Float>> beliefs = new HashMap<>(); 
 	
 	public Voter() {
-		
+	//	this.id=(int) args[0];
 	}
 	
 	public Voter(float passivity, float assertiveness, HashMap<String, ArrayList<Float>> beliefs) {
@@ -25,7 +26,11 @@ public class Voter extends Agent{
 		this.assertiveness = assertiveness;
 		this.beliefs = beliefs;
 	}
-
+	
+	public int getId(){
+		return id;
+	}
+	
 	public float getPassivity() {
 		return passivity;
 	}

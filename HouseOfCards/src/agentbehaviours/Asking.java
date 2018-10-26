@@ -14,12 +14,12 @@ public class Asking extends Behaviour{
 
 	public void action(){
 		n++;
-		System.out.println("Weelellele");
+		System.out.println("I was created with id:" + this.agent.getLocalName());
 		
 	}
 
 	@Override
 	public boolean done() {
-		return n==2;
+		return n==1;
 	}
 }
