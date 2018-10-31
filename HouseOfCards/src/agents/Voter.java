@@ -4,21 +4,20 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 import jade.core.Agent;
-import agentbehaviours.Asking;
 import jade.core.behaviours.*;
+import agentbehaviours.Asking;
 import agentbehaviours.Intimidate;
-
 
 public class Voter extends Agent{
 	
+	int id;
 	private float passivity;
 	private float assertiveness;
 	private int minCredibility;
-	int id;
 	private HashMap<String, ArrayList<Float>> beliefs = new HashMap<>(); 
 	
 	public Voter() {
-	//	this.id=(int) args[0];
+		
 	}
 	
 	public Voter(float passivity, float assertiveness, HashMap<String, ArrayList<Float>> beliefs) {
@@ -57,7 +56,7 @@ public class Voter extends Agent{
 	
 	public void setup(){
         addBehaviour(new Asking(this));
-       }
+    }
 	
 	public void takeDown(){
         System.out.println(getLocalName()+ ": You won, Frank.");

@@ -11,6 +11,7 @@ import jade.core.Runtime;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
+
 public class Elections {
 	
 	private int minPopulation, maxPopulation, states, candidates;
@@ -19,7 +20,7 @@ public class Elections {
 	private ContainerController cc;
 	
 
-	public Elections(int minPopulation, int maxPopulation, int states, int candidates) {
+	public Elections(int minPopulation, int maxPopulation, int states, int candidates) throws StaleProxyException {
 		this.minPopulation = minPopulation;
 		this.maxPopulation = maxPopulation;
 		this.states = states;
@@ -27,6 +28,14 @@ public class Elections {
 		this.rt = Runtime.instance();
 		this.p = new ProfileImpl(true);
 		this.cc =rt.createMainContainer(p);
+		
+		try{
+		createVotersPerState();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		createCandidates();
 	}
 	
 	public int getMinPopulation(){
@@ -41,46 +50,45 @@ public class Elections {
 		return this.states;
 	}
 	
-	public static void main(String args[]) throws StaleProxyException{
+	//min_state_population, max_state_population, nr_states, nr_candidates
+	public static void main(String args[]) throws StaleProxyException {
 		Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),Integer.parseInt(args[2]),Integer.parseInt(args[3]));
-		Random rnd = new Random();
-		int population = rnd.nextInt(elections.getMaxPopulation()+1 - elections.getMinPopulation()) + elections.getMinPopulation();
-		System.out.println(population);
+	}
+	
+	
+	public void createVotersPerState() throws StaleProxyException{
 		
-		try{
+		for(int id_state=0; id_state < states; id_state++){
+			int id_voterstate = 0;
 			
-		elections.createAgentsPerState(elections.getStates(), population);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public void createAgents(int population)throws StaleProxyException{
-		//Object[] args = new Object[1];
-		int i = 0;
-		while(i < population ){
-			//args[0]=i+1;
-			try{
-				System.out.println("reaching here with population: " + population);
-			AgentController ac = this.cc.createNewAgent("voter"+Integer.toString(i),"agents.Voter",null);
-			ac.start();
-			i++;
-			}catch(Exception e){
-				e.printStackTrace();
+			Random rnd = new Random();
+			int population = rnd.nextInt(this.maxPopulation+1 - this.minPopulation) + this.minPopulation;
+			System.out.println(" > STATE " + id_state + " POPULATION:" + population);
+			
+			while(id_voterstate < population ){
+				try{
+					String id = "voter_"+Integer.toString(id_state)+"_"+Integer.toString(id_voterstate);
+					AgentController ac = this.cc.createNewAgent(id,"agents.Voter",null);
+					ac.start();
+					id_voterstate++;
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 		}
 		
 	}
 	
-	public void createAgentsPerState(int states, int population)throws StaleProxyException{
-		for(int i=0; i < states; i++){
-			try{
-			createAgents(population);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
+	public void createCandidates() throws StaleProxyException{
+		
+		System.out.println(" > CANDIDATES: " + candidates);
+		
+		for(int id_candidate=0; id_candidate<candidates; id_candidate++){
+			String id = "candidate_"+Integer.toString(id_candidate);
+			AgentController ac = this.cc.createNewAgent(id,"agents.Candidate",null);
+			ac.start();
 		}
+			
 	}
 
 }
