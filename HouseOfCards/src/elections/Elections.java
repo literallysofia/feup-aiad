@@ -7,6 +7,7 @@ import jade.wrapper.StaleProxyException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import agents.Candidate;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -123,7 +124,7 @@ public class Elections {
 
 		for (int id_candidate = 0; id_candidate < this.nrCandidates; id_candidate++) {
 			String id = "candidate_" + Integer.toString(id_candidate);
-			AgentController ac = this.cc.createNewAgent(id, "agents.Candidate", null);
+			AgentController ac = this.cc.acceptNewAgent(id, new Candidate(id, this.beliefs));
 			ac.start();
 		}
 

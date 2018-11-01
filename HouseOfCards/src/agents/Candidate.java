@@ -2,34 +2,44 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import agentbehaviours.Asking;
 
-public class Candidate extends Agent{
+public class Candidate extends Agent {
 
-	private int id;
-	private int credibility=100; 
-	private HashMap<String, Float> beliefs = new HashMap<>(); 
-	
-	public Candidate() {
-		// TODO Auto-generated constructor stub
+	private String id;
+	private int credibility = 100;
+	private HashMap<String, Integer> beliefs = new HashMap<>();
+
+	public Candidate(String id, ArrayList<String> beliefs) {
+		this.id = id;
+		
+		for (int i = 0; i < beliefs.size(); i++) {
+			
+			Random rnd = new Random();
+			int value = rnd.nextInt(100) + 1;
+			this.beliefs.put(beliefs.get(i), value);
+		}
+		
+		System.out.println(this.id + "\nBeliefs: " + this.beliefs);
 	}
-	
-	public int getId(){
+
+	public String getId() {
 		return id;
 	}
-	
-	public void setId(int id){
+
+	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public HashMap<String, Float> getBeliefs() {
+
+	public HashMap<String, Integer> getBeliefs() {
 		return beliefs;
 	}
 
-	public void setBeliefs(HashMap<String, Float> beliefs) {
+	public void setBeliefs(HashMap<String, Integer> beliefs) {
 		this.beliefs = beliefs;
 	}
 
@@ -40,9 +50,9 @@ public class Candidate extends Agent{
 	public void setCredibility(int credibility) {
 		this.credibility = credibility;
 	}
-	
-	public void setup(){
-        addBehaviour(new Asking(this));
-    }
+
+	public void setup() {
+		addBehaviour(new Asking(this));
+	}
 
 }

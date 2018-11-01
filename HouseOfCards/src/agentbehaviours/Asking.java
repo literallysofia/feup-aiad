@@ -14,8 +14,7 @@ public class Asking extends Behaviour{
 
 	public void action(){
 		n++;
-		System.out.println("I was created with id: " + this.agent.getLocalName());
-		
+		//System.out.println("I was created with id: " + this.agent.getLocalName());
 	}
 
 	@Override
