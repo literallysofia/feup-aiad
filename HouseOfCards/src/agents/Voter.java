@@ -8,7 +8,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import agentbehaviours.Asking;
-
+import agentbehaviours.ListeningCandidateBeliefs;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
@@ -96,7 +96,7 @@ public class Voter extends Agent {
 
 	public void setup() {
 		register();
-		addBehaviour(new Asking(this));
+		addBehaviour(new ListeningCandidateBeliefs(this));
 	}
 
 	public void takeDown() {

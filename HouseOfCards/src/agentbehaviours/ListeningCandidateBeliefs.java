@@ -2,6 +2,7 @@ package agentbehaviours;
 
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 import jade.core.Agent;
 
 public class ListeningCandidateBeliefs extends CyclicBehaviour{
@@ -16,7 +17,12 @@ public class ListeningCandidateBeliefs extends CyclicBehaviour{
 
 	public void action() {
 		ACLMessage msg = this.agent.blockingReceive();
-		System.out.println(msg.getContent());
+		try {
+			System.out.println("> Listening Candidate Beliefs: " + msg.getContentObject());
+		} catch (UnreadableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
