@@ -21,20 +21,22 @@ public class Voter extends Agent {
 		Random rnd = new Random();
 
 		for (int i = 0; i < beliefs.size(); i++) {
-			
+
 			int first_value = rnd.nextInt(100) + 1;
 			int second_value = rnd.nextInt(100 - first_value + 1) + first_value;
-			
+
 			ArrayList<Integer> range = new ArrayList<Integer>();
 			range.add(first_value);
 			range.add(second_value);
-			
+
 			this.beliefs.put(beliefs.get(i), range);
 		}
-		
+
 		this.passivity = rnd.nextInt(100) + 1;
 		this.assertiveness = rnd.nextInt(100) + 1;
-		System.out.println(this.id + "\nBeliefs: " + this.beliefs + "\nPassivity: " + this.passivity + " Assertiveness: " + this.assertiveness + "\n");
+		this.minCredibility = rnd.nextInt(100) + 1;
+		System.out.println(this.id + "\nBeliefs: " + this.beliefs + "\nPassivity: " + this.passivity
+				+ " Assertiveness: " + this.assertiveness + "\nMin Credibility: " + this.minCredibility + "\n");
 	}
 
 	public String getId() {
