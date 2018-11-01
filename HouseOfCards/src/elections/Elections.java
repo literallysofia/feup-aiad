@@ -65,8 +65,7 @@ public class Elections {
 
 		try {
 			createVotersPerState();
-			createCandidates();
-			createChiefsOfStaff();
+			createCandidatesAndChiefs();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,27 +129,34 @@ public class Elections {
 		
 	}
 
-	public void createCandidates() throws StaleProxyException {
+	public void createCandidatesAndChiefs() throws StaleProxyException {
+		
+		ArrayList<Candidate> candidates = new ArrayList<Candidate>();
+
 
 		System.out.println(" > CANDIDATES: " + this.nrCandidates);
 
 		for (int id_candidate = 0; id_candidate < this.nrCandidates; id_candidate++) {
 			String id = "candidate_" + Integer.toString(id_candidate);
-			AgentController ac = this.cc.acceptNewAgent(id, new Candidate(id,this.states, this.beliefs));
+			Candidate candidate = new Candidate(id,this.states, this.beliefs);
+			AgentController ac = this.cc.acceptNewAgent(id, candidate);
 			ac.start();
+			candidates.add(candidate);
 		}
-
-	}
-
-	public void createChiefsOfStaff() throws StaleProxyException {
-
+		
+		
 		System.out.println(" > CHIEFS OF STAFF: " + this.states.size());
 
 		for (int id_chief = 0; id_chief < this.states.size(); id_chief++) {
+			Random rnd = new Random();
+			int candidateIndex = rnd.nextInt(candidates.size());
+			
+			
 			String id = "chiefofstaff_" + Integer.toString(id_chief);
-			AgentController ac = this.cc.acceptNewAgent(id, new ChiefOfStaff());
+			AgentController ac = this.cc.acceptNewAgent(id, new ChiefOfStaff(candidates.get(candidateIndex), this.states.get(id_chief)));
 			ac.start();
 		}
+
 	}
 
 }

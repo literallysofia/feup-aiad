@@ -5,11 +5,13 @@ import jade.core.behaviours.*;
 import agentbehaviours.Asking;
 
 public class ChiefOfStaff extends Agent {
-
+	
 	private Candidate boss;
+	private String state;
 
-	public ChiefOfStaff() {
-		// TODO Auto-generated constructor stub
+	public ChiefOfStaff(Candidate candidate, String state) {
+		this.boss = candidate;
+		this.state = state;
 	}
 
 	public Candidate getBoss() {
@@ -21,7 +23,7 @@ public class ChiefOfStaff extends Agent {
 	}
 
 	public void setup() {
-		addBehaviour(new Asking(this));
+		System.out.println("Chief " + this.getAID().getName() + " State: " + this.state + " Boss: " + this.boss.getId());
 	}
 
 }
