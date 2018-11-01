@@ -16,25 +16,19 @@ public class Candidate extends Agent {
 
 	public Candidate(String id, ArrayList<String> beliefs) {
 		this.id = id;
-		
+
 		for (int i = 0; i < beliefs.size(); i++) {
-			
 			Random rnd = new Random();
 			int value = rnd.nextInt(100) + 1;
 			this.beliefs.put(beliefs.get(i), value);
 		}
-		
 		System.out.println(this.id + "\nBeliefs: " + this.beliefs);
 	}
 
 	public String getId() {
 		return id;
 	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
 	public HashMap<String, Integer> getBeliefs() {
 		return beliefs;
 	}

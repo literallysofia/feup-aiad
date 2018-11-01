@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import agents.Candidate;
+import agents.Voter;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -35,22 +36,22 @@ public class Elections {
 		this.states.add("Florida");
 		this.states.add("Hawaii");
 		this.states.add("Kansas");
-		//this.states.add("Montana");
-		//this.states.add("New Jersey");
-		//this.states.add("New York");
-		//this.states.add("Washington");
-		//this.states.add("Texas");
-		
+		// this.states.add("Montana");
+		// this.states.add("New Jersey");
+		// this.states.add("New York");
+		// this.states.add("Washington");
+		// this.states.add("Texas");
+
 		this.beliefs.add("Liberalism");
 		this.beliefs.add("Conservatism");
 		this.beliefs.add("Communism");
 		this.beliefs.add("Socialism");
 		this.beliefs.add("Anarchism");
-		//this.beliefs.add("Nationalism");
-		//this.beliefs.add("Fascism");
-		//this.beliefs.add("Monarchism");
-		//this.beliefs.add("Republicanism");
-		//this.beliefs.add("Environmentalism");
+		// this.beliefs.add("Nationalism");
+		// this.beliefs.add("Fascism");
+		// this.beliefs.add("Monarchism");
+		// this.beliefs.add("Republicanism");
+		// this.beliefs.add("Environmentalism");
 
 		this.rt = Runtime.instance();
 		this.p = new ProfileImpl(true);
@@ -73,7 +74,7 @@ public class Elections {
 	public int getMaxPopulation() {
 		return this.maxPopulation;
 	}
-	
+
 	public ArrayList<String> getStates() {
 		return states;
 	}
@@ -81,7 +82,7 @@ public class Elections {
 	public void setStates(ArrayList<String> states) {
 		this.states = states;
 	}
-	
+
 	public ArrayList<String> getBeliefs() {
 		return beliefs;
 	}
@@ -92,7 +93,8 @@ public class Elections {
 
 	// min_state_population, max_state_population, nr_candidates
 	public static void main(String args[]) throws StaleProxyException {
-		Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+		Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),
+				Integer.parseInt(args[2]));
 	}
 
 	public void createVotersPerState() throws StaleProxyException {
@@ -107,7 +109,7 @@ public class Elections {
 			while (id_voterstate < population) {
 				try {
 					String id = "voter_" + this.states.get(id_state) + "_" + Integer.toString(id_voterstate);
-					AgentController ac = this.cc.createNewAgent(id, "agents.Voter", null);
+					AgentController ac = this.cc.acceptNewAgent(id, new Voter(id, this.beliefs));
 					ac.start();
 					id_voterstate++;
 				} catch (Exception e) {
