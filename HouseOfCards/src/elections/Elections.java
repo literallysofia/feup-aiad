@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import agents.Candidate;
+import agents.ChiefOfStaff;
 import agents.Voter;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -138,7 +139,7 @@ public class Elections {
 
 		for (int id_chief = 0; id_chief < this.states.size(); id_chief++) {
 			String id = "chiefofstaff_" + Integer.toString(id_chief);
-			AgentController ac = this.cc.createNewAgent(id, "agents.ChiefOfStaff", null);
+			AgentController ac = this.cc.acceptNewAgent(id, new ChiefOfStaff());
 			ac.start();
 		}
 
