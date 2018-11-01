@@ -118,7 +118,6 @@ public class Elections {
 				}
 			}
 		}
-
 	}
 
 	public void createCandidates() throws StaleProxyException {
@@ -142,7 +141,6 @@ public class Elections {
 			AgentController ac = this.cc.acceptNewAgent(id, new ChiefOfStaff());
 			ac.start();
 		}
-
 	}
 
 }
