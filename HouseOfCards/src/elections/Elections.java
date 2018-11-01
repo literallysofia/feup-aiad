@@ -17,14 +17,18 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
 
+
 public class Elections {
 
 	private int minPopulation, maxPopulation, nrCandidates;
+	private ArrayList<String> states = new ArrayList<String>();
+	private ArrayList<String> beliefs = new ArrayList<String>();
+	
 	private Runtime rt;
 	private Profile p;
 	private ContainerController cc;
-	private ArrayList<String> states = new ArrayList<String>();
-	private ArrayList<String> beliefs = new ArrayList<String>();
+	
+	
 
 	public Elections(int minPopulation, int maxPopulation, int nrCandidates) throws StaleProxyException {
 
@@ -57,6 +61,7 @@ public class Elections {
 		this.rt = Runtime.instance();
 		this.p = new ProfileImpl(true);
 		this.cc = rt.createMainContainer(p);
+		
 
 		try {
 			createVotersPerState();
@@ -65,6 +70,8 @@ public class Elections {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
 
 	}
 
@@ -110,7 +117,7 @@ public class Elections {
 			while (id_voterstate < population) {
 				try {
 					String id = "voter_" + this.states.get(id_state) + "_" + Integer.toString(id_voterstate);
-					AgentController ac = this.cc.acceptNewAgent(id, new Voter(id, this.beliefs));
+					AgentController ac = this.cc.acceptNewAgent(id, new Voter(id, this.states.get(id_state),this.beliefs));
 					ac.start();
 					id_voterstate++;
 				} catch (Exception e) {
@@ -118,6 +125,10 @@ public class Elections {
 				}
 			}
 		}
+		
+		
+		
+		
 	}
 
 	public void createCandidates() throws StaleProxyException {
@@ -126,7 +137,7 @@ public class Elections {
 
 		for (int id_candidate = 0; id_candidate < this.nrCandidates; id_candidate++) {
 			String id = "candidate_" + Integer.toString(id_candidate);
-			AgentController ac = this.cc.acceptNewAgent(id, new Candidate(id, this.beliefs));
+			AgentController ac = this.cc.acceptNewAgent(id, new Candidate(id,this.states, this.beliefs));
 			ac.start();
 		}
 
