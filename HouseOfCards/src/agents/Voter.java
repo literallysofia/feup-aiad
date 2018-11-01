@@ -11,16 +11,17 @@ import agentbehaviours.Asking;
 public class Voter extends Agent {
 
 	private String id;
-	private float passivity;
-	private float assertiveness;
+	private int passivity;
+	private int assertiveness;
 	private int minCredibility;
 	private HashMap<String, ArrayList<Integer>> beliefs = new HashMap<>();
 
 	public Voter(String id, ArrayList<String> beliefs) {
 		this.id = id;
+		Random rnd = new Random();
 
 		for (int i = 0; i < beliefs.size(); i++) {
-			Random rnd = new Random();
+			
 			int first_value = rnd.nextInt(100) + 1;
 			int second_value = rnd.nextInt(100 - first_value + 1) + first_value;
 			
@@ -30,13 +31,10 @@ public class Voter extends Agent {
 			
 			this.beliefs.put(beliefs.get(i), range);
 		}
-		System.out.println(this.id + "\nBeliefs: " + this.beliefs);
-	}
-
-	public Voter(float passivity, float assertiveness, HashMap<String, ArrayList<Integer>> beliefs) {
-		this.passivity = passivity;
-		this.assertiveness = assertiveness;
-		this.beliefs = beliefs;
+		
+		this.passivity = rnd.nextInt(100) + 1;
+		this.assertiveness = rnd.nextInt(100) + 1;
+		System.out.println(this.id + "\nBeliefs: " + this.beliefs + "\nPassivity: " + this.passivity + " Assertiveness: " + this.assertiveness + "\n");
 	}
 
 	public String getId() {
@@ -47,7 +45,7 @@ public class Voter extends Agent {
 		return passivity;
 	}
 
-	public void setPassivity(float passivity) {
+	public void setPassivity(int passivity) {
 		this.passivity = passivity;
 	}
 
@@ -55,7 +53,7 @@ public class Voter extends Agent {
 		return assertiveness;
 	}
 
-	public void setAssertiveness(float assertiveness) {
+	public void setAssertiveness(int assertiveness) {
 		this.assertiveness = assertiveness;
 	}
 
