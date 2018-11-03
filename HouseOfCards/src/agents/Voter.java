@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
-import agentbehaviours.Asking;
 import agentbehaviours.ListeningCandidateBeliefs;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
@@ -21,9 +20,12 @@ public class Voter extends Agent {
 	private int assertiveness;
 	private int minCredibility;
 	private HashMap<String, ArrayList<Integer>> beliefs = new HashMap<>();
+	private int candidatesSize;
+	private HashMap<String, HashMap<String, Integer>> candidatesBeliefs = new HashMap<>();
+	
 	private DFAgentDescription dfd;
 
-	public Voter(String id, String state, ArrayList<String> beliefs) {
+	public Voter(String id, String state, ArrayList<String> beliefs, int candidatesSize) {
 		this.id = id;
 		this.state = state;
 		Random rnd = new Random();
@@ -43,27 +45,12 @@ public class Voter extends Agent {
 		this.passivity = rnd.nextInt(100) + 1;
 		this.assertiveness = rnd.nextInt(100) + 1;
 		this.minCredibility = rnd.nextInt(100) + 1;
-		//System.out.println(this.id + "\nBeliefs: " + this.beliefs + "\nPassivity: " + this.passivity
-				//+ " Assertiveness: " + this.assertiveness + "\nMin Credibility: " + this.minCredibility + "\n");
-		
-		
-		
-		
-	}
+		this.setCandidatesSize(candidatesSize);
+		System.out.println(	" > VOTER: " + this.id + " BELIEFS: " + this.beliefs);		
+		// + "\nPassivity: " + this.passivity
+		// + " Assertiveness: " + this.assertiveness + "\nMin Credibility: " +
+		// this.minCredibility + "\n");
 
-	public void register() {
-		ServiceDescription sd = new ServiceDescription();
-		sd.setType(this.state);
-		sd.setName(getLocalName());
-		
-		this.dfd = new DFAgentDescription();
-		dfd.setName(getAID());
-		dfd.addServices(sd);
-		try {
-			DFService.register(this, this.dfd);
-		} catch (FIPAException fe) {
-			fe.printStackTrace();
-		}
 	}
 
 	public String getId() {
@@ -94,21 +81,53 @@ public class Voter extends Agent {
 		this.beliefs = beliefs;
 	}
 
-	public void setup() {
-		register();
-		addBehaviour(new ListeningCandidateBeliefs(this));
-	}
-
-	public void takeDown() {
-		System.out.println(getLocalName() + ": You won, Frank.");
-	}
-
 	public int getMinCredibility() {
 		return minCredibility;
 	}
 
 	public void setMinCredibility(int minCredibility) {
 		this.minCredibility = minCredibility;
+	}
+
+	public HashMap<String, HashMap<String, Integer>> getCandidatesBeliefs() {
+		return candidatesBeliefs;
+	}
+
+	public void setCandidatesbeliefs(HashMap<String, HashMap<String, Integer>> candidatesBeliefs) {
+		this.candidatesBeliefs = candidatesBeliefs;
+	}
+
+	public int getCandidatesSize() {
+		return candidatesSize;
+	}
+
+	public void setCandidatesSize(int candidatesSize) {
+		this.candidatesSize = candidatesSize;
+	}
+	
+	
+	public void setup() {
+		register();
+		addBehaviour(new ListeningCandidateBeliefs(this));
+	}
+	
+	public void register() {
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType(this.state);
+		sd.setName(getLocalName());
+
+		this.dfd = new DFAgentDescription();
+		dfd.setName(getAID());
+		dfd.addServices(sd);
+		try {
+			DFService.register(this, this.dfd);
+		} catch (FIPAException fe) {
+			fe.printStackTrace();
+		}
+	}
+
+	public void takeDown() {
+		System.out.println(getLocalName() + ": You won, Frank.");
 	}
 
 }

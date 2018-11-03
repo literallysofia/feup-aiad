@@ -2,7 +2,6 @@ package agents;
 
 import jade.core.Agent;
 import jade.core.behaviours.*;
-import agentbehaviours.Asking;
 
 public class ChiefOfStaff extends Agent {
 	
@@ -23,7 +22,7 @@ public class ChiefOfStaff extends Agent {
 	}
 
 	public void setup() {
-		System.out.println("Chief " + this.getAID().getName() + " State: " + this.state + " Boss: " + this.boss.getId());
+		System.out.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getId());
 	}
 
 }

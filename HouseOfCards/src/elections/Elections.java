@@ -37,10 +37,10 @@ public class Elections {
 		this.nrCandidates = nrCandidates;
 
 		this.states.add("Alaska");
-		this.states.add("California");
-		this.states.add("Florida");
-		this.states.add("Hawaii");
-		this.states.add("Kansas");
+		//this.states.add("California");
+		//this.states.add("Florida");
+		//this.states.add("Hawaii");
+		//this.states.add("Kansas");
 		// this.states.add("Montana");
 		// this.states.add("New Jersey");
 		// this.states.add("New York");
@@ -111,12 +111,12 @@ public class Elections {
 
 			Random rnd = new Random();
 			int population = rnd.nextInt(this.maxPopulation + 1 - this.minPopulation) + this.minPopulation;
-			System.out.println(" > STATE " + this.states.get(id_state) + " " + " POPULATION: " + population);
+			System.out.println(" > STATE: " + this.states.get(id_state) + " " + " POPULATION: " + population);
 
 			while (id_voterstate < population) {
 				try {
 					String id = "voter_" + this.states.get(id_state) + "_" + Integer.toString(id_voterstate);
-					AgentController ac = this.cc.acceptNewAgent(id, new Voter(id, this.states.get(id_state),this.beliefs));
+					AgentController ac = this.cc.acceptNewAgent(id, new Voter(id, this.states.get(id_state),this.beliefs, this.nrCandidates));
 					ac.start();
 					id_voterstate++;
 				} catch (Exception e) {
@@ -143,9 +143,6 @@ public class Elections {
 			ac.start();
 			candidates.add(candidate);
 		}
-		
-		
-		System.out.println(" > CHIEFS OF STAFF: " + this.states.size());
 
 		for (int id_chief = 0; id_chief < this.states.size(); id_chief++) {
 			Random rnd = new Random();

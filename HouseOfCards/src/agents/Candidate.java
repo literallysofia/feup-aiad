@@ -6,7 +6,6 @@ import java.util.Random;
 
 import jade.core.Agent;
 import jade.core.behaviours.*;
-import agentbehaviours.Asking;
 import agentbehaviours.SendBeliefs;
 
 public class Candidate extends Agent {
