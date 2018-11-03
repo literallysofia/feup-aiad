@@ -1,6 +1,7 @@
 package agents;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class Voter extends Agent {
 	private HashMap<String, ArrayList<Integer>> beliefs = new HashMap<>();
 	private int candidatesSize;
 	private HashMap<String, HashMap<String, Integer>> candidatesBeliefs = new HashMap<>();
-	
+
 	private DFAgentDescription dfd;
 
 	public Voter(String id, String state, ArrayList<String> beliefs, int candidatesSize) {
@@ -46,7 +47,7 @@ public class Voter extends Agent {
 		this.assertiveness = rnd.nextInt(100) + 1;
 		this.minCredibility = rnd.nextInt(100) + 1;
 		this.setCandidatesSize(candidatesSize);
-		System.out.println(	" > VOTER: " + this.id + " BELIEFS: " + this.beliefs);		
+		System.out.println(" > VOTER: " + this.id + " BELIEFS: " + this.beliefs);
 		// + "\nPassivity: " + this.passivity
 		// + " Assertiveness: " + this.assertiveness + "\nMin Credibility: " +
 		// this.minCredibility + "\n");
@@ -104,13 +105,12 @@ public class Voter extends Agent {
 	public void setCandidatesSize(int candidatesSize) {
 		this.candidatesSize = candidatesSize;
 	}
-	
-	
+
 	public void setup() {
 		register();
 		addBehaviour(new ListeningCandidateBeliefs(this));
 	}
-	
+
 	public void register() {
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType(this.state);
@@ -130,4 +130,39 @@ public class Voter extends Agent {
 		System.out.println(getLocalName() + ": You won, Frank.");
 	}
 
+	// TODO: Comentar codigo
+	public void chooseCandidate() {
+		System.out.println("      - VOTER: " + this.getLocalName() + " CANDIDATES BELIEFS: " + this.candidatesBeliefs);
+
+		String chosenCandidate = null;
+		int difference = 0;
+
+		int minBeliefs = (int) Math.ceil(beliefs.size() / 2);
+
+		for (Map.Entry<String, HashMap<String, Integer>> entry : this.candidatesBeliefs.entrySet()) {
+			String candidate = entry.getKey();
+			HashMap<String, Integer> candidatebeliefs = entry.getValue();
+
+			int wrongBeliefs = 0;
+
+			for (Map.Entry<String, Integer> entry2 : candidatebeliefs.entrySet()) {
+
+				if (wrongBeliefs < minBeliefs) {
+					String belief = entry2.getKey();
+					Integer value = entry2.getValue();
+
+					if (value < this.beliefs.get(belief).get(0) || this.beliefs.get(belief).get(1) < value) {
+						wrongBeliefs++;
+					} else {
+						// calcular o value do candidato
+					}
+				} else {
+					break;
+				}
+			}
+			
+		}
+		
+	}
+	
 }

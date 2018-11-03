@@ -42,7 +42,7 @@ public class ListeningCandidateBeliefs extends SimpleBehaviour {
 		}
 
 		if (this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize()) {
-			System.out.println("      - VOTER: " + this.voter.getLocalName() + " CANDIDATES BELIEFS: "+ this.voter.getCandidatesBeliefs());
+			//this.voter.chooseCandidate();
 			this.finished = true;
 		}
 
