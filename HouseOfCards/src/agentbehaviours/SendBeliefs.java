@@ -16,7 +16,7 @@ import jade.core.Agent;
 
 public class SendBeliefs extends Behaviour{
 	private Candidate candidate;
-	private int n = 0;
+	private boolean finished;
 
 	public SendBeliefs(Candidate a) {
 		this.candidate = a;
@@ -49,11 +49,8 @@ public class SendBeliefs extends Behaviour{
             }
            
 		}
-		n = 1;
+		this.finished = true;
 	}
 
-	@Override
-	public boolean done() {
-		return n == 1;
-	}
+	public  boolean done() {  return this.finished;  }
 }

@@ -10,10 +10,10 @@ import java.util.HashMap;
 import agents.Voter;
 import jade.core.Agent;
 
-public class ListeningCandidateBeliefs extends CyclicBehaviour {
+public class ListeningCandidateBeliefs extends SimpleBehaviour {
 
 	private Voter voter;
-	private int n = 0;
+	private boolean finished = false;
 
 	public ListeningCandidateBeliefs(Voter voter) {
 		this.voter = voter;
@@ -21,14 +21,14 @@ public class ListeningCandidateBeliefs extends CyclicBehaviour {
 
 	public void action() {
 
-		while (this.voter.getCandidatesBeliefs().size() < this.voter.getCandidatesSize()) {
+		ACLMessage msg = this.voter.blockingReceive();
 
+		// while (this.voter.getCandidatesBeliefs().size() <
+		// this.voter.getCandidatesSize()) {
+		if (msg != null) {
 			try {
-				ACLMessage msg = this.voter.blockingReceive();
-
-				System.out.println("   - Listening Candidate Beliefs: " + msg.getSender().getLocalName() + " "
+				System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CANDIDATE BELIEFS: " + msg.getSender().getLocalName() + " "
 						+ msg.getContentObject());
-
 				String candidate = msg.getSender().getLocalName();
 				HashMap<String, Integer> beliefs = new HashMap<String, Integer>();
 				beliefs = (HashMap) msg.getContentObject();
@@ -37,14 +37,20 @@ public class ListeningCandidateBeliefs extends CyclicBehaviour {
 			} catch (UnreadableException e) {
 				e.printStackTrace();
 			}
+		} else {
+			block();
 		}
-		
-		block();
 
-		System.out.println("      - " + this.voter.getCandidatesBeliefs());
+		if (this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize()) {
+			System.out.println("      - VOTER: " + this.voter.getLocalName() + " CANDIDATES BELIEFS: "+ this.voter.getCandidatesBeliefs());
+			this.finished = true;
+		}
 
 		return;
+	}
 
+	public boolean done() {
+		return this.finished;
 	}
 
 }
