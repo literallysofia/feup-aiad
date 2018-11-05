@@ -23,7 +23,7 @@ public class Voter extends Agent {
 	private HashMap<String, ArrayList<Integer>> beliefs = new HashMap<>();
 	private int candidatesSize;
 	private HashMap<String, HashMap<String, Integer>> candidatesBeliefs = new HashMap<>();
-	private HashMap<String, HashMap<String,Integer>> candidatesCredibility = new HashMap<>();
+	private HashMap<String, Integer> candidatesCredibility = new HashMap<>();
 	private String chosenCandidate;
 
 	private DFAgentDescription dfd;
@@ -54,7 +54,7 @@ public class Voter extends Agent {
 		this.assertiveness = rnd.nextInt(100) + 1;
 		this.minCredibility = rnd.nextInt(100) + 1;
 		this.setCandidatesSize(candidatesSize);
-		System.out.println(" > VOTER: " + this.id + " BELIEFS: " + this.beliefs);
+		System.out.println(" > VOTER: " + this.id + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: " + this.minCredibility);
 		// + "\nPassivity: " + this.passivity
 		// + " Assertiveness: " + this.assertiveness + "\nMin Credibility: " +
 		// this.minCredibility + "\n");
@@ -167,9 +167,8 @@ public class Voter extends Agent {
 					wrongBeliefs++;
 				
 			}
-			
 			//System.out.println("VOTER: " + this.getLocalName() + " CANDIDATE: " + candidate + " WRONG BELIIEFS: " + wrongBeliefs);
-			if (wrongBeliefs <= minBeliefs)
+			if (wrongBeliefs <= minBeliefs && this.candidatesCredibility.get(candidate) > this.minCredibility)
 				possibleCandidates.add(candidate);
 
 		}
@@ -189,11 +188,11 @@ public class Voter extends Agent {
 	}
 
 
-	public HashMap<String, HashMap<String,Integer>> getCandidatesCredibility() {
+	public HashMap<String, Integer> getCandidatesCredibility() {
 		return candidatesCredibility;
 	}
 
-	public void setCandidatesCredibility(HashMap<String, HashMap<String,Integer>> candidatesCredibility) {
+	public void setCandidatesCredibility(HashMap<String, Integer> candidatesCredibility) {
 		this.candidatesCredibility = candidatesCredibility;
 	}
 	

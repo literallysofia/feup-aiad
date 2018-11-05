@@ -33,7 +33,7 @@ public class ListeningCandidateBeliefs extends SimpleBehaviour {
 				ArrayList<HashMap<String,Integer>> profile = new ArrayList<HashMap<String,Integer>>();
 				profile = (ArrayList) msg.getContentObject();
 				this.voter.getCandidatesBeliefs().put(candidate, profile.get(0));
-				this.voter.getCandidatesCredibility().put("credibility_" + candidate.charAt(candidate.length() - 1), profile.get(1));
+				this.voter.getCandidatesCredibility().put(msg.getSender().getLocalName(), profile.get(1).get("Credibility"));
 
 			} catch (UnreadableException e) {
 				e.printStackTrace();
