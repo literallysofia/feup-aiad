@@ -23,8 +23,6 @@ public class ListeningCandidateBeliefs extends SimpleBehaviour {
 
 		ACLMessage msg = this.voter.blockingReceive();
 
-		// while (this.voter.getCandidatesBeliefs().size() <
-		// this.voter.getCandidatesSize()) {
 		if (msg != null) {
 			try {
 				System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CANDIDATE BELIEFS: " + msg.getSender().getLocalName() + " "
@@ -45,7 +43,7 @@ public class ListeningCandidateBeliefs extends SimpleBehaviour {
 		}
 
 		if (this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize()) {
-			//this.voter.chooseCandidate();
+			this.voter.chooseCandidate();
 			this.finished = true;
 		}
 

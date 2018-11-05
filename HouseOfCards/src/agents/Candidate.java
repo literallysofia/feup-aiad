@@ -67,6 +67,7 @@ public class Candidate extends Agent {
 	}
 
 	public void setup() {
+		System.out.println(" > CANDIDATE: " + this.getLocalName() + " BELIEFS: " + this.beliefs);
 		addBehaviour(new SendBeliefs(this));
 	}
 	

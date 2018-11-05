@@ -37,10 +37,10 @@ public class Elections {
 		this.nrCandidates = nrCandidates;
 
 		this.states.add("Alaska");
-		//this.states.add("California");
-		//this.states.add("Florida");
-		//this.states.add("Hawaii");
-		//this.states.add("Kansas");
+		this.states.add("California");
+		this.states.add("Florida");
+		// this.states.add("Hawaii");
+		// this.states.add("Kansas");
 		// this.states.add("Montana");
 		// this.states.add("New Jersey");
 		// this.states.add("New York");
@@ -51,7 +51,7 @@ public class Elections {
 		this.beliefs.add("Conservatism");
 		this.beliefs.add("Communism");
 		this.beliefs.add("Socialism");
-		this.beliefs.add("Anarchism");
+		//this.beliefs.add("Anarchism");
 		// this.beliefs.add("Nationalism");
 		// this.beliefs.add("Fascism");
 		// this.beliefs.add("Monarchism");

@@ -24,6 +24,7 @@ public class Voter extends Agent {
 	private int candidatesSize;
 	private HashMap<String, HashMap<String, Integer>> candidatesBeliefs = new HashMap<>();
 	private HashMap<String, HashMap<String,Integer>> candidatesCredibility = new HashMap<>();
+	private String chosenCandidate;
 
 	private DFAgentDescription dfd;
 
@@ -35,7 +36,12 @@ public class Voter extends Agent {
 		for (int i = 0; i < beliefs.size(); i++) {
 
 			int first_value = rnd.nextInt(100) + 1;
-			int second_value = rnd.nextInt(100 - first_value + 1) + first_value;
+			int second_value;
+			
+			if(first_value+30>100)
+				second_value=100;
+			else
+				second_value=first_value+20;
 
 			ArrayList<Integer> range = new ArrayList<Integer>();
 			range.add(first_value);
@@ -106,6 +112,14 @@ public class Voter extends Agent {
 	public void setCandidatesSize(int candidatesSize) {
 		this.candidatesSize = candidatesSize;
 	}
+	
+	public String getChosenCandidate() {
+		return chosenCandidate;
+	}
+
+	public void setChosenCandidate(String chosenCandidate) {
+		this.chosenCandidate = chosenCandidate;
+	}
 
 	public void setup() {
 		register();
@@ -133,13 +147,12 @@ public class Voter extends Agent {
 
 	// TODO: Comentar codigo
 	public void chooseCandidate() {
-		System.out.println("      - VOTER: " + this.getLocalName() + " CANDIDATES BELIEFS: " + this.candidatesBeliefs);
+		
+		//System.out.println("      - VOTER: " + this.getLocalName() + " CANDIDATES BELIEFS: " + this.candidatesBeliefs);
 
-		String chosenCandidate = null;
-		int difference = 0;
-
-		int minBeliefs = (int) Math.ceil(beliefs.size() / 2);
-
+		ArrayList<String> possibleCandidates = new ArrayList<String>();
+		int minBeliefs =  (int) Math.ceil(beliefs.size() / 2.0);
+		
 		for (Map.Entry<String, HashMap<String, Integer>> entry : this.candidatesBeliefs.entrySet()) {
 			String candidate = entry.getKey();
 			HashMap<String, Integer> candidatebeliefs = entry.getValue();
@@ -147,24 +160,34 @@ public class Voter extends Agent {
 			int wrongBeliefs = 0;
 
 			for (Map.Entry<String, Integer> entry2 : candidatebeliefs.entrySet()) {
+				String belief = entry2.getKey();
+				Integer value = entry2.getValue();
 
-				if (wrongBeliefs < minBeliefs) {
-					String belief = entry2.getKey();
-					Integer value = entry2.getValue();
-
-					if (value < this.beliefs.get(belief).get(0) || this.beliefs.get(belief).get(1) < value) {
-						wrongBeliefs++;
-					} else {
-						// calcular o value do candidato
-					}
-				} else {
-					break;
-				}
+				if (value < this.beliefs.get(belief).get(0) || this.beliefs.get(belief).get(1) < value)
+					wrongBeliefs++;
+				
 			}
 			
+			//System.out.println("VOTER: " + this.getLocalName() + " CANDIDATE: " + candidate + " WRONG BELIIEFS: " + wrongBeliefs);
+			if (wrongBeliefs <= minBeliefs)
+				possibleCandidates.add(candidate);
+
 		}
 		
+		//System.out.println("         - VOTER: " + this.getLocalName() + " POSSIBLE CANDIDATES: " + possibleCandidates);
+		
+		if(possibleCandidates.size()!=0){
+			Random rnd = new Random();
+			int chosenCandidateIndex = rnd.nextInt(possibleCandidates.size());
+			this.chosenCandidate = possibleCandidates.get(chosenCandidateIndex);
+		} else {
+			this.chosenCandidate = null;
+		}
+		
+		System.out.println("         - VOTER: " + this.getLocalName() + " CHOSEN CANDIDATE: " + this.chosenCandidate);
+
 	}
+
 
 	public HashMap<String, HashMap<String,Integer>> getCandidatesCredibility() {
 		return candidatesCredibility;
@@ -174,4 +197,5 @@ public class Voter extends Agent {
 		this.candidatesCredibility = candidatesCredibility;
 	}
 	
+
 }
