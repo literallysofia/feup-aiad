@@ -23,6 +23,7 @@ public class Voter extends Agent {
 	private HashMap<String, ArrayList<Integer>> beliefs = new HashMap<>();
 	private int candidatesSize;
 	private HashMap<String, HashMap<String, Integer>> candidatesBeliefs = new HashMap<>();
+	private HashMap<String, HashMap<String,Integer>> candidatesCredibility = new HashMap<>();
 
 	private DFAgentDescription dfd;
 
@@ -163,6 +164,14 @@ public class Voter extends Agent {
 			
 		}
 		
+	}
+
+	public HashMap<String, HashMap<String,Integer>> getCandidatesCredibility() {
+		return candidatesCredibility;
+	}
+
+	public void setCandidatesCredibility(HashMap<String, HashMap<String,Integer>> candidatesCredibility) {
+		this.candidatesCredibility = candidatesCredibility;
 	}
 	
 }

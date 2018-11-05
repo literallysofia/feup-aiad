@@ -11,21 +11,30 @@ import agentbehaviours.SendBeliefs;
 public class Candidate extends Agent {
 
 	private String id;
-	private int credibility = 100;
+	private HashMap<String, Integer> credibility = new HashMap<>();
 	private ArrayList<String> states = new ArrayList<String>();
 	private HashMap<String, Integer> beliefs = new HashMap<>();
+	private ArrayList<HashMap<String,Integer>> profile = new ArrayList<>();
+
+
 
 
 	public Candidate(String id, ArrayList<String> states, ArrayList<String> beliefs) {
 		this.id = id;
 		
 		this.states = states;
-
+		
+		this.credibility.put("credibility_" + id.charAt(id.length() - 1), 100);
+		
+		
 		for (int i = 0; i < beliefs.size(); i++) {
 			Random rnd = new Random();
 			int value = rnd.nextInt(100) + 1;
 			this.beliefs.put(beliefs.get(i), value);
 		}
+		
+		this.profile.add(this.beliefs);
+		this.profile.add(this.credibility);
 		//System.out.println(this.id + "\nBeliefs: " + this.beliefs);
 	}
 
@@ -49,16 +58,24 @@ public class Candidate extends Agent {
 		this.beliefs = beliefs;
 	}
 
-	public int getCredibility() {
+	public HashMap<String, Integer> getCredibility() {
 		return credibility;
 	}
 
 	public void setCredibility(int credibility) {
-		this.credibility = credibility;
+		this.credibility.put(getLocalName(), credibility);
 	}
 
 	public void setup() {
 		addBehaviour(new SendBeliefs(this));
+	}
+	
+	public ArrayList<HashMap<String, Integer>> getProfile() {
+		return profile;
+	}
+
+	public void setProfile(ArrayList<HashMap<String, Integer>> profile) {
+		this.profile = profile;
 	}
 
 }

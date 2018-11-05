@@ -26,7 +26,7 @@ public class SendBeliefs extends Behaviour{
 		
 		ACLMessage msg = new ACLMessage( ACLMessage.INFORM );
 	    try {
-			msg.setContentObject(candidate.getBeliefs());
+			msg.setContentObject(candidate.getProfile());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
