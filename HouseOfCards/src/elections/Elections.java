@@ -37,7 +37,7 @@ public class Elections {
 		this.nrCandidates = nrCandidates;
 
 		this.states.add("Alaska");
-		//this.states.add("California");
+		this.states.add("California");
 		//this.states.add("Florida");
 		// this.states.add("Hawaii");
 		// this.states.add("Kansas");

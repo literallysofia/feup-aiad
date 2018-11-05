@@ -25,16 +25,18 @@ public class ListeningCandidateBeliefs extends SimpleBehaviour {
 
 		if (msg != null) {
 			try {
-				System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CANDIDATE BELIEFS: " + msg.getSender().getLocalName() + " "
-						+ msg.getContentObject());
-				String candidate = msg.getSender().getLocalName();
-				HashMap<String, Integer> beliefs = new HashMap<String, Integer>();
-				HashMap<String, Integer> credibility = new HashMap<String, Integer>();
-				ArrayList<HashMap<String,Integer>> profile = new ArrayList<HashMap<String,Integer>>();
-				profile = (ArrayList) msg.getContentObject();
-				this.voter.getCandidatesBeliefs().put(candidate, profile.get(0));
-				this.voter.getCandidatesCredibility().put(msg.getSender().getLocalName(), profile.get(1).get("Credibility"));
-
+				if (msg.getSender().getLocalName().substring(0,9).equals("candidate")) {
+					//System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CANDIDATE BELIEFS: "
+						//	+ msg.getSender().getLocalName() + " " + msg.getContentObject());
+					String candidate = msg.getSender().getLocalName();
+					HashMap<String, Integer> beliefs = new HashMap<String, Integer>();
+					HashMap<String, Integer> credibility = new HashMap<String, Integer>();
+					ArrayList<HashMap<String, Integer>> profile = new ArrayList<HashMap<String, Integer>>();
+					profile = (ArrayList) msg.getContentObject();
+					this.voter.getCandidatesBeliefs().put(candidate, profile.get(0));
+					this.voter.getCandidatesCredibility().put(msg.getSender().getLocalName(),
+							profile.get(1).get("Credibility"));
+				}
 			} catch (UnreadableException e) {
 				e.printStackTrace();
 			}
