@@ -20,27 +20,28 @@ public class ListeningChiefOfStaffQuestion extends SimpleBehaviour {
 	}
 
 	public void action() {
-		
+
 		ACLMessage msg = this.voter.blockingReceive();
-		
+
 		if (msg != null) {
-			if (msg.getSender().getLocalName().substring(0,9).equals("chiefofst")) {
+			if (msg.getSender().getLocalName().substring(0, 9).equals("chiefofst")) {
 
-			try {
-				System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CHIEF OF STAFF BOSS: " + msg.getSender().getLocalName() + " "
-						+ msg.getContentObject());
-			
+				try {
+					System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CHIEF OF STAFF BOSS: "
+							+ msg.getSender().getLocalName() + " " + msg.getContentObject());
+					
+					ArrayList<String> message = (ArrayList) msg.getContentObject();
+					String candidate = message.get(1);
+					String belief = this.voter.calculateWrongBelief(candidate);
+					System.out.println("BELIEF = " + belief);
 
-			} catch (UnreadableException e) {
-				e.printStackTrace();
-			}
+				} catch (UnreadableException e) {
+					e.printStackTrace();
+				}
 			}
 		} else {
 			block();
 		}
-
-
-
 
 		return;
 	}

@@ -3,6 +3,9 @@ package agents;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
+
 import java.util.ArrayList;
 
 import jade.core.AID;
@@ -60,6 +63,46 @@ public class Voter extends Agent {
 		// + " Assertiveness: " + this.assertiveness + "\nMin Credibility: " +
 		// this.minCredibility + "\n");
 
+	}
+	
+	public String calculateWrongBelief(String candidate){
+		
+		if(!candidate.equals(this.chosenCandidate)){
+			
+			HashMap <String, Integer> beliefScores = new HashMap();
+			
+			HashMap <String, Integer> candidateBeliefs = new HashMap();
+			candidateBeliefs = this.candidatesBeliefs.get(candidate);
+			
+			for (Map.Entry<String, ArrayList<Integer>> entry : this.beliefs.entrySet()) {
+			    String belief = entry.getKey();
+			    int first_value = entry.getValue().get(0);
+			    int second_value = entry.getValue().get(1);
+			    
+			    int median = (second_value-first_value)/2;
+			    int score = Math.abs(median-candidateBeliefs.get(belief));
+			    
+			    beliefScores.put(belief, score);
+			}
+			
+			Map.Entry<String, Integer> maxEntry = null;
+
+			for (Map.Entry<String, Integer> entry : beliefScores.entrySet())
+			{
+			    if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)
+			    {
+			        maxEntry = entry;
+			    }
+			}
+			
+			return maxEntry.getKey();
+			
+		} else {
+			return null;
+		}
+
+		
+		
 	}
 
 	public String getId() {
