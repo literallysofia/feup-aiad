@@ -26,8 +26,8 @@ public class ListeningCandidateBeliefs extends SimpleBehaviour {
 		if (msg != null) {
 			try {
 				if (msg.getSender().getLocalName().substring(0,9).equals("candidate")) {
-					//System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CANDIDATE BELIEFS: "
-						//	+ msg.getSender().getLocalName() + " " + msg.getContentObject());
+					System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CANDIDATE BELIEFS: "
+							+ msg.getSender().getLocalName() + " " + msg.getContentObject());
 					String candidate = msg.getSender().getLocalName();
 					HashMap<String, Integer> beliefs = new HashMap<String, Integer>();
 					HashMap<String, Integer> credibility = new HashMap<String, Integer>();

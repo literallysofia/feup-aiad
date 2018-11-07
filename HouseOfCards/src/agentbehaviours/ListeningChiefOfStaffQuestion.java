@@ -32,8 +32,7 @@ public class ListeningChiefOfStaffQuestion extends SimpleBehaviour {
 					
 					ArrayList<String> message = (ArrayList) msg.getContentObject();
 					String candidate = message.get(1);
-					String belief = this.voter.calculateWrongBelief(candidate);
-					System.out.println("BELIEF = " + belief);
+					this.voter.getChiefOfStaffInfo().put(msg.getSender().getLocalName(), candidate);
 
 				} catch (UnreadableException e) {
 					e.printStackTrace();
@@ -42,7 +41,7 @@ public class ListeningChiefOfStaffQuestion extends SimpleBehaviour {
 		} else {
 			block();
 		}
-
+		this.finished = true;
 		return;
 	}
 
