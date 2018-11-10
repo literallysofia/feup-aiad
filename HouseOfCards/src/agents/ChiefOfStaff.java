@@ -6,9 +6,12 @@ import java.util.Map;
 
 import agentbehaviours.ChiefOfStaffListeningVoter;
 import agentbehaviours.ListeningChiefOfStaffQuestion;
+import agentbehaviours.SayWhatToChange;
 import agentbehaviours.SendQuestion;
 import jade.core.Agent;
 import jade.core.behaviours.*;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 
 public class ChiefOfStaff extends Agent {
 
@@ -96,12 +99,12 @@ public class ChiefOfStaff extends Agent {
 				maxEntry = entry;
 			}
 		}
-		
-		
+
+
 		System.out.println("CANDIDATES: " + map);
 		System.out.println("CANDIDATE: " + maxEntry.getKey());
 		this.chosenCandidate = maxEntry.getKey();
-		
+
 		//CHOOSE BELIEF
 		Map<String, Integer> map2 = new HashMap<String, Integer>();
 		for (int i = 0; i < this.stateChosenBeliefs.size(); i++) {
