@@ -40,7 +40,7 @@ public class ChiefOfStaffListeningVoter extends SimpleBehaviour {
 					if(message.get(5)!=null)
 						value = Integer.parseInt(message.get(5));
 
-					System.out.println("               - CHIEF OF STAFF: " + this.chiefOfStaff.getLocalName()
+					System.out.println("                 - CHIEF OF STAFF: " + this.chiefOfStaff.getLocalName()
 							+ " LISTENING VOTER CHOICES: " + msg.getSender().getLocalName() + " " + message);
 
 					this.chiefOfStaff.getStateChosenCandidates().add(candidate);

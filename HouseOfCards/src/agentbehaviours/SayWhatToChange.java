@@ -27,7 +27,7 @@ public class SayWhatToChange extends ContractNetResponder {
 
 			if (this.chiefOfStaff.getChosenCandidate().equals(this.chiefOfStaff.getBoss().getId())) {
 				ArrayList<String> answer = new ArrayList();
-				answer.add("Winning in");
+				answer.add("Winning in ");
 				answer.add(this.chiefOfStaff.getStateName());
 				try {
 					reply.setContentObject(answer);
@@ -36,7 +36,7 @@ public class SayWhatToChange extends ContractNetResponder {
 				}
 			} else {
 				ArrayList<String> changing = new ArrayList<>();
-				changing.add("Losing in");
+				changing.add("Losing in ");
 				changing.add(this.chiefOfStaff.getStateName());
 				changing.add(" and should change your ");
 				changing.add(this.chiefOfStaff.getChosenBelief());
@@ -50,7 +50,7 @@ public class SayWhatToChange extends ContractNetResponder {
 			}
 		} else {
 			ArrayList<String> nullCandidate = new ArrayList<>();
-			nullCandidate.add("Losing in");
+			nullCandidate.add("Losing in ");
 			nullCandidate.add(this.chiefOfStaff.getStateName());
 			nullCandidate.add(" and should change your ");
 			nullCandidate.add(this.chiefOfStaff.getChosenBelief());
