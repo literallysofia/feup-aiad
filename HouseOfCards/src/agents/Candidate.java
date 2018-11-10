@@ -6,7 +6,9 @@ import java.util.Random;
 
 import jade.core.Agent;
 import jade.core.behaviours.*;
+import jade.lang.acl.ACLMessage;
 import agentbehaviours.SendBeliefs;
+import agentbehaviours.WhatToChange;
 
 public class Candidate extends Agent {
 
@@ -15,7 +17,9 @@ public class Candidate extends Agent {
 	private ArrayList<String> states = new ArrayList<String>();
 	private HashMap<String, Integer> beliefs = new HashMap<>();
 	private ArrayList<HashMap<String,Integer>> profile = new ArrayList<>();
-
+	private ArrayList<String> chiefsOfStaff = new ArrayList<>();
+	
+	
 	public Candidate(String id, ArrayList<String> states, ArrayList<String> beliefs) {
 		this.id = id;
 		
@@ -58,6 +62,7 @@ public class Candidate extends Agent {
 	public void setup() {
 		System.out.println(" > CANDIDATE: " + this.getLocalName() + " BELIEFS: " + this.beliefs);
 		addBehaviour(new SendBeliefs(this));
+		addBehaviour(new WhatToChange(this,new ACLMessage(ACLMessage.CFP)));
 	}
 	
 	public ArrayList<HashMap<String, Integer>> getProfile() {
@@ -66,6 +71,14 @@ public class Candidate extends Agent {
 
 	public void setProfile(ArrayList<HashMap<String, Integer>> profile) {
 		this.profile = profile;
+	}
+
+	public ArrayList<String> getChiefsOfStaff() {
+		return chiefsOfStaff;
+	}
+
+	public void setChiefsOfStaff(ArrayList<String> chiefsOfStaff) {
+		this.chiefsOfStaff = chiefsOfStaff;
 	}
 
 }

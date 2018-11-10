@@ -37,7 +37,7 @@ public class Elections {
 		this.nrCandidates = nrCandidates;
 
 		this.states.add("Alaska");
-		// this.states.add("California");
+		this.states.add("California");
 		// this.states.add("Florida");
 		// this.states.add("Hawaii");
 		// this.states.add("Kansas");
@@ -151,6 +151,7 @@ public class Elections {
 			
 			String id = "chiefofstaff_" + Integer.toString(id_chief);
 			AgentController ac = this.cc.acceptNewAgent(id, new ChiefOfStaff(candidates.get(candidateIndex), this.states.get(id_chief)));
+			candidates.get(candidateIndex).getChiefsOfStaff().add(id);
 			ac.start();
 		}
 
