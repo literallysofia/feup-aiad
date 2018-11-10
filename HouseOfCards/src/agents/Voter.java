@@ -47,7 +47,7 @@ public class Voter extends Agent {
 			if (first_value + 30 > 100)
 				second_value = 100;
 			else
-				second_value = first_value + 20;
+				second_value = first_value + 30;
 
 			ArrayList<Integer> range = new ArrayList<Integer>();
 			range.add(first_value);

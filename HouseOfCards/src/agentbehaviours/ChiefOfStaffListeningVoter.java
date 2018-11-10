@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import agents.ChiefOfStaff;
 import agents.Voter;
+import jade.core.AID;
 import jade.core.Agent;
 
 public class ChiefOfStaffListeningVoter extends SimpleBehaviour {
@@ -53,6 +54,12 @@ public class ChiefOfStaffListeningVoter extends SimpleBehaviour {
 		if (this.chiefOfStaff.getStateChosenCandidates().size() == this.chiefOfStaff.getNrVotersState()) {
 			this.chiefOfStaff.calculateChosens();
 			this.finished = true;
+			ACLMessage msgToCandidate = new ACLMessage(ACLMessage.INFORM);
+			AID dest = new AID(this.chiefOfStaff.getBoss().getId(),false);
+			msgToCandidate.setContent("GO!");
+			msgToCandidate.addReceiver(dest);
+			this.chiefOfStaff.send(msgToCandidate);
+			
 		}
 
 		return;

@@ -20,10 +20,12 @@ public class SayWhatToChange extends ContractNetResponder{
 	}
 	
 	protected ACLMessage handleCfp(ACLMessage cfp) {
-		
-		System.out.println(this.chiefOfStaff.getLocalName() + " I Received the message from " + cfp.getSender() + " with the content: " +  cfp.getContent());
+		System.out.println(this.chiefOfStaff.getLocalName() + " I Received the message from " + cfp.getSender().getLocalName() + " with the content: " +  cfp.getContent());
 		ACLMessage reply = cfp.createReply();
 		reply.setPerformative(ACLMessage.PROPOSE);
+		if(this.chiefOfStaff.getChosenCandidate() != null){
+			
+		
 		if(this.chiefOfStaff.getChosenCandidate().equals(this.chiefOfStaff.getBoss().getId())){
 			ArrayList<String> answer = new ArrayList();
 			answer.add("You good, fam");
@@ -44,6 +46,20 @@ public class SayWhatToChange extends ContractNetResponder{
 			} catch (IOException e) {
 				e.printStackTrace();
 			};
+		}
+		}else{
+			ArrayList<String> nullCandidate = new ArrayList<>();
+			nullCandidate.add("Losing in");
+			nullCandidate.add(this.chiefOfStaff.getStateName());
+			nullCandidate.add(" and should change your ");
+			nullCandidate.add(this.chiefOfStaff.getChosenBelief());
+			
+			try {
+				reply.setContentObject(nullCandidate);
+			} catch (IOException e) {
+				e.printStackTrace();
+			};
+			
 		}
 		return reply;
 	}
