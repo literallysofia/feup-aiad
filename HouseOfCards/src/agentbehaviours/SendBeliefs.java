@@ -9,6 +9,8 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import agents.Candidate;
 import jade.core.AID;
@@ -26,7 +28,14 @@ public class SendBeliefs extends Behaviour{
 		
 		ACLMessage msg = new ACLMessage( ACLMessage.INFORM );
 	    try {
-			msg.setContentObject(candidate.getProfile());
+	    	ArrayList<HashMap<String,Integer>> profile = new ArrayList();
+	    	
+	    	HashMap<String, Integer> credibilityHash = new HashMap<>();
+			credibilityHash.put("Credibility", this.candidate.getCredibility());
+			profile.add(this.candidate.getBeliefs());
+			profile.add(credibilityHash);
+			
+			msg.setContentObject(profile);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

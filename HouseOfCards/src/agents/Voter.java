@@ -71,7 +71,7 @@ public class Voter extends Agent {
 	public Map.Entry<String, Integer> calculateWrongBelief() {
 		
 		String candidate = null;
-		while(candidate == null){
+		while(this.chiefOfStaffInfo.keySet().size()==0 || candidate == null){
 			candidate = this.chiefOfStaffInfo.get(this.chiefOfStaffInfo.keySet().toArray()[0]);
 		}
 		

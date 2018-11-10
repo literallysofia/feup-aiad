@@ -14,12 +14,10 @@ import agentbehaviours.WhatToChange;
 public class Candidate extends Agent {
 
 	private String id;
-	private int credibility =  60;
+	private int credibility =  100;
 	private ArrayList<String> states = new ArrayList<String>();
 	private HashMap<String, Integer> beliefs = new HashMap<>();
-	private ArrayList<HashMap<String,Integer>> profile = new ArrayList<>();
 	private ArrayList<String> chiefsOfStaff = new ArrayList<>();
-	
 	
 	public Candidate(String id, ArrayList<String> states, ArrayList<String> beliefs) {
 		this.id = id;
@@ -32,11 +30,6 @@ public class Candidate extends Agent {
 			this.beliefs.put(beliefs.get(i), value);
 		}
 		
-		HashMap<String, Integer> credibilityHash = new HashMap<>();
-		credibilityHash.put("Credibility", this.credibility);
-		
-		this.profile.add(this.beliefs);
-		this.profile.add(credibilityHash);
 		//System.out.println(this.id + "\nBeliefs: " + this.beliefs);
 	}
 
@@ -69,20 +62,20 @@ public class Candidate extends Agent {
 		addBehaviour(trial);
 	}
 	
-	public ArrayList<HashMap<String, Integer>> getProfile() {
-		return profile;
-	}
-
-	public void setProfile(ArrayList<HashMap<String, Integer>> profile) {
-		this.profile = profile;
-	}
-
 	public ArrayList<String> getChiefsOfStaff() {
 		return chiefsOfStaff;
 	}
 
 	public void setChiefsOfStaff(ArrayList<String> chiefsOfStaff) {
 		this.chiefsOfStaff = chiefsOfStaff;
+	}
+
+	public int getCredibility() {
+		return credibility;
+	}
+
+	public void setCredibility(int credibility) {
+		this.credibility = credibility;
 	}
 
 }

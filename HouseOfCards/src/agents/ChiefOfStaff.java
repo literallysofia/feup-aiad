@@ -105,8 +105,8 @@ public class ChiefOfStaff extends Agent {
 			}
 		}
 
-		//System.out.println("CANDIDATES: " + map);
-		//System.out.println("CANDIDATE: " + maxEntry.getKey());
+		/*System.out.println("CANDIDATES: " + map);
+		System.out.println("CANDIDATE: " + maxEntry.getKey());*/
 		this.chosenCandidate = maxEntry.getKey();
 	}
 
@@ -124,15 +124,20 @@ public class ChiefOfStaff extends Agent {
 			if (maxEntry2 == null || entry.getValue().compareTo(maxEntry2.getValue()) > 0) {
 				maxEntry2 = entry;
 			}
+			else if(entry.getValue().compareTo(maxEntry2.getValue()) == 0 
+					&& maxEntry2.getKey() == null){
+				maxEntry2 = entry;
+			}
 		}
 
 		ArrayList<Integer> values = this.stateChosenBeliefs.get(maxEntry2.getKey());
 		int average = (int) calculateAverage(values);
 
-		//System.out.println("BELIEFS: " + map2);
-		//System.out.println("BELIEF: " + maxEntry2.getKey());
-		//System.out.println("VALUES: " + values);
-		//System.out.println("VALUE: " + average);
+		/*System.out.println("BELIEFS: " + map2);
+		System.out.println("BELIEF: " + maxEntry2.getKey());
+		System.out.println("VALUES: " + values);
+		System.out.println("VALUE: " + average);*/
+		
 		this.chosenBelief = maxEntry2.getKey();
 		this.chosenValue = average;
 	}
