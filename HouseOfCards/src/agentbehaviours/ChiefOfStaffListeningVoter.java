@@ -35,12 +35,24 @@ public class ChiefOfStaffListeningVoter extends SimpleBehaviour {
 					ArrayList<String> message = (ArrayList) msg.getContentObject();
 					String candidate = message.get(1);
 					String belief = message.get(3);
+					int value = -1;
+					if(message.get(5)!=null)
+						value = Integer.parseInt(message.get(5));
 
 					System.out.println("               - CHIEF OF STAFF: " + this.chiefOfStaff.getLocalName()
 							+ " LISTENING VOTER CHOICES: " + msg.getSender().getLocalName() + " " + message);
 
 					this.chiefOfStaff.getStateChosenCandidates().add(candidate);
-					this.chiefOfStaff.getStateChosenBeliefs().add(belief);
+					
+					if(this.chiefOfStaff.getStateChosenBeliefs().get(belief)==null){
+						ArrayList <Integer> values = new ArrayList();
+						values.add(value);
+						this.chiefOfStaff.getStateChosenBeliefs().put(belief, values);
+					}
+					else{
+						this.chiefOfStaff.getStateChosenBeliefs().get(belief).add(value);
+					}
+					
 
 				} catch (UnreadableException e) {
 					e.printStackTrace();
@@ -51,7 +63,8 @@ public class ChiefOfStaffListeningVoter extends SimpleBehaviour {
 		}
 
 		if (this.chiefOfStaff.getStateChosenCandidates().size() == this.chiefOfStaff.getNrVotersState()) {
-			this.chiefOfStaff.calculateChosens();
+			this.chiefOfStaff.calculateChooseCandidate();
+			this.chiefOfStaff.calculateChooseBelief();
 			this.finished = true;
 		}
 

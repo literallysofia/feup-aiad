@@ -2,7 +2,10 @@ package agents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import agentbehaviours.ChiefOfStaffListeningVoter;
 import agentbehaviours.ListeningChiefOfStaffQuestion;
@@ -18,9 +21,10 @@ public class ChiefOfStaff extends Agent {
 	private Candidate boss;
 	private String state;
 	private ArrayList<String> stateChosenCandidates = new ArrayList();
-	private ArrayList<String> stateChosenBeliefs = new ArrayList();
+	private HashMap<String, ArrayList<Integer>> stateChosenBeliefs = new HashMap<>();
 	private String chosenCandidate;
 	private String chosenBelief;
+	private int chosenValue;
 	private int nrVotersState;
 
 	public ChiefOfStaff(Candidate candidate, String state) {
@@ -52,11 +56,11 @@ public class ChiefOfStaff extends Agent {
 		this.stateChosenCandidates = stateChosenCandidates;
 	}
 
-	public ArrayList<String> getStateChosenBeliefs() {
+	public HashMap<String, ArrayList<Integer>> getStateChosenBeliefs() {
 		return stateChosenBeliefs;
 	}
 
-	public void setStateChosenBeliefs(ArrayList<String> stateChosenBeliefs) {
+	public void setStateChosenBeliefs(HashMap<String, ArrayList<Integer>> stateChosenBeliefs) {
 		this.stateChosenBeliefs = stateChosenBeliefs;
 	}
 
@@ -84,13 +88,11 @@ public class ChiefOfStaff extends Agent {
 		addBehaviour(new ChiefOfStaffListeningVoter(this));
 	}
 
-	public void calculateChosens() {
-
-		//CHOOSE CANDIDATE
+	public void calculateChooseCandidate(){
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		for (int i = 0; i < this.stateChosenCandidates.size(); i++) {
 			Integer count = map.get(stateChosenCandidates.get(i));
-			map.put(stateChosenCandidates.get(i), count == null ? 1 : count + 1);																	// count
+			map.put(stateChosenCandidates.get(i), count == null ? 1 : count + 1); // count
 		}
 
 		Map.Entry<String, Integer> maxEntry = null;
@@ -100,16 +102,18 @@ public class ChiefOfStaff extends Agent {
 			}
 		}
 
-
 		System.out.println("CANDIDATES: " + map);
 		System.out.println("CANDIDATE: " + maxEntry.getKey());
 		this.chosenCandidate = maxEntry.getKey();
-
-		//CHOOSE BELIEF
+	}
+	
+	public void calculateChooseBelief(){
 		Map<String, Integer> map2 = new HashMap<String, Integer>();
-		for (int i = 0; i < this.stateChosenBeliefs.size(); i++) {
-			Integer count = map2.get(stateChosenBeliefs.get(i));
-			map2.put(stateChosenBeliefs.get(i), count == null ? 1 : count + 1);
+		List<String> keys = new ArrayList<String>(this.stateChosenBeliefs.keySet());
+
+		for (int i = 0; i < keys.size(); i++) {
+			Integer count = this.stateChosenBeliefs.get(keys.get(i)).size();
+			map2.put(keys.get(i), count);
 		}
 
 		Map.Entry<String, Integer> maxEntry2 = null;
@@ -118,10 +122,28 @@ public class ChiefOfStaff extends Agent {
 				maxEntry2 = entry;
 			}
 		}
+
+		ArrayList<Integer> values = this.stateChosenBeliefs.get(maxEntry2.getKey());
+		int average = (int) calculateAverage(values);
+		
 		System.out.println("BELIEFS: " + map2);
 		System.out.println("BELIEF: " + maxEntry2.getKey());
+		System.out.println("VALUES: " + values);
+		System.out.println("VALUE: " + average);
 		this.chosenBelief = maxEntry2.getKey();
+		this.chosenValue = average;
+	}
+	
 
+	private double calculateAverage(List<Integer> marks) {
+		Integer sum = 0;
+		if (!marks.isEmpty()) {
+			for (Integer mark : marks) {
+				sum += mark;
+			}
+			return sum.doubleValue() / marks.size();
+		}
+		return sum;
 	}
 
 	public int getNrVotersState() {
@@ -130,6 +152,14 @@ public class ChiefOfStaff extends Agent {
 
 	public void setNrVotersState(int nrVotersState) {
 		this.nrVotersState = nrVotersState;
+	}
+
+	public int getChosenValue() {
+		return chosenValue;
+	}
+
+	public void setChosenValue(int chosenValue) {
+		this.chosenValue = chosenValue;
 	}
 
 }

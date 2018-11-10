@@ -11,6 +11,7 @@ import jade.lang.acl.UnreadableException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import agents.Candidate;
 import agents.ChiefOfStaff;
@@ -30,7 +31,7 @@ public class AnswerChiefOfStaff extends SimpleBehaviour {
 	@Override
 	public void action() {
 
-		String belief = this.voter.calculateWrongBelief();
+		Map.Entry<String, Integer> belief = this.voter.calculateWrongBelief();
 
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		try {
@@ -38,7 +39,16 @@ public class AnswerChiefOfStaff extends SimpleBehaviour {
 			info.add("I'll vote in candidate: ");
 			info.add(this.voter.getChosenCandidate());
 			info.add("I'll consider changing my vote if your boss changes the belief: ");
-			info.add(belief);
+			if(belief == null){
+				info.add(null);
+				info.add(" to ");
+				info.add(null);
+			}
+			else{
+				info.add(belief.getKey());
+				info.add(" to ");
+				info.add(belief.getValue().toString());
+			}
 
 			msg.setContentObject(info);
 		} catch (IOException e1) {

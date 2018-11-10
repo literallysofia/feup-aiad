@@ -47,7 +47,7 @@ public class Voter extends Agent {
 			if (first_value + 30 > 100)
 				second_value = 100;
 			else
-				second_value = first_value + 20;
+				second_value = first_value + 30;
 
 			ArrayList<Integer> range = new ArrayList<Integer>();
 			range.add(first_value);
@@ -68,7 +68,7 @@ public class Voter extends Agent {
 
 	}
 
-	public String calculateWrongBelief() {
+	public Map.Entry<String, Integer> calculateWrongBelief() {
 		
 		String candidate = null;
 		while(candidate == null){
@@ -102,8 +102,13 @@ public class Voter extends Agent {
 					maxEntry = entry;
 				}
 			}
+			
+			int first_value = this.beliefs.get(maxEntry.getKey()).get(0);
+			int second_value = this.beliefs.get(maxEntry.getKey()).get(1);
+			int median = ((second_value - first_value) / 2) + first_value;
 
-			return maxEntry.getKey();
+			maxEntry.setValue(median);
+			return maxEntry;
 
 		} else {
 			return null;
