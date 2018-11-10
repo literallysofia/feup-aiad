@@ -40,6 +40,8 @@ public class SayWhatToChange extends ContractNetResponder {
 				changing.add(this.chiefOfStaff.getStateName());
 				changing.add(" and should change your ");
 				changing.add(this.chiefOfStaff.getChosenBelief());
+				changing.add(" to ");
+				changing.add(this.chiefOfStaff.getChosenValue()+"");
 				try {
 					reply.setContentObject(changing);
 				} catch (IOException e) {
@@ -52,6 +54,8 @@ public class SayWhatToChange extends ContractNetResponder {
 			nullCandidate.add(this.chiefOfStaff.getStateName());
 			nullCandidate.add(" and should change your ");
 			nullCandidate.add(this.chiefOfStaff.getChosenBelief());
+			nullCandidate.add(" to ");
+			nullCandidate.add(this.chiefOfStaff.getChosenValue()+"");
 
 			try {
 				reply.setContentObject(nullCandidate);
