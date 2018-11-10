@@ -69,8 +69,12 @@ public class Voter extends Agent {
 	}
 
 	public String calculateWrongBelief() {
-
-		String candidate = this.chiefOfStaffInfo.get(this.chiefOfStaffInfo.keySet().toArray()[0]);
+		
+		String candidate = null;
+		while(candidate == null){
+			candidate = this.chiefOfStaffInfo.get(this.chiefOfStaffInfo.keySet().toArray()[0]);
+		}
+		
 
 		if (chosenCandidate == null || !candidate.equals(this.chosenCandidate)) {
 
@@ -169,8 +173,8 @@ public class Voter extends Agent {
 
 	public void setup() {
 		register();
-		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();
 		addBehaviour(new ListeningChiefOfStaffQuestion(this));
+		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();
 		chooseCandidateAndBeliefs.addSubBehaviour(new ListeningCandidateBeliefs(this));
 		chooseCandidateAndBeliefs.addSubBehaviour(new AnswerChiefOfStaff(this));
 		addBehaviour(chooseCandidateAndBeliefs);
@@ -195,7 +199,7 @@ public class Voter extends Agent {
 		System.out.println(getLocalName() + ": You won, Frank.");
 	}
 
-	// TODO: Comentar codigo
+
 	public void chooseCandidate() {
 
 		// System.out.println(" - VOTER: " + this.getLocalName() + " CANDIDATES

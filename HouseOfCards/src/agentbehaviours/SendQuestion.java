@@ -45,6 +45,7 @@ public class SendQuestion extends Behaviour {
 
 		try {
 			DFAgentDescription[] result = DFService.search(this.chiefOfStaff, dfd);
+			this.chiefOfStaff.setNrVotersState(result.length);
 			for (int j = 0; j < result.length; j++) {
 				AID dest = result[j].getName();
 				msg.addReceiver(dest);
