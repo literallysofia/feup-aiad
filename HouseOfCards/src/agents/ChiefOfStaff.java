@@ -11,6 +11,7 @@ import agentbehaviours.ChiefOfStaffListeningVoter;
 import agentbehaviours.ListeningChiefOfStaffQuestion;
 import agentbehaviours.SayWhatToChange;
 import agentbehaviours.SendQuestion;
+import agentbehaviours.WhatToChange;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
@@ -84,8 +85,10 @@ public class ChiefOfStaff extends Agent {
 		System.out
 				.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getId());
 		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
-		addBehaviour(new SendQuestion(this));
-		addBehaviour(new ChiefOfStaffListeningVoter(this));
+		talkWithVoter.addSubBehaviour(new SendQuestion(this));
+		talkWithVoter.addSubBehaviour(new ChiefOfStaffListeningVoter(this));
+		talkWithVoter.addSubBehaviour(new SayWhatToChange(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
+		addBehaviour(talkWithVoter);
 	}
 
 	public void calculateChooseCandidate(){

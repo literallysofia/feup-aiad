@@ -21,9 +21,8 @@ public class WhatToChange extends ContractNetInitiator {
 	
 	protected Vector prepareCfps(ACLMessage cfp) {
 		Vector v = new Vector();
-		System.out.println("welelele " + this.candidate.getId() + " candidates" + this.candidate.getChiefsOfStaff().size());
 		for(int i=0; i < candidate.getChiefsOfStaff().size(); i++){
-			System.out.println(candidate.getChiefsOfStaff().get(i));
+			
 			cfp.addReceiver(new AID(candidate.getChiefsOfStaff().get(i),false));
 		}
 		
@@ -35,7 +34,6 @@ public class WhatToChange extends ContractNetInitiator {
 	}
 	
 	protected void handleAllResponses(Vector responses, Vector acceptances) {
-		
 		System.out.println("got " + responses.size() + " responses!");
 		
 		for(int i=0; i<responses.size(); i++) {

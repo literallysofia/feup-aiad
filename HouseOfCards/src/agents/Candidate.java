@@ -7,6 +7,7 @@ import java.util.Random;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
+import agentbehaviours.IsStaffFinished;
 import agentbehaviours.SendBeliefs;
 import agentbehaviours.WhatToChange;
 
@@ -61,8 +62,11 @@ public class Candidate extends Agent {
 
 	public void setup() {
 		System.out.println(" > CANDIDATE: " + this.getLocalName() + " BELIEFS: " + this.beliefs);
+		SequentialBehaviour trial = new SequentialBehaviour();
 		addBehaviour(new SendBeliefs(this));
-		addBehaviour(new WhatToChange(this,new ACLMessage(ACLMessage.CFP)));
+		trial.addSubBehaviour(new IsStaffFinished(this));
+		trial.addSubBehaviour(new WhatToChange(this,new ACLMessage(ACLMessage.CFP)));
+		addBehaviour(trial);
 	}
 	
 	public ArrayList<HashMap<String, Integer>> getProfile() {
