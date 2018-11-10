@@ -69,7 +69,7 @@ public class ChiefOfStaffListeningVoter extends SimpleBehaviour {
 			this.finished = true;
 			ACLMessage msgToCandidate = new ACLMessage(ACLMessage.INFORM);
 			AID dest = new AID(this.chiefOfStaff.getBoss().getId(),false);
-			msgToCandidate.setContent("GO!");
+			msgToCandidate.setContent("Finished");
 			msgToCandidate.addReceiver(dest);
 			this.chiefOfStaff.send(msgToCandidate);
 			

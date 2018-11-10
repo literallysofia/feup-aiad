@@ -245,7 +245,7 @@ public class Voter extends Agent {
 			this.chosenCandidate = null;
 		}
 
-		System.out.println("         - VOTER: " + this.getLocalName() + " CHOSEN CANDIDATE: " + this.chosenCandidate);
+		//System.out.println("         - VOTER: " + this.getLocalName() + " CHOSEN CANDIDATE: " + this.chosenCandidate);
 
 	}
 

@@ -25,7 +25,7 @@ public class IsStaffFinished extends SimpleBehaviour{
 		if (msg != null) {
 			this.numberOfMessages++;
 			if (msg.getSender().getLocalName().substring(0, 5).equals("chief")) {				
-					System.out.println(msg.getContent());
+					//System.out.println("               - CANDIDATE: " + this.candidate.getLocalName() + " FINISHED: " + msg.getSender().getLocalName());
 			}
 		} else {
 			block();

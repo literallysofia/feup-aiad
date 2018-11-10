@@ -34,23 +34,21 @@ public class WhatToChange extends ContractNetInitiator {
 	}
 	
 	protected void handleAllResponses(Vector responses, Vector acceptances) {
-		System.out.println("got " + responses.size() + " responses!");
+		//System.out.println("got " + responses.size() + " responses!");
 		
 		for(int i=0; i<responses.size(); i++) {
 			ACLMessage msg;
 			msg = (ACLMessage) ((ACLMessage) responses.elementAt(i));
 
-			ArrayList<String> parseResponses = new ArrayList<>();
+			ArrayList<String> parseResponse = new ArrayList<>();
 			try {
-				parseResponses = (ArrayList<String>) msg.getContentObject();
+				parseResponse = (ArrayList<String>) msg.getContentObject();
 			} catch (UnreadableException e) {
 				e.printStackTrace();
 			}
-			if(parseResponses.size() < 3){
-				System.out.println("Candidate " + this.candidate.getId() + " is winning in " + parseResponses.get(1));
-			}else{
-				System.out.println("CANDIDATE " + this.candidate.getId() + " has to change " + parseResponses.get(3) + " because he's losin in " + parseResponses.get(1));
-			}
+			
+			System.out.println("                  - CANDIDATE: " + this.candidate.getId() + " WHAT TO CHANGE: " + parseResponse);
+			
 			//ACLMessage msg = ((ACLMessage) responses.get(i)).createReply();
 			//msg.setPerformative(ACLMessage.ACCEPT_PROPOSAL); // OR NOT!
 			//acceptances.add(msg);
