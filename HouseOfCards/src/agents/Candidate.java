@@ -20,7 +20,7 @@ import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import agentbehaviours.CandidateListenChiefIsFinished;
 import agentbehaviours.CandidateSendBeliefs;
-import agentbehaviours.CandidateListenCheifStatus;
+import agentbehaviours.CandidateListenChiefStatus;
 
 public class Candidate extends Agent { 
 	public Logger logger;
@@ -123,7 +123,7 @@ public class Candidate extends Agent {
 		addBehaviour(new CandidateSendBeliefs(this));
 		SequentialBehaviour trial = new SequentialBehaviour();
 		trial.addSubBehaviour(new CandidateListenChiefIsFinished(this));
-		trial.addSubBehaviour(new CandidateListenCheifStatus(this, new ACLMessage(ACLMessage.CFP)));
+		trial.addSubBehaviour(new CandidateListenChiefStatus(this, new ACLMessage(ACLMessage.CFP)));
 		addBehaviour(trial);
 		//this.logger.getHandlers()[0].close();
 	}

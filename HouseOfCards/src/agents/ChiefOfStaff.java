@@ -16,7 +16,7 @@ import agentbehaviours.ChiefListenVoterChoices;
 import agentbehaviours.VoterListenChiefQuestion;
 import agentbehaviours.ChiefSendCandidateStatus;
 import agentbehaviours.ChiefSendVoterQuestion;
-import agentbehaviours.CandidateListenCheifStatus;
+import agentbehaviours.CandidateListenChiefStatus;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
