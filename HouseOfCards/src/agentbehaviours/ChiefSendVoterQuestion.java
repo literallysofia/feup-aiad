@@ -26,6 +26,10 @@ public class ChiefSendVoterQuestion extends Behaviour {
 	}
 
 	public void action() {
+		
+		this.chiefOfStaff.logger.info("> INFO:    ID: " +  this.chiefOfStaff.getLocalName() + " STATE: " + this.chiefOfStaff.getStateName() + " BOSS: " + this.chiefOfStaff.getBoss().getLocalName());
+		System.out.println("> INFO:    ID: " +  this.chiefOfStaff.getLocalName() + " STATE: " + this.chiefOfStaff.getStateName() + " BOSS: " + this.chiefOfStaff.getBoss().getLocalName());
+		
 
 		ACLMessage msg = new ACLMessage(ACLMessage.QUERY_IF);
 		try {

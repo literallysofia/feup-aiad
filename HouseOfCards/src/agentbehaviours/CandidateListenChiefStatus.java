@@ -77,7 +77,7 @@ public class CandidateListenChiefStatus extends ContractNetInitiator {
 			}
 
 		}
-
+		
 		this.candidate.changeBeliefs();
 	}
 

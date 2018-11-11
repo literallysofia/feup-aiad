@@ -15,9 +15,21 @@ public class VoterListenCandidateAndChief extends SimpleBehaviour {
 	private Voter voter;
 	private boolean finished = false;
 	private boolean chiefReceived = false;
+	private int cycle;
 
-	public VoterListenCandidateAndChief(Voter voter) {
+	public VoterListenCandidateAndChief(Voter voter, int cycle) {
 		this.voter = voter;
+		this.cycle = cycle;	
+		
+		this.voter.logger.info("> INFO:    ID: " + this.voter.getLocalName() + " BELIEFS: " + this.voter.getBeliefs() + " MIN CREDIBILITY: "
+				+ this.voter.getMinCredibility());
+		System.out.println("> INFO:    ID: " + this.voter.getLocalName() + " BELIEFS: " + this.voter.getBeliefs() + " MIN CREDIBILITY: "
+				+ this.voter.getMinCredibility());
+	
+		
+		this.voter.setCandidatesbeliefs(new HashMap<>());
+		this.voter.setCandidatesCredibility(new HashMap<>());
+		this.voter.setChosenCandidate(null);
 	}
 
 	public void action() {
@@ -27,11 +39,7 @@ public class VoterListenCandidateAndChief extends SimpleBehaviour {
 		if (msg != null) {
 			try {
 				if (msg.getSender().getLocalName().substring(0, 9).equals("candidate")) {
-					// System.out.println(" - VOTER: " +
-					// this.voter.getLocalName() + " LISTENING CANDIDATE
-					// BELIEFS: "
-					// + msg.getSender().getLocalName() + " " +
-					// msg.getContentObject());
+					
 					this.voter.logger
 							.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
 					String candidate = msg.getSender().getLocalName();
@@ -63,10 +71,15 @@ public class VoterListenCandidateAndChief extends SimpleBehaviour {
 		} else {
 			block();
 		}
-
-		if (this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize() && chiefReceived) {
+		if (this.cycle==1 && this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize() && chiefReceived) {
 			this.voter.chooseCandidate();
 			this.finished = true;
+		}
+		if(this.cycle==2 && this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize()){
+			this.voter.chooseCandidate();
+			this.voter.setReadyToVote(true);
+			this.finished = true;
+			//this.voter.doDelete();
 		}
 
 		return;

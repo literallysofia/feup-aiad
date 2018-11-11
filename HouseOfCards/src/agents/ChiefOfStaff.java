@@ -128,16 +128,16 @@ public class ChiefOfStaff extends Agent {
 	}
 
 	public void setup() {
-		/*System.out.println(
-				" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());*/
-		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
-		System.out.println("> INFO:    ID: " +  this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
-		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
-		talkWithVoter.addSubBehaviour(new ChiefSendVoterQuestion(this));
-		talkWithVoter.addSubBehaviour(new ChiefListenVoterChoices(this));
-		talkWithVoter
-				.addSubBehaviour(new ChiefSendCandidateStatus(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
-		addBehaviour(talkWithVoter);
+		
+		SequentialBehaviour cycle1 = new SequentialBehaviour();
+		cycle1.addSubBehaviour(new ChiefSendVoterQuestion(this));
+		cycle1.addSubBehaviour(new ChiefListenVoterChoices(this));
+		cycle1.addSubBehaviour(new ChiefSendCandidateStatus(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
+		addBehaviour(cycle1);
+	}
+	
+	public void takeDown() {
+		System.out.println(this.getLocalName() + " was taken down.");
 	}
 
 	// calcula o candidato escolhido pelos voters do seu estado

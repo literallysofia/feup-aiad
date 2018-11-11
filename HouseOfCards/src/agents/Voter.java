@@ -17,9 +17,13 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import agentbehaviours.VoterSendChiefChoices;
+import agentbehaviours.CandidateListenChiefIsFinished;
+import agentbehaviours.CandidateListenChiefStatus;
+import agentbehaviours.CandidateSendBeliefs;
 import agentbehaviours.VoterListenCandidateAndChief;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
+import jade.lang.acl.ACLMessage;
 import jade.domain.FIPAException;
 
 public class Voter extends Agent {
@@ -33,6 +37,7 @@ public class Voter extends Agent {
 	private HashMap<String, Integer> candidatesCredibility = new HashMap<>();
 	private HashMap<String, String> chiefOfStaffInfo = new HashMap<>();
 	private String chosenCandidate;
+	private boolean readyToVote = false;
 
 	private DFAgentDescription dfd;
 
@@ -46,10 +51,10 @@ public class Voter extends Agent {
 			int first_value = rnd.nextInt(100) + 1;
 			int second_value;
 
-			if (first_value + 30 > 100)
+			if (first_value + 50 > 100)
 				second_value = 100;
 			else
-				second_value = first_value + 30;
+				second_value = first_value + 50;
 
 			ArrayList<Integer> range = new ArrayList<Integer>();
 			range.add(first_value);
@@ -120,6 +125,14 @@ public class Voter extends Agent {
 	public void setChiefOfStaffInfo(HashMap<String, String> chiefOfStaffInfo) {
 		this.chiefOfStaffInfo = chiefOfStaffInfo;
 	}
+	
+	public boolean isReadyToVote() {
+		return readyToVote;
+	}
+
+	public void setReadyToVote(boolean readyToVote) {
+		this.readyToVote = readyToVote;
+	}
 
 	public void setupLogger() {
 
@@ -146,16 +159,15 @@ public class Voter extends Agent {
 	}
 
 	public void setup() {
-		register();
-		this.logger.info("> INFO:    ID: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
-				+ this.minCredibility);
-		System.out.println("> INFO:    ID: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
-				+ this.minCredibility);
-		//addBehaviour(new VoterListenChiefQuestion(this));
-		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();
-		chooseCandidateAndBeliefs.addSubBehaviour(new VoterListenCandidateAndChief(this));
-		chooseCandidateAndBeliefs.addSubBehaviour(new VoterSendChiefChoices(this));
-		addBehaviour(chooseCandidateAndBeliefs);
+		register();	
+		SequentialBehaviour loop = new SequentialBehaviour();
+				loop.addSubBehaviour(new VoterListenCandidateAndChief(this,1));
+				loop.addSubBehaviour(new VoterSendChiefChoices(this));
+		addBehaviour(loop);
+	}
+	
+	public void takeDown() {
+		System.out.println(this.getLocalName() + " was taken down.");
 	}
 
 	// regista nas paginas amarelas
@@ -274,8 +286,6 @@ public class Voter extends Agent {
 		} else {
 			return null;
 		}
-		
-		
 
 	}
 

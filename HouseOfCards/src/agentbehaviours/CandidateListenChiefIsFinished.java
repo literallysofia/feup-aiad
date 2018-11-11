@@ -20,6 +20,13 @@ public class CandidateListenChiefIsFinished extends SimpleBehaviour {
 
 	@Override
 	public void action() {
+
+		if(this.candidate.getChiefsOfStaff().size()==0){
+			this.candidate.addBehaviour(new CandidateSendBeliefs(this.candidate, 2));
+			this.done=true;
+			return;
+		}
+		
 		ACLMessage msg = this.candidate.blockingReceive();
 		if (msg != null) {
 			this.numberOfMessages++;

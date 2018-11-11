@@ -22,7 +22,7 @@ import agentbehaviours.CandidateListenChiefIsFinished;
 import agentbehaviours.CandidateSendBeliefs;
 import agentbehaviours.CandidateListenChiefStatus;
 
-public class Candidate extends Agent { 
+public class Candidate extends Agent {
 	public Logger logger;
 	private String id;
 	private int credibility = 100;
@@ -33,7 +33,7 @@ public class Candidate extends Agent {
 	private HashMap<String, Integer> beliefToChangeValue = new HashMap<>();
 
 	public Candidate(String id, ArrayList<String> states, ArrayList<String> beliefs) {
-		this.id=id;
+		this.id = id;
 		this.states = states;
 
 		for (int i = 0; i < beliefs.size(); i++) {
@@ -43,7 +43,6 @@ public class Candidate extends Agent {
 		}
 		setupLogger();
 	}
-
 
 	public ArrayList<String> getStates() {
 		return states;
@@ -92,40 +91,45 @@ public class Candidate extends Agent {
 	public void setBeliefToChangeValue(HashMap<String, Integer> beliefToChangeValue) {
 		this.beliefToChangeValue = beliefToChangeValue;
 	}
-	
-	public void setupLogger(){
-		
-		this.logger=Logger.getLogger(this.id);
-	    FileHandler fh = null; 
-	    this.logger.setUseParentHandlers(false);
 
-	    try {  
-	    	File logDir = new File("logs/"); 
-			if( !(logDir.exists()) )
+	public void setupLogger() {
+
+		this.logger = Logger.getLogger(this.id);
+		FileHandler fh = null;
+		this.logger.setUseParentHandlers(false);
+
+		try {
+			File logDir = new File("logs/");
+			if (!(logDir.exists()))
 				logDir.mkdir();
-		
-	        fh = new FileHandler("logs/"+this.id+".log");  
-	        this.logger.addHandler(fh); 
-	        SimpleFormatter formatter = new SimpleFormatter();  
-	        fh.setFormatter(formatter); 
 
-	    } catch (SecurityException e) {  
-	        e.printStackTrace();  
-	    } catch (IOException e) {  
-	        e.printStackTrace();  
-	    }  
-	   
+			fh = new FileHandler("logs/" + this.id + ".log");
+			this.logger.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void setup() {
-		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS: " + this.beliefs);
-		System.out.println("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS: " + this.beliefs);
-		addBehaviour(new CandidateSendBeliefs(this));
-		SequentialBehaviour trial = new SequentialBehaviour();
-		trial.addSubBehaviour(new CandidateListenChiefIsFinished(this));
-		trial.addSubBehaviour(new CandidateListenChiefStatus(this, new ACLMessage(ACLMessage.CFP)));
-		addBehaviour(trial);
-		//this.logger.getHandlers()[0].close();
+
+		SequentialBehaviour loop = new SequentialBehaviour();
+			loop.addSubBehaviour(new CandidateSendBeliefs(this, 1));
+			SequentialBehaviour trial = new SequentialBehaviour();
+			trial.addSubBehaviour(new CandidateListenChiefIsFinished(this));
+			trial.addSubBehaviour(new CandidateListenChiefStatus(this, new ACLMessage(ACLMessage.CFP)));
+			loop.addSubBehaviour(trial);
+		addBehaviour(loop);
+
+	}
+
+	public void takeDown() {
+		System.out.println(this.getLocalName() + " was taken down.");
 	}
 
 	// atualiza as beliefs conforme a informação dada pelo chief of staff
@@ -162,17 +166,22 @@ public class Candidate extends Agent {
 			this.credibility = this.credibility - diffCre;
 			// System.out.println("NEW CREDIBILITY: " + this.credibility);
 
-			this.logger.info("> INFO:    CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);  
-			this.logger.info("> INFO:    CHANGED credibility TO " + this.credibility);  
-			System.out.println("> INFO:    ID: " + this.getLocalName()+ " CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);  
-			System.out.println("> INFO:    ID: " + this.getLocalName()+ " CHANGED credibility TO " + this.credibility);  
-			
-			/*System.out.println("                           - CANDIDATE: " + this.getLocalName() + " CHANGED BELIEF: "
-					+ maxEntry.getKey() + " OLD VALUE: " + oldValue + " NEW VALUE : " + value + " CHANGED CREDIBILITY: "
-					+ this.credibility);*/
+			this.logger.info("> INFO:    CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);
+			this.logger.info("> INFO:    CHANGED credibility TO " + this.credibility);
+			System.out.println(
+					"> INFO:    ID: " + this.getLocalName() + " CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);
+			System.out.println("> INFO:    ID: " + this.getLocalName() + " CHANGED credibility TO " + this.credibility);
+
+			/*
+			 * System.out.println("                           - CANDIDATE: " +
+			 * this.getLocalName() + " CHANGED BELIEF: " + maxEntry.getKey() +
+			 * " OLD VALUE: " + oldValue + " NEW VALUE : " + value +
+			 * " CHANGED CREDIBILITY: " + this.credibility);
+			 */
 
 		}
+		
+		this.addBehaviour(new CandidateSendBeliefs(this, 2));
 	}
 
 }
-

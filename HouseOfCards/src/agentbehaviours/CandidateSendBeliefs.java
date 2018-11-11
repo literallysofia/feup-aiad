@@ -22,12 +22,23 @@ import jade.core.Agent;
 public class CandidateSendBeliefs extends Behaviour {
 	private Candidate candidate;
 	private boolean finished;
+	private int cycle;
 
-	public CandidateSendBeliefs(Candidate a) {
+	public CandidateSendBeliefs(Candidate a, int cycle) {
 		this.candidate = a;
+		this.cycle = cycle;
+		
+		this.candidate.logger.info("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS: "
+				+ this.candidate.getBeliefs());
+		System.out.println("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS: "
+				+ this.candidate.getBeliefs());
+		
+		this.candidate.setBeliefToChangePopulation(new HashMap<>());
+		this.candidate.setBeliefToChangeValue(new HashMap<>());
 	}
 
 	public void action() {
+		
 		//System.out.println("ID: " +  this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS:" + this.candidate.getBeliefs());  
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		try {

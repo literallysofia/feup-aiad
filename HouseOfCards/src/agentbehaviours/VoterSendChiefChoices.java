@@ -70,7 +70,7 @@ public class VoterSendChiefChoices extends SimpleBehaviour {
 		} catch (UnreadableException e) {
 			e.printStackTrace();
 		}*/
-
+		this.voter.addBehaviour(new VoterListenCandidateAndChief(this.voter,2));
 		this.finished = true;
 
 	}
