@@ -10,12 +10,13 @@ import java.util.HashMap;
 import agents.Voter;
 import jade.core.Agent;
 
-public class VoterListenCandidate extends SimpleBehaviour {
+public class VoterListenCandidateAndChief extends SimpleBehaviour {
 
 	private Voter voter;
 	private boolean finished = false;
+	private boolean chiefReceived = false;
 
-	public VoterListenCandidate(Voter voter) {
+	public VoterListenCandidateAndChief(Voter voter) {
 		this.voter = voter;
 	}
 
@@ -31,7 +32,8 @@ public class VoterListenCandidate extends SimpleBehaviour {
 					// BELIEFS: "
 					// + msg.getSender().getLocalName() + " " +
 					// msg.getContentObject());
-					this.voter.logger.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
+					this.voter.logger
+							.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
 					String candidate = msg.getSender().getLocalName();
 					HashMap<String, Integer> beliefs = new HashMap<String, Integer>();
 					HashMap<String, Integer> credibility = new HashMap<String, Integer>();
@@ -40,7 +42,21 @@ public class VoterListenCandidate extends SimpleBehaviour {
 					this.voter.getCandidatesBeliefs().put(candidate, profile.get(0));
 					this.voter.getCandidatesCredibility().put(msg.getSender().getLocalName(),
 							profile.get(1).get("Credibility"));
+					
+				} else if (msg != null && msg.getSender().getLocalName().substring(0, 9).equals("chiefofst")) {
+
+					try {
+						this.voter.logger.info(
+								"RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
+						ArrayList<String> message = (ArrayList) msg.getContentObject();
+						String candidate = message.get(1);
+						this.voter.getChiefOfStaffInfo().put(msg.getSender().getLocalName(), candidate);
+						chiefReceived = true;
+					} catch (UnreadableException e) {
+						e.printStackTrace();
+					}
 				}
+				
 			} catch (UnreadableException e) {
 				e.printStackTrace();
 			}
@@ -48,7 +64,7 @@ public class VoterListenCandidate extends SimpleBehaviour {
 			block();
 		}
 
-		if (this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize()) {
+		if (this.voter.getCandidatesBeliefs().size() == this.voter.getCandidatesSize() && chiefReceived) {
 			this.voter.chooseCandidate();
 			this.finished = true;
 		}

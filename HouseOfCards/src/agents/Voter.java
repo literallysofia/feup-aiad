@@ -17,8 +17,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import agentbehaviours.VoterSendChiefChoices;
-import agentbehaviours.VoterListenCandidate;
-import agentbehaviours.VoterListenChiefQuestion;
+import agentbehaviours.VoterListenCandidateAndChief;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
@@ -152,9 +151,9 @@ public class Voter extends Agent {
 				+ this.minCredibility);
 		System.out.println("> INFO:    ID: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
 				+ this.minCredibility);
-		addBehaviour(new VoterListenChiefQuestion(this));
+		//addBehaviour(new VoterListenChiefQuestion(this));
 		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();
-		chooseCandidateAndBeliefs.addSubBehaviour(new VoterListenCandidate(this));
+		chooseCandidateAndBeliefs.addSubBehaviour(new VoterListenCandidateAndChief(this));
 		chooseCandidateAndBeliefs.addSubBehaviour(new VoterSendChiefChoices(this));
 		addBehaviour(chooseCandidateAndBeliefs);
 	}
@@ -224,6 +223,7 @@ public class Voter extends Agent {
 		}
 		
 		this.logger.info("> INFO:    CHOSEN CANDIDATE: " + this.chosenCandidate);
+		System.out.println("> INFO:    ID: " + this.getLocalName() + " CHOSEN CANDIDATE: " + this.chosenCandidate);
 
 	}
 

@@ -10,13 +10,9 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
 import agentbehaviours.ChiefListenVoterChoices;
-import agentbehaviours.VoterListenChiefQuestion;
 import agentbehaviours.ChiefSendCandidateStatus;
 import agentbehaviours.ChiefSendVoterQuestion;
-import agentbehaviours.CandidateListenChiefStatus;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
