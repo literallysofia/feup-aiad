@@ -16,11 +16,11 @@ import agents.ChiefOfStaff;
 import jade.core.AID;
 import jade.core.Agent;
 
-public class SendQuestion extends Behaviour {
+public class ChiefSendVoterQuestion extends Behaviour {
 	private ChiefOfStaff chiefOfStaff;
 	private boolean finished;
 
-	public SendQuestion(ChiefOfStaff a) {
+	public ChiefSendVoterQuestion(ChiefOfStaff a) {
 		this.chiefOfStaff = a;
 	}
 

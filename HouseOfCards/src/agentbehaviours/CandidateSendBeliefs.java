@@ -16,11 +16,11 @@ import agents.Candidate;
 import jade.core.AID;
 import jade.core.Agent;
 
-public class SendBeliefs extends Behaviour{
+public class CandidateSendBeliefs extends Behaviour{
 	private Candidate candidate;
 	private boolean finished;
 
-	public SendBeliefs(Candidate a) {
+	public CandidateSendBeliefs(Candidate a) {
 		this.candidate = a;
 	}
 

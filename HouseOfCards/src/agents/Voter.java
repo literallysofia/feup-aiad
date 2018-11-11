@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
-import agentbehaviours.AnswerChiefOfStaff;
-import agentbehaviours.ListeningCandidateBeliefs;
-import agentbehaviours.ListeningChiefOfStaffQuestion;
+import agentbehaviours.VoterSendChiefChoices;
+import agentbehaviours.VoterListeningCandidate;
+import agentbehaviours.VoterListenChiefQuestion;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
@@ -180,10 +180,10 @@ public class Voter extends Agent {
 
 	public void setup() {
 		register();
-		addBehaviour(new ListeningChiefOfStaffQuestion(this));
+		addBehaviour(new VoterListenChiefQuestion(this));
 		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();
-		chooseCandidateAndBeliefs.addSubBehaviour(new ListeningCandidateBeliefs(this));
-		chooseCandidateAndBeliefs.addSubBehaviour(new AnswerChiefOfStaff(this));
+		chooseCandidateAndBeliefs.addSubBehaviour(new VoterListeningCandidate(this));
+		chooseCandidateAndBeliefs.addSubBehaviour(new VoterSendChiefChoices(this));
 		addBehaviour(chooseCandidateAndBeliefs);
 	}
 

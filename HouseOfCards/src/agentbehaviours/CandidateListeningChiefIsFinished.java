@@ -8,14 +8,14 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
-public class IsStaffFinished extends SimpleBehaviour{
+public class CandidateListeningChiefIsFinished extends SimpleBehaviour{
 		
 	private Candidate candidate;
 	private boolean done = false;
 	private int numberOfMessages = 0;
 
 	
-	public IsStaffFinished(Candidate a){
+	public CandidateListeningChiefIsFinished(Candidate a){
 		this.candidate = a;
 	}
 

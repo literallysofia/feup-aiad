@@ -8,9 +8,9 @@ import java.util.Random;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
-import agentbehaviours.IsStaffFinished;
-import agentbehaviours.SendBeliefs;
-import agentbehaviours.WhatToChange;
+import agentbehaviours.CandidateListeningChiefIsFinished;
+import agentbehaviours.CandidateSendBeliefs;
+import agentbehaviours.CandidateListenCheidStatus;
 
 public class Candidate extends Agent {
 
@@ -59,9 +59,9 @@ public class Candidate extends Agent {
 	public void setup() {
 		System.out.println(" > CANDIDATE: " + this.getLocalName() + " BELIEFS: " + this.beliefs);
 		SequentialBehaviour trial = new SequentialBehaviour();
-		addBehaviour(new SendBeliefs(this));
-		trial.addSubBehaviour(new IsStaffFinished(this));
-		trial.addSubBehaviour(new WhatToChange(this, new ACLMessage(ACLMessage.CFP)));
+		addBehaviour(new CandidateSendBeliefs(this));
+		trial.addSubBehaviour(new CandidateListeningChiefIsFinished(this));
+		trial.addSubBehaviour(new CandidateListenCheidStatus(this, new ACLMessage(ACLMessage.CFP)));
 		addBehaviour(trial);
 	}
 

@@ -7,11 +7,11 @@ import java.util.Map;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
-import agentbehaviours.ChiefOfStaffListeningVoter;
-import agentbehaviours.ListeningChiefOfStaffQuestion;
-import agentbehaviours.SayWhatToChange;
-import agentbehaviours.SendQuestion;
-import agentbehaviours.WhatToChange;
+import agentbehaviours.ChiefListenVoterChoices;
+import agentbehaviours.VoterListenChiefQuestion;
+import agentbehaviours.ChiefSendCandidateStatus;
+import agentbehaviours.ChiefSendVoterQuestion;
+import agentbehaviours.CandidateListenCheidStatus;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
@@ -85,9 +85,9 @@ public class ChiefOfStaff extends Agent {
 		System.out
 				.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getId());
 		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
-		talkWithVoter.addSubBehaviour(new SendQuestion(this));
-		talkWithVoter.addSubBehaviour(new ChiefOfStaffListeningVoter(this));
-		talkWithVoter.addSubBehaviour(new SayWhatToChange(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
+		talkWithVoter.addSubBehaviour(new ChiefSendVoterQuestion(this));
+		talkWithVoter.addSubBehaviour(new ChiefListenVoterChoices(this));
+		talkWithVoter.addSubBehaviour(new ChiefSendCandidateStatus(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
 		addBehaviour(talkWithVoter);
 	}
 

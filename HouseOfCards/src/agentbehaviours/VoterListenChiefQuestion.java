@@ -10,12 +10,12 @@ import java.util.HashMap;
 import agents.Voter;
 import jade.core.Agent;
 
-public class ListeningChiefOfStaffQuestion extends SimpleBehaviour {
+public class VoterListenChiefQuestion extends SimpleBehaviour {
 
 	private Voter voter;
 	private boolean finished = false;
 
-	public ListeningChiefOfStaffQuestion(Voter voter) {
+	public VoterListenChiefQuestion(Voter voter) {
 		this.voter = voter;
 	}
 

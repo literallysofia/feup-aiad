@@ -14,11 +14,11 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetInitiator;
 
-public class WhatToChange extends ContractNetInitiator {
+public class CandidateListenCheidStatus extends ContractNetInitiator {
 
 	private Candidate candidate;
 
-	public WhatToChange(Candidate a, ACLMessage cfp) {
+	public CandidateListenCheidStatus(Candidate a, ACLMessage cfp) {
 		super(a, cfp);
 		this.candidate = a;
 	}

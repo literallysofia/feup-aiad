@@ -19,12 +19,12 @@ import agents.Voter;
 import jade.core.AID;
 import jade.core.Agent;
 
-public class AnswerChiefOfStaff extends SimpleBehaviour {
+public class VoterSendChiefChoices extends SimpleBehaviour {
 
 	private Voter voter;
 	private boolean finished = false;
 
-	public AnswerChiefOfStaff(Voter voter) {
+	public VoterSendChiefChoices(Voter voter) {
 		this.voter = voter;
 	}
 

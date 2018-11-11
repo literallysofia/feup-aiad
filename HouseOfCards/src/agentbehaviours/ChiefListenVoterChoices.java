@@ -16,12 +16,12 @@ import agents.Voter;
 import jade.core.AID;
 import jade.core.Agent;
 
-public class ChiefOfStaffListeningVoter extends SimpleBehaviour {
+public class ChiefListenVoterChoices extends SimpleBehaviour {
 
 	private ChiefOfStaff chiefOfStaff;
 	private boolean finished = false;
 
-	public ChiefOfStaffListeningVoter(ChiefOfStaff chiefOfStaff) {
+	public ChiefListenVoterChoices(ChiefOfStaff chiefOfStaff) {
 		this.chiefOfStaff = chiefOfStaff;
 	}
 

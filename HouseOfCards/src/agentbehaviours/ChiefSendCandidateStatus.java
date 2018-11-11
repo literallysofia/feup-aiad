@@ -9,11 +9,11 @@ import jade.proto.ContractNetResponder;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SayWhatToChange extends ContractNetResponder {
+public class ChiefSendCandidateStatus extends ContractNetResponder {
 
 	private ChiefOfStaff chiefOfStaff;
 
-	public SayWhatToChange(ChiefOfStaff a, MessageTemplate mt) {
+	public ChiefSendCandidateStatus(ChiefOfStaff a, MessageTemplate mt) {
 		super(a, mt);
 		this.chiefOfStaff = a;
 	}
