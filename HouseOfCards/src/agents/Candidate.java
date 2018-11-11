@@ -118,7 +118,8 @@ public class Candidate extends Agent {
 	}
 
 	public void setup() {
-		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS: " + this.beliefs);  
+		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS: " + this.beliefs);
+		System.out.println("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS: " + this.beliefs);
 		addBehaviour(new CandidateSendBeliefs(this));
 		SequentialBehaviour trial = new SequentialBehaviour();
 		trial.addSubBehaviour(new CandidateListenChiefIsFinished(this));
@@ -163,10 +164,12 @@ public class Candidate extends Agent {
 
 			this.logger.info("> INFO:    CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);  
 			this.logger.info("> INFO:    CHANGED credibility TO " + this.credibility);  
+			System.out.println("> INFO:    ID: " + this.getLocalName()+ " CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);  
+			System.out.println("> INFO:    ID: " + this.getLocalName()+ " CHANGED credibility TO " + this.credibility);  
 			
-			System.out.println("                           - CANDIDATE: " + this.getLocalName() + " CHANGED BELIEF: "
+			/*System.out.println("                           - CANDIDATE: " + this.getLocalName() + " CHANGED BELIEF: "
 					+ maxEntry.getKey() + " OLD VALUE: " + oldValue + " NEW VALUE : " + value + " CHANGED CREDIBILITY: "
-					+ this.credibility);
+					+ this.credibility);*/
 
 		}
 	}

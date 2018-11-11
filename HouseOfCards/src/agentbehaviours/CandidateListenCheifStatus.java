@@ -52,8 +52,8 @@ public class CandidateListenCheifStatus extends ContractNetInitiator {
 				e.printStackTrace();
 			}
 
-			System.out.println("                     - CANDIDATE: " + this.candidate.getLocalName() + " WHAT TO CHANGE: "
-					+ parseResponse);
+			/*System.out.println("                     - CANDIDATE: " + this.candidate.getLocalName() + " WHAT TO CHANGE: "
+					+ parseResponse);*/
 
 			if (parseResponse.get(0).equals("Losing in ")) {
 				String state = parseResponse.get(1);

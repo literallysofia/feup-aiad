@@ -132,9 +132,10 @@ public class ChiefOfStaff extends Agent {
 	}
 
 	public void setup() {
-		System.out.println(
-				" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
+		/*System.out.println(
+				" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());*/
 		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
+		System.out.println("> INFO:    ID: " +  this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
 		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
 		talkWithVoter.addSubBehaviour(new ChiefSendVoterQuestion(this));
 		talkWithVoter.addSubBehaviour(new ChiefListenVoterChoices(this));

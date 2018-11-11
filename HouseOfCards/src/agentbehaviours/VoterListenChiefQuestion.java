@@ -27,8 +27,8 @@ public class VoterListenChiefQuestion extends SimpleBehaviour {
 			if (msg.getSender().getLocalName().substring(0, 9).equals("chiefofst")) {
 
 				try {
-					System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CHIEF OF STAFF BOSS: "
-							+ msg.getSender().getLocalName() + " " + msg.getContentObject());
+					/*System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CHIEF OF STAFF BOSS: "
+							+ msg.getSender().getLocalName() + " " + msg.getContentObject());*/
 					this.voter.logger.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
 					ArrayList<String> message = (ArrayList) msg.getContentObject();
 					String candidate = message.get(1);

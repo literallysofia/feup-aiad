@@ -65,11 +65,11 @@ public class VoterSendChiefChoices extends SimpleBehaviour {
 			e1.printStackTrace();
 		}
 
-		try {
+		/*try {
 			System.out.println("            - VOTER: " + this.voter.getLocalName() + " " + msg.getContentObject());
 		} catch (UnreadableException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		this.finished = true;
 

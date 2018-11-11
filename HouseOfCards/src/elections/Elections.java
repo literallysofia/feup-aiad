@@ -104,14 +104,16 @@ public class Elections {
 	}
 
 	public void createVotersPerState() throws StaleProxyException {
+		
+		int total = 0;
 
 		for (int id_state = 0; id_state < this.states.size(); id_state++) {
 			int id_voterstate = 0;
 
 			Random rnd = new Random();
 			int population = rnd.nextInt(this.maxPopulation + 1 - this.minPopulation) + this.minPopulation;
-			System.out.println(" > STATE: " + this.states.get(id_state) + " " + " POPULATION: " + population);
-
+			System.out.println("> STATE: " + this.states.get(id_state) + " " + " POPULATION: " + population);
+			total = total + population;
 			while (id_voterstate < population) {
 				try {
 					String id = "voter_" + this.states.get(id_state) + "_" + Integer.toString(id_voterstate);
@@ -124,12 +126,14 @@ public class Elections {
 				}
 			}
 		}
+		
+		System.out.println("> TOTAL POPULATION: " + total);
 	}
 
 	public void createCandidatesAndChiefs() throws StaleProxyException {
 
 		ArrayList<Candidate> candidates = new ArrayList<Candidate>();
-		System.out.println(" > CANDIDATES: " + this.nrCandidates);
+		System.out.println("> NR CANDIDATES: " + this.nrCandidates);
 
 		for (int id_candidate = 0; id_candidate < this.nrCandidates; id_candidate++) {
 			String id = "candidate_" + Integer.toString(id_candidate);

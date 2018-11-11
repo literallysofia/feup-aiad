@@ -147,10 +147,10 @@ public class Voter extends Agent {
 	}
 
 	public void setup() {
-		System.out.println(" > VOTER: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
-				+ this.minCredibility);
 		register();
 		this.logger.info("> INFO:    ID: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
+				+ this.minCredibility);
+		System.out.println("> INFO:    ID: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
 				+ this.minCredibility);
 		addBehaviour(new VoterListenChiefQuestion(this));
 		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();

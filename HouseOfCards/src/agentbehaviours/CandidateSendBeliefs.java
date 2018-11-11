@@ -60,7 +60,6 @@ public class CandidateSendBeliefs extends Behaviour {
 			} catch (FIPAException e) {
 				e.printStackTrace();
 			} catch (UnreadableException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
