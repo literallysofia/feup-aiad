@@ -4,6 +4,7 @@ import agents.ChiefOfStaff;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetResponder;
 
 import java.io.IOException;
@@ -25,8 +26,11 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 		// cfp.getContent());
 		ACLMessage reply = cfp.createReply();
 		reply.setPerformative(ACLMessage.PROPOSE);
+		
+		this.chiefOfStaff.logger.info("> INFO:    CANDIDATE " +  chiefOfStaff.getChosenCandidate() + " IS WINNING IN " + this.chiefOfStaff.getStateName());
+		
 		if (this.chiefOfStaff.getChosenCandidate() != null) {
-
+			
 			if (this.chiefOfStaff.getChosenCandidate().equals(this.chiefOfStaff.getBoss().getLocalName())) {
 				ArrayList<String> answer = new ArrayList();
 				answer.add("Winning in ");
@@ -65,6 +69,12 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 				e.printStackTrace();
 			}
 
+		}
+		
+		try {
+			this.chiefOfStaff.logger.info("SENT:      " + reply.getContentObject() + " TO: " + cfp.getSender().getLocalName());
+		} catch (UnreadableException e) {
+			e.printStackTrace();
 		}
 		return reply;
 	}

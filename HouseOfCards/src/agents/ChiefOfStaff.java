@@ -1,9 +1,14 @@
 package agents;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
@@ -19,6 +24,8 @@ import jade.lang.acl.MessageTemplate;
 
 public class ChiefOfStaff extends Agent {
 
+	public Logger logger;
+	private String id;
 	private Candidate boss;
 	private String state;
 	private ArrayList<String> stateChosenCandidates = new ArrayList<>();
@@ -28,9 +35,12 @@ public class ChiefOfStaff extends Agent {
 	private int chosenValue;
 	private int nrVotersState;
 
-	public ChiefOfStaff(Candidate candidate, String state) {
+	public ChiefOfStaff(String id, Candidate candidate, String state) {
+		this.id = id;
 		this.boss = candidate;
 		this.state = state;
+
+		setupLogger();
 	}
 
 	public Candidate getBoss() {
@@ -97,9 +107,34 @@ public class ChiefOfStaff extends Agent {
 		this.chosenValue = chosenValue;
 	}
 
+	public void setupLogger() {
+
+		this.logger = Logger.getLogger(this.id);
+		FileHandler fh = null;
+		this.logger.setUseParentHandlers(false);
+
+		try {
+			File logDir = new File("logs/");
+			if (!(logDir.exists()))
+				logDir.mkdir();
+
+			fh = new FileHandler("logs/" + this.id + ".log");
+			this.logger.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public void setup() {
-		System.out
-				.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
+		System.out.println(
+				" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
+		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
 		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
 		talkWithVoter.addSubBehaviour(new ChiefSendVoterQuestion(this));
 		talkWithVoter.addSubBehaviour(new ChiefListenVoterChoices(this));

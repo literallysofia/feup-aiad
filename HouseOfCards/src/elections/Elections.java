@@ -145,7 +145,7 @@ public class Elections {
 
 			String id = "chiefofstaff_" + Integer.toString(id_chief);
 			AgentController ac = this.cc.acceptNewAgent(id,
-					new ChiefOfStaff(candidates.get(candidateIndex), this.states.get(id_chief)));
+					new ChiefOfStaff(id, candidates.get(candidateIndex), this.states.get(id_chief)));
 			candidates.get(candidateIndex).getChiefsOfStaff().add(id);
 			ac.start();
 		}

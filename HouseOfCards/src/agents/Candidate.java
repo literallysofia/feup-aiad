@@ -118,7 +118,7 @@ public class Candidate extends Agent {
 	}
 
 	public void setup() {
-		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS:" + this.beliefs);  
+		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS: " + this.beliefs);  
 		addBehaviour(new CandidateSendBeliefs(this));
 		SequentialBehaviour trial = new SequentialBehaviour();
 		trial.addSubBehaviour(new CandidateListenChiefIsFinished(this));

@@ -31,9 +31,10 @@ public class ChiefListenVoterChoices extends SimpleBehaviour {
 
 		if (msg != null) {
 			if (msg.getSender().getLocalName().substring(0, 5).equals("voter")) {
-
+				
 				try {
 					ArrayList<String> message = (ArrayList) msg.getContentObject();
+					this.chiefOfStaff.logger.info("RECEIVED:  " + message + " FROM: " + msg.getSender().getLocalName());
 					String candidate = message.get(1);
 					String belief = message.get(3);
 					int value = -1;
