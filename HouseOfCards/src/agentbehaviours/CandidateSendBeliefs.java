@@ -7,10 +7,13 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import agents.Candidate;
 import jade.core.AID;
@@ -25,7 +28,7 @@ public class CandidateSendBeliefs extends Behaviour {
 	}
 
 	public void action() {
-
+		//System.out.println("ID: " +  this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS:" + this.candidate.getBeliefs());  
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		try {
 			ArrayList<HashMap<String, Integer>> profile = new ArrayList();
@@ -52,8 +55,12 @@ public class CandidateSendBeliefs extends Behaviour {
 					AID dest = result[j].getName();
 					msg.addReceiver(dest);
 					this.candidate.send(msg);
+					this.candidate.logger.info("SENT:      " + msg.getContentObject() + " TO: " + dest.getLocalName());
 				}
 			} catch (FIPAException e) {
+				e.printStackTrace();
+			} catch (UnreadableException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

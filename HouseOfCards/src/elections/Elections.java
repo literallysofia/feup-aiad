@@ -94,6 +94,11 @@ public class Elections {
 
 	// min_state_population, max_state_population, nr_candidates
 	public static void main(String args[]) throws StaleProxyException {
+		 System.setProperty("java.util.logging.SimpleFormatter.format", 
+		            "[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
+		 
+		 //"-Djava.util.logging.SimpleFormatter.format=[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n"
+		 
 		Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),
 				Integer.parseInt(args[2]));
 	}

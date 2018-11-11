@@ -66,7 +66,7 @@ public class ChiefListenVoterChoices extends SimpleBehaviour {
 			this.chiefOfStaff.calculateChooseBelief();
 			this.finished = true;
 			ACLMessage msgToCandidate = new ACLMessage(ACLMessage.INFORM);
-			AID dest = new AID(this.chiefOfStaff.getBoss().getId(), false);
+			AID dest = new AID(this.chiefOfStaff.getBoss().getLocalName(), false);
 			msgToCandidate.setContent("Finished");
 			msgToCandidate.addReceiver(dest);
 			this.chiefOfStaff.send(msgToCandidate);

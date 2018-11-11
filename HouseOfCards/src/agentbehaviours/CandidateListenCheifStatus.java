@@ -14,23 +14,22 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetInitiator;
 
-public class CandidateListenCheidStatus extends ContractNetInitiator {
+public class CandidateListenCheifStatus extends ContractNetInitiator {
 
 	private Candidate candidate;
 
-	public CandidateListenCheidStatus(Candidate a, ACLMessage cfp) {
+	public CandidateListenCheifStatus(Candidate a, ACLMessage cfp) {
 		super(a, cfp);
 		this.candidate = a;
 	}
 
 	protected Vector prepareCfps(ACLMessage cfp) {
 		Vector v = new Vector();
-		for (int i = 0; i < candidate.getChiefsOfStaff().size(); i++) {
-
-			cfp.addReceiver(new AID(candidate.getChiefsOfStaff().get(i), false));
-		}
-
 		cfp.setContent("What should i change?");
+		for (int i = 0; i < candidate.getChiefsOfStaff().size(); i++) {
+			cfp.addReceiver(new AID(candidate.getChiefsOfStaff().get(i), false));
+			this.candidate.logger.info("SENT:      " + cfp.getContent() + " TO: " + candidate.getChiefsOfStaff().get(i));
+		}
 		v.add(cfp);
 
 		return v;
@@ -46,11 +45,14 @@ public class CandidateListenCheidStatus extends ContractNetInitiator {
 			ArrayList<String> parseResponse = new ArrayList<>();
 			try {
 				parseResponse = (ArrayList<String>) msg.getContentObject();
+				this.candidate.logger.info("RECEIVED:  " + parseResponse + " FROM: " + msg.getSender().getLocalName());
+				
+				//this.candidate.logger.info("RECEIVED MSG: " + parseResponse);
 			} catch (UnreadableException e) {
 				e.printStackTrace();
 			}
 
-			System.out.println("                     - CANDIDATE: " + this.candidate.getId() + " WHAT TO CHANGE: "
+			System.out.println("                     - CANDIDATE: " + this.candidate.getLocalName() + " WHAT TO CHANGE: "
 					+ parseResponse);
 
 			if (parseResponse.get(0).equals("Losing in ")) {

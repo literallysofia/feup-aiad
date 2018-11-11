@@ -11,7 +11,7 @@ import agentbehaviours.ChiefListenVoterChoices;
 import agentbehaviours.VoterListenChiefQuestion;
 import agentbehaviours.ChiefSendCandidateStatus;
 import agentbehaviours.ChiefSendVoterQuestion;
-import agentbehaviours.CandidateListenCheidStatus;
+import agentbehaviours.CandidateListenCheifStatus;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
@@ -99,7 +99,7 @@ public class ChiefOfStaff extends Agent {
 
 	public void setup() {
 		System.out
-				.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getId());
+				.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getLocalName());
 		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
 		talkWithVoter.addSubBehaviour(new ChiefSendVoterQuestion(this));
 		talkWithVoter.addSubBehaviour(new ChiefListenVoterChoices(this));

@@ -27,7 +27,7 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 		reply.setPerformative(ACLMessage.PROPOSE);
 		if (this.chiefOfStaff.getChosenCandidate() != null) {
 
-			if (this.chiefOfStaff.getChosenCandidate().equals(this.chiefOfStaff.getBoss().getId())) {
+			if (this.chiefOfStaff.getChosenCandidate().equals(this.chiefOfStaff.getBoss().getLocalName())) {
 				ArrayList<String> answer = new ArrayList();
 				answer.add("Winning in ");
 				answer.add(this.chiefOfStaff.getStateName());

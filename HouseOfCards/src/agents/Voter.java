@@ -19,8 +19,7 @@ import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
 
 public class Voter extends Agent {
-
-	private String id;
+	
 	private String state;
 	private int passivity;
 	private int assertiveness;
@@ -35,7 +34,6 @@ public class Voter extends Agent {
 	private DFAgentDescription dfd;
 
 	public Voter(String id, String state, ArrayList<String> beliefs, int candidatesSize) {
-		this.id = id;
 		this.state = state;
 		Random rnd = new Random();
 
@@ -60,12 +58,7 @@ public class Voter extends Agent {
 		this.assertiveness = rnd.nextInt(100) + 1;
 		this.minCredibility = rnd.nextInt(100) + 1;
 		this.setCandidatesSize(candidatesSize);
-		System.out.println(
-				" > VOTER: " + this.id + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: " + this.minCredibility);
-	}
-
-	public String getId() {
-		return id;
+		
 	}
 
 	public float getPassivity() {
@@ -141,6 +134,8 @@ public class Voter extends Agent {
 	}
 
 	public void setup() {
+		System.out.println(
+				" > VOTER: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: " + this.minCredibility);
 		register();
 		addBehaviour(new VoterListenChiefQuestion(this));
 		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();
