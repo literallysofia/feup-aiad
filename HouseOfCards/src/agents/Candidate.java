@@ -43,34 +43,7 @@ public class Candidate extends Agent {
 		}
 		setupLogger();
 	}
-	
-	public void setupLogger(){
-	
-		this.logger=Logger.getLogger(this.id);
-	    FileHandler fh = null; 
-	    this.logger.setUseParentHandlers(false);
 
-	    try {  
-	    	File logDir = new File("logs/"); 
-			if( !(logDir.exists()) )
-				logDir.mkdir();
-			
-	        // This block configure the logger with handler and formatter  
-	        fh = new FileHandler("logs/"+this.id+".log");  
-	        this.logger.addHandler(fh); 
-	        SimpleFormatter formatter = new SimpleFormatter();  
-	        fh.setFormatter(formatter); 
-
-	        // the following statement is used to log any messages  
-	        //this.logger.info("My first log");  
-
-	    } catch (SecurityException e) {  
-	        e.printStackTrace();  
-	    } catch (IOException e) {  
-	        e.printStackTrace();  
-	    }  
-	   
-	}
 
 	public ArrayList<String> getStates() {
 		return states;
@@ -119,9 +92,33 @@ public class Candidate extends Agent {
 	public void setBeliefToChangeValue(HashMap<String, Integer> beliefToChangeValue) {
 		this.beliefToChangeValue = beliefToChangeValue;
 	}
+	
+	public void setupLogger(){
+		
+		this.logger=Logger.getLogger(this.id);
+	    FileHandler fh = null; 
+	    this.logger.setUseParentHandlers(false);
+
+	    try {  
+	    	File logDir = new File("logs/"); 
+			if( !(logDir.exists()) )
+				logDir.mkdir();
+		
+	        fh = new FileHandler("logs/"+this.id+".log");  
+	        this.logger.addHandler(fh); 
+	        SimpleFormatter formatter = new SimpleFormatter();  
+	        fh.setFormatter(formatter); 
+
+	    } catch (SecurityException e) {  
+	        e.printStackTrace();  
+	    } catch (IOException e) {  
+	        e.printStackTrace();  
+	    }  
+	   
+	}
 
 	public void setup() {
-		this.logger.info("> INFO:    ID: " +  this.id + " CREDIBILITY: " + this.credibility + " BELIEFS:" + this.beliefs);  
+		this.logger.info("> INFO:    ID: " +  this.getLocalName() + " CREDIBILITY: " + this.credibility + " BELIEFS:" + this.beliefs);  
 		addBehaviour(new CandidateSendBeliefs(this));
 		SequentialBehaviour trial = new SequentialBehaviour();
 		trial.addSubBehaviour(new CandidateListenChiefIsFinished(this));

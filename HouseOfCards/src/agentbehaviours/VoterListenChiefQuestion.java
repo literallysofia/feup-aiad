@@ -29,7 +29,7 @@ public class VoterListenChiefQuestion extends SimpleBehaviour {
 				try {
 					System.out.println("   - VOTER: " + this.voter.getLocalName() + " LISTENING CHIEF OF STAFF BOSS: "
 							+ msg.getSender().getLocalName() + " " + msg.getContentObject());
-
+					this.voter.logger.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
 					ArrayList<String> message = (ArrayList) msg.getContentObject();
 					String candidate = message.get(1);
 					this.voter.getChiefOfStaffInfo().put(msg.getSender().getLocalName(), candidate);

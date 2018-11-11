@@ -10,12 +10,12 @@ import java.util.HashMap;
 import agents.Voter;
 import jade.core.Agent;
 
-public class VoterListeningCandidate extends SimpleBehaviour {
+public class VoterListenCandidate extends SimpleBehaviour {
 
 	private Voter voter;
 	private boolean finished = false;
 
-	public VoterListeningCandidate(Voter voter) {
+	public VoterListenCandidate(Voter voter) {
 		this.voter = voter;
 	}
 
@@ -31,6 +31,7 @@ public class VoterListeningCandidate extends SimpleBehaviour {
 					// BELIEFS: "
 					// + msg.getSender().getLocalName() + " " +
 					// msg.getContentObject());
+					this.voter.logger.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
 					String candidate = msg.getSender().getLocalName();
 					HashMap<String, Integer> beliefs = new HashMap<String, Integer>();
 					HashMap<String, Integer> credibility = new HashMap<String, Integer>();

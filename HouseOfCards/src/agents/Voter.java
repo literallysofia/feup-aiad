@@ -3,26 +3,30 @@ package agents;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import agentbehaviours.VoterSendChiefChoices;
-import agentbehaviours.VoterListeningCandidate;
+import agentbehaviours.VoterListenCandidate;
 import agentbehaviours.VoterListenChiefQuestion;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
 
 public class Voter extends Agent {
-	
+	public Logger logger;
+	private String id;
 	private String state;
-	private int passivity;
-	private int assertiveness;
 	private int minCredibility;
 	private HashMap<String, ArrayList<Integer>> beliefs = new HashMap<>();
 	private int candidatesSize;
@@ -34,6 +38,7 @@ public class Voter extends Agent {
 	private DFAgentDescription dfd;
 
 	public Voter(String id, String state, ArrayList<String> beliefs, int candidatesSize) {
+		this.id = id;
 		this.state = state;
 		Random rnd = new Random();
 
@@ -54,27 +59,11 @@ public class Voter extends Agent {
 			this.beliefs.put(beliefs.get(i), range);
 		}
 
-		this.passivity = rnd.nextInt(100) + 1;
-		this.assertiveness = rnd.nextInt(100) + 1;
 		this.minCredibility = rnd.nextInt(100) + 1;
 		this.setCandidatesSize(candidatesSize);
-		
-	}
 
-	public float getPassivity() {
-		return passivity;
-	}
+		setupLogger();
 
-	public void setPassivity(int passivity) {
-		this.passivity = passivity;
-	}
-
-	public float getAssertiveness() {
-		return assertiveness;
-	}
-
-	public void setAssertiveness(int assertiveness) {
-		this.assertiveness = assertiveness;
 	}
 
 	public HashMap<String, ArrayList<Integer>> getBeliefs() {
@@ -133,13 +122,39 @@ public class Voter extends Agent {
 		this.chiefOfStaffInfo = chiefOfStaffInfo;
 	}
 
+	public void setupLogger() {
+
+		this.logger = Logger.getLogger(this.id);
+		FileHandler fh = null;
+		this.logger.setUseParentHandlers(false);
+
+		try {
+			File logDir = new File("logs/");
+			if (!(logDir.exists()))
+				logDir.mkdir();
+
+			fh = new FileHandler("logs/" + this.id + ".log");
+			this.logger.addHandler(fh);
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public void setup() {
-		System.out.println(
-				" > VOTER: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: " + this.minCredibility);
+		System.out.println(" > VOTER: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
+				+ this.minCredibility);
 		register();
+		this.logger.info("> INFO:    ID: " + this.getLocalName() + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: "
+				+ this.minCredibility);
 		addBehaviour(new VoterListenChiefQuestion(this));
 		SequentialBehaviour chooseCandidateAndBeliefs = new SequentialBehaviour();
-		chooseCandidateAndBeliefs.addSubBehaviour(new VoterListeningCandidate(this));
+		chooseCandidateAndBeliefs.addSubBehaviour(new VoterListenCandidate(this));
 		chooseCandidateAndBeliefs.addSubBehaviour(new VoterSendChiefChoices(this));
 		addBehaviour(chooseCandidateAndBeliefs);
 	}
@@ -207,6 +222,8 @@ public class Voter extends Agent {
 		} else {
 			this.chosenCandidate = null;
 		}
+		
+		this.logger.info("> INFO:    CHOSEN CANDIDATE: " + this.chosenCandidate);
 
 	}
 
@@ -222,9 +239,9 @@ public class Voter extends Agent {
 
 		if (chosenCandidate == null || !candidate.equals(this.chosenCandidate)) {
 
-			HashMap<String, Integer> beliefScores = new HashMap();
+			HashMap<String, Integer> beliefScores = new HashMap<>();
 
-			HashMap<String, Integer> candidateBeliefs = new HashMap();
+			HashMap<String, Integer> candidateBeliefs = new HashMap<>();
 			candidateBeliefs = this.candidatesBeliefs.get(candidate);
 
 			for (Map.Entry<String, ArrayList<Integer>> entry : this.beliefs.entrySet()) {
@@ -257,6 +274,8 @@ public class Voter extends Agent {
 		} else {
 			return null;
 		}
+		
+		
 
 	}
 
