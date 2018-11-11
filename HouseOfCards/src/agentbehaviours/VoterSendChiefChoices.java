@@ -39,12 +39,11 @@ public class VoterSendChiefChoices extends SimpleBehaviour {
 			info.add("I'll vote in candidate: ");
 			info.add(this.voter.getChosenCandidate());
 			info.add("I'll consider changing my vote if your boss changes the belief: ");
-			if(belief == null){
+			if (belief == null) {
 				info.add(null);
 				info.add(" to ");
 				info.add(null);
-			}
-			else{
+			} else {
 				info.add(belief.getKey());
 				info.add(" to ");
 				info.add(belief.getValue().toString());
@@ -55,10 +54,10 @@ public class VoterSendChiefChoices extends SimpleBehaviour {
 			e1.printStackTrace();
 		}
 
-		AID dest = new AID ((String) this.voter.getChiefOfStaffInfo().keySet().toArray()[0], false);
+		AID dest = new AID((String) this.voter.getChiefOfStaffInfo().keySet().toArray()[0], false);
 		msg.addReceiver(dest);
 		this.voter.send(msg);
-		
+
 		try {
 			System.out.println("            - VOTER: " + this.voter.getLocalName() + " " + msg.getContentObject());
 		} catch (UnreadableException e) {

@@ -21,7 +21,7 @@ public class ChiefOfStaff extends Agent {
 
 	private Candidate boss;
 	private String state;
-	private ArrayList<String> stateChosenCandidates = new ArrayList();
+	private ArrayList<String> stateChosenCandidates = new ArrayList<>();
 	private HashMap<String, ArrayList<Integer>> stateChosenBeliefs = new HashMap<>();
 	private String chosenCandidate;
 	private String chosenBelief;
@@ -81,78 +81,6 @@ public class ChiefOfStaff extends Agent {
 		this.chosenBelief = chosenBelief;
 	}
 
-	public void setup() {
-		System.out
-				.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getId());
-		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
-		talkWithVoter.addSubBehaviour(new ChiefSendVoterQuestion(this));
-		talkWithVoter.addSubBehaviour(new ChiefListenVoterChoices(this));
-		talkWithVoter.addSubBehaviour(new ChiefSendCandidateStatus(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
-		addBehaviour(talkWithVoter);
-	}
-
-	public void calculateChooseCandidate() {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		for (int i = 0; i < this.stateChosenCandidates.size(); i++) {
-			Integer count = map.get(stateChosenCandidates.get(i));
-			map.put(stateChosenCandidates.get(i), count == null ? 1 : count + 1); // count
-		}
-
-		Map.Entry<String, Integer> maxEntry = null;
-		for (Map.Entry<String, Integer> entry : map.entrySet()) {
-			if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-				maxEntry = entry;
-			}
-		}
-
-		/*System.out.println("CANDIDATES: " + map);
-		System.out.println("CANDIDATE: " + maxEntry.getKey());*/
-		this.chosenCandidate = maxEntry.getKey();
-	}
-
-	public void calculateChooseBelief() {
-		Map<String, Integer> map2 = new HashMap<String, Integer>();
-		List<String> keys = new ArrayList<String>(this.stateChosenBeliefs.keySet());
-
-		for (int i = 0; i < keys.size(); i++) {
-			Integer count = this.stateChosenBeliefs.get(keys.get(i)).size();
-			map2.put(keys.get(i), count);
-		}
-
-		Map.Entry<String, Integer> maxEntry2 = null;
-		for (Map.Entry<String, Integer> entry : map2.entrySet()) {
-			if (maxEntry2 == null || entry.getValue().compareTo(maxEntry2.getValue()) > 0) {
-				maxEntry2 = entry;
-			}
-			else if(entry.getValue().compareTo(maxEntry2.getValue()) == 0 
-					&& maxEntry2.getKey() == null){
-				maxEntry2 = entry;
-			}
-		}
-
-		ArrayList<Integer> values = this.stateChosenBeliefs.get(maxEntry2.getKey());
-		int average = (int) calculateAverage(values);
-
-		/*System.out.println("BELIEFS: " + map2);
-		System.out.println("BELIEF: " + maxEntry2.getKey());
-		System.out.println("VALUES: " + values);
-		System.out.println("VALUE: " + average);*/
-		
-		this.chosenBelief = maxEntry2.getKey();
-		this.chosenValue = average;
-	}
-
-	private double calculateAverage(List<Integer> marks) {
-		Integer sum = 0;
-		if (!marks.isEmpty()) {
-			for (Integer mark : marks) {
-				sum += mark;
-			}
-			return sum.doubleValue() / marks.size();
-		}
-		return sum;
-	}
-
 	public int getNrVotersState() {
 		return nrVotersState;
 	}
@@ -167,6 +95,75 @@ public class ChiefOfStaff extends Agent {
 
 	public void setChosenValue(int chosenValue) {
 		this.chosenValue = chosenValue;
+	}
+
+	public void setup() {
+		System.out
+				.println(" > CHIEF: " + this.getLocalName() + " STATE: " + this.state + " BOSS: " + this.boss.getId());
+		SequentialBehaviour talkWithVoter = new SequentialBehaviour();
+		talkWithVoter.addSubBehaviour(new ChiefSendVoterQuestion(this));
+		talkWithVoter.addSubBehaviour(new ChiefListenVoterChoices(this));
+		talkWithVoter
+				.addSubBehaviour(new ChiefSendCandidateStatus(this, MessageTemplate.MatchPerformative(ACLMessage.CFP)));
+		addBehaviour(talkWithVoter);
+	}
+
+	// calcula o candidato escolhido pelos voters do seu estado
+	public void calculateChooseCandidate() {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		for (int i = 0; i < this.stateChosenCandidates.size(); i++) {
+			Integer count = map.get(stateChosenCandidates.get(i));
+			map.put(stateChosenCandidates.get(i), count == null ? 1 : count + 1); // count
+		}
+
+		Map.Entry<String, Integer> maxEntry = null;
+		for (Map.Entry<String, Integer> entry : map.entrySet()) {
+			if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
+				maxEntry = entry;
+			}
+		}
+
+		this.chosenCandidate = maxEntry.getKey();
+	}
+
+	// calcula a belief escolhido pelos voters do seu estado (belief do seu
+	// candidato que esses voters acham que está mais aquém das suas
+	// expectativas)
+	public void calculateChooseBelief() {
+		Map<String, Integer> map2 = new HashMap<String, Integer>();
+		List<String> keys = new ArrayList<String>(this.stateChosenBeliefs.keySet());
+
+		for (int i = 0; i < keys.size(); i++) {
+			Integer count = this.stateChosenBeliefs.get(keys.get(i)).size();
+			map2.put(keys.get(i), count);
+		}
+
+		Map.Entry<String, Integer> maxEntry2 = null;
+		for (Map.Entry<String, Integer> entry : map2.entrySet()) {
+			if (maxEntry2 == null || entry.getValue().compareTo(maxEntry2.getValue()) > 0) {
+				maxEntry2 = entry;
+			} else if (entry.getValue().compareTo(maxEntry2.getValue()) == 0 && maxEntry2.getKey() == null) {
+				maxEntry2 = entry;
+			}
+		}
+
+		ArrayList<Integer> values = this.stateChosenBeliefs.get(maxEntry2.getKey());
+		int average = (int) calculateAverage(values);
+
+		this.chosenBelief = maxEntry2.getKey();
+		this.chosenValue = average;
+	}
+
+	// calcula a média de um arraylist de ineteiros
+	private double calculateAverage(List<Integer> marks) {
+		Integer sum = 0;
+		if (!marks.isEmpty()) {
+			for (Integer mark : marks) {
+				sum += mark;
+			}
+			return sum.doubleValue() / marks.size();
+		}
+		return sum;
 	}
 
 }

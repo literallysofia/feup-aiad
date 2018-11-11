@@ -50,43 +50,38 @@ public class CandidateListenCheidStatus extends ContractNetInitiator {
 				e.printStackTrace();
 			}
 
-			System.out.println(
-					"                     - CANDIDATE: " + this.candidate.getId() + " WHAT TO CHANGE: " + parseResponse);
+			System.out.println("                     - CANDIDATE: " + this.candidate.getId() + " WHAT TO CHANGE: "
+					+ parseResponse);
 
 			if (parseResponse.get(0).equals("Losing in ")) {
 				String state = parseResponse.get(1);
 				String belief = parseResponse.get(3);
 				int value = Integer.parseInt(parseResponse.get(5));
 				int population = getStatePopulation(state);
-				
-				if(candidate.getBeliefToChangePopulation() != null && candidate.getBeliefToChangePopulation().get(belief) != null){
+
+				if (candidate.getBeliefToChangePopulation() != null
+						&& candidate.getBeliefToChangePopulation().get(belief) != null) {
 					int old_pop = candidate.getBeliefToChangePopulation().get(belief);
 					this.candidate.getBeliefToChangePopulation().put(belief, old_pop + population);
-					int old_value =  candidate.getBeliefToChangeValue().get(belief);
-					int new_value = (old_value + value)/2;
+					int old_value = candidate.getBeliefToChangeValue().get(belief);
+					int new_value = (old_value + value) / 2;
 					this.candidate.getBeliefToChangeValue().put(belief, new_value);
-					
-				}
-				else{
+
+				} else {
 					this.candidate.getBeliefToChangePopulation().put(belief, population);
 					this.candidate.getBeliefToChangeValue().put(belief, value);
 				}
-				
-				
+
 			}
 
-			// ACLMessage msg = ((ACLMessage) responses.get(i)).createReply();
-			// msg.setPerformative(ACLMessage.ACCEPT_PROPOSAL); // OR NOT!
-			// acceptances.add(msg);
-
 		}
-		
-		this.candidate.changeBeliefs();	
+
+		this.candidate.changeBeliefs();
 	}
 
 	public int getStatePopulation(String state) {
 		DFAgentDescription[] result = null;
-				
+
 		try {
 			DFAgentDescription dfd = new DFAgentDescription();
 			ServiceDescription sd = new ServiceDescription();
@@ -96,7 +91,7 @@ public class CandidateListenCheidStatus extends ContractNetInitiator {
 		} catch (FIPAException e) {
 			e.printStackTrace();
 		}
-		
+
 		return result.length;
 	}
 

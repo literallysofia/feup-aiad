@@ -19,8 +19,10 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 	}
 
 	protected ACLMessage handleCfp(ACLMessage cfp) {
-		//System.out.println("                  - CHIEF OF STAFF: " + this.chiefOfStaff.getLocalName()
-				//+ " SAY WHAT TO CHANGE: " + cfp.getSender().getLocalName() + " " + cfp.getContent());
+		// System.out.println(" - CHIEF OF STAFF: " +
+		// this.chiefOfStaff.getLocalName()
+		// + " SAY WHAT TO CHANGE: " + cfp.getSender().getLocalName() + " " +
+		// cfp.getContent());
 		ACLMessage reply = cfp.createReply();
 		reply.setPerformative(ACLMessage.PROPOSE);
 		if (this.chiefOfStaff.getChosenCandidate() != null) {
@@ -41,7 +43,7 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 				changing.add(" and should change your ");
 				changing.add(this.chiefOfStaff.getChosenBelief());
 				changing.add(" to ");
-				changing.add(this.chiefOfStaff.getChosenValue()+"");
+				changing.add(this.chiefOfStaff.getChosenValue() + "");
 				try {
 					reply.setContentObject(changing);
 				} catch (IOException e) {
@@ -55,7 +57,7 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 			nullCandidate.add(" and should change your ");
 			nullCandidate.add(this.chiefOfStaff.getChosenBelief());
 			nullCandidate.add(" to ");
-			nullCandidate.add(this.chiefOfStaff.getChosenValue()+"");
+			nullCandidate.add(this.chiefOfStaff.getChosenValue() + "");
 
 			try {
 				reply.setContentObject(nullCandidate);

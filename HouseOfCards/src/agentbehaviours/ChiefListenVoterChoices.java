@@ -37,23 +37,21 @@ public class ChiefListenVoterChoices extends SimpleBehaviour {
 					String candidate = message.get(1);
 					String belief = message.get(3);
 					int value = -1;
-					if(message.get(5)!=null)
+					if (message.get(5) != null)
 						value = Integer.parseInt(message.get(5));
 
 					System.out.println("                 - CHIEF OF STAFF: " + this.chiefOfStaff.getLocalName()
 							+ " LISTENING VOTER CHOICES: " + msg.getSender().getLocalName() + " " + message);
 
 					this.chiefOfStaff.getStateChosenCandidates().add(candidate);
-					
-					if(this.chiefOfStaff.getStateChosenBeliefs().get(belief)==null){
-						ArrayList <Integer> values = new ArrayList();
+
+					if (this.chiefOfStaff.getStateChosenBeliefs().get(belief) == null) {
+						ArrayList<Integer> values = new ArrayList();
 						values.add(value);
 						this.chiefOfStaff.getStateChosenBeliefs().put(belief, values);
-					}
-					else{
+					} else {
 						this.chiefOfStaff.getStateChosenBeliefs().get(belief).add(value);
 					}
-					
 
 				} catch (UnreadableException e) {
 					e.printStackTrace();
@@ -68,11 +66,11 @@ public class ChiefListenVoterChoices extends SimpleBehaviour {
 			this.chiefOfStaff.calculateChooseBelief();
 			this.finished = true;
 			ACLMessage msgToCandidate = new ACLMessage(ACLMessage.INFORM);
-			AID dest = new AID(this.chiefOfStaff.getBoss().getId(),false);
+			AID dest = new AID(this.chiefOfStaff.getBoss().getId(), false);
 			msgToCandidate.setContent("Finished");
 			msgToCandidate.addReceiver(dest);
 			this.chiefOfStaff.send(msgToCandidate);
-			
+
 		}
 
 		return;

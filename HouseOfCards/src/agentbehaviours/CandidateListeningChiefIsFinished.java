@@ -8,14 +8,13 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
-public class CandidateListeningChiefIsFinished extends SimpleBehaviour{
-		
+public class CandidateListeningChiefIsFinished extends SimpleBehaviour {
+
 	private Candidate candidate;
 	private boolean done = false;
 	private int numberOfMessages = 0;
 
-	
-	public CandidateListeningChiefIsFinished(Candidate a){
+	public CandidateListeningChiefIsFinished(Candidate a) {
 		this.candidate = a;
 	}
 
@@ -24,17 +23,19 @@ public class CandidateListeningChiefIsFinished extends SimpleBehaviour{
 		ACLMessage msg = this.candidate.blockingReceive();
 		if (msg != null) {
 			this.numberOfMessages++;
-			if (msg.getSender().getLocalName().substring(0, 5).equals("chief")) {				
-					//System.out.println("               - CANDIDATE: " + this.candidate.getLocalName() + " FINISHED: " + msg.getSender().getLocalName());
+			if (msg.getSender().getLocalName().substring(0, 5).equals("chief")) {
+				// System.out.println(" - CANDIDATE: " +
+				// this.candidate.getLocalName() + " FINISHED: " +
+				// msg.getSender().getLocalName());
 			}
 		} else {
 			block();
 		}
-		
-		if(this.numberOfMessages == this.candidate.getChiefsOfStaff().size()){
-			this.done=true;
+
+		if (this.numberOfMessages == this.candidate.getChiefsOfStaff().size()) {
+			this.done = true;
 		}
-		
+
 	}
 
 	@Override

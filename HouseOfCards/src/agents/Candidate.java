@@ -32,8 +32,6 @@ public class Candidate extends Agent {
 			int value = rnd.nextInt(100) + 1;
 			this.beliefs.put(beliefs.get(i), value);
 		}
-
-		// System.out.println(this.id + "\nBeliefs: " + this.beliefs);
 	}
 
 	public String getId() {
@@ -54,15 +52,6 @@ public class Candidate extends Agent {
 
 	public void setBeliefs(HashMap<String, Integer> beliefs) {
 		this.beliefs = beliefs;
-	}
-
-	public void setup() {
-		System.out.println(" > CANDIDATE: " + this.getLocalName() + " BELIEFS: " + this.beliefs);
-		SequentialBehaviour trial = new SequentialBehaviour();
-		addBehaviour(new CandidateSendBeliefs(this));
-		trial.addSubBehaviour(new CandidateListeningChiefIsFinished(this));
-		trial.addSubBehaviour(new CandidateListenCheidStatus(this, new ACLMessage(ACLMessage.CFP)));
-		addBehaviour(trial);
 	}
 
 	public ArrayList<String> getChiefsOfStaff() {
@@ -97,34 +86,48 @@ public class Candidate extends Agent {
 		this.beliefToChangeValue = beliefToChangeValue;
 	}
 
+	public void setup() {
+		System.out.println(" > CANDIDATE: " + this.getLocalName() + " BELIEFS: " + this.beliefs);
+		addBehaviour(new CandidateSendBeliefs(this));
+		SequentialBehaviour trial = new SequentialBehaviour();
+		trial.addSubBehaviour(new CandidateListeningChiefIsFinished(this));
+		trial.addSubBehaviour(new CandidateListenCheidStatus(this, new ACLMessage(ACLMessage.CFP)));
+		addBehaviour(trial);
+	}
+
+	// atualiza as beliefs conforme a informação dada pelo chief of staff
 	public void changeBeliefs() {
 
 		if (this.beliefToChangePopulation.size() != 0 && this.beliefToChangeValue.size() != 0) {
-			Map.Entry<String, Integer> maxEntry = null; //belief com mais população
+			Map.Entry<String, Integer> maxEntry = null; // belief com mais
+														// população
 			for (Map.Entry<String, Integer> entry : this.beliefToChangePopulation.entrySet()) {
 				if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
 					maxEntry = entry;
 				}
 			}
-			//System.out.println("BELIEFS_POP: " + this.beliefToChangePopulation);
-			//System.out.println("BELIEFS_VALUE: " + this.beliefToChangeValue);
+			// System.out.println("BELIEFS_POP: " +
+			// this.beliefToChangePopulation);
+			// System.out.println("BELIEFS_VALUE: " + this.beliefToChangeValue);
 
-			//System.out.println("OLD BELIEFS: " + this.beliefs);
+			// System.out.println("OLD BELIEFS: " + this.beliefs);
 			int value = this.beliefToChangeValue.get(maxEntry.getKey());
 			int oldValue = this.beliefs.get(maxEntry.getKey());
 			this.beliefs.replace(maxEntry.getKey(), value);
 
-			//System.out.println("NEW BELIEFS: " + this.beliefs);
-			//System.out.println("OLD CREDIBILITY: " + this.credibility);
+			// System.out.println("NEW BELIEFS: " + this.beliefs);
+			// System.out.println("OLD CREDIBILITY: " + this.credibility);
 
 			int diff = Math.abs(oldValue - value);
-			//System.out.println("DIFF BELIEF: " + diff);
+			// System.out.println("DIFF BELIEF: " + diff);
 
-			int diffCre = (int) Math.ceil(diff / 4.0); //credibilidade perde um quarto do valor da mudança da crença
-			//System.out.println("DIFF CRED: " + diffCre);
+			int diffCre = (int) Math.ceil(diff / 4.0); // credibilidade perde um
+														// quarto do valor da
+														// mudança da crença
+			// System.out.println("DIFF CRED: " + diffCre);
 
 			this.credibility = this.credibility - diffCre;
-			//System.out.println("NEW CREDIBILITY: " + this.credibility);
+			// System.out.println("NEW CREDIBILITY: " + this.credibility);
 
 			System.out.println("                           - CANDIDATE: " + this.getLocalName() + " CHANGED BELIEF: "
 					+ maxEntry.getKey() + " OLD VALUE: " + oldValue + " NEW VALUE : " + value + " CHANGED CREDIBILITY: "

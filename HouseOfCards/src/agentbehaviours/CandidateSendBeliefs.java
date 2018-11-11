@@ -16,7 +16,7 @@ import agents.Candidate;
 import jade.core.AID;
 import jade.core.Agent;
 
-public class CandidateSendBeliefs extends Behaviour{
+public class CandidateSendBeliefs extends Behaviour {
 	private Candidate candidate;
 	private boolean finished;
 
@@ -25,41 +25,43 @@ public class CandidateSendBeliefs extends Behaviour{
 	}
 
 	public void action() {
-		
-		ACLMessage msg = new ACLMessage( ACLMessage.INFORM );
-	    try {
-	    	ArrayList<HashMap<String,Integer>> profile = new ArrayList();
-	    	
-	    	HashMap<String, Integer> credibilityHash = new HashMap<>();
+
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		try {
+			ArrayList<HashMap<String, Integer>> profile = new ArrayList();
+
+			HashMap<String, Integer> credibilityHash = new HashMap<>();
 			credibilityHash.put("Credibility", this.candidate.getCredibility());
 			profile.add(this.candidate.getBeliefs());
 			profile.add(credibilityHash);
-			
+
 			msg.setContentObject(profile);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-		for(int i = 0; i< this.candidate.getStates().size();i++){
-		    DFAgentDescription dfd = new DFAgentDescription();
-            ServiceDescription sd  = new ServiceDescription();
-            sd.setType( this.candidate.getStates().get(i) );
-            dfd.addServices(sd);
-            
-            try{
-            	DFAgentDescription[] result = DFService.search(this.candidate, dfd);
-            	for(int j =0; j < result.length; j++){
-            		AID dest = result[j].getName();
-            		msg.addReceiver(dest);
-            		this.candidate.send(msg);
-            	}
-            }catch(FIPAException e){
-            	e.printStackTrace();
-            }
-           
+
+		for (int i = 0; i < this.candidate.getStates().size(); i++) {
+			DFAgentDescription dfd = new DFAgentDescription();
+			ServiceDescription sd = new ServiceDescription();
+			sd.setType(this.candidate.getStates().get(i));
+			dfd.addServices(sd);
+
+			try {
+				DFAgentDescription[] result = DFService.search(this.candidate, dfd);
+				for (int j = 0; j < result.length; j++) {
+					AID dest = result[j].getName();
+					msg.addReceiver(dest);
+					this.candidate.send(msg);
+				}
+			} catch (FIPAException e) {
+				e.printStackTrace();
+			}
+
 		}
 		this.finished = true;
 	}
 
-	public  boolean done() {  return this.finished;  }
+	public boolean done() {
+		return this.finished;
+	}
 }

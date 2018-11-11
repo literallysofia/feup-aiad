@@ -62,60 +62,6 @@ public class Voter extends Agent {
 		this.setCandidatesSize(candidatesSize);
 		System.out.println(
 				" > VOTER: " + this.id + " BELIEFS: " + this.beliefs + " MIN CREDIBILITY: " + this.minCredibility);
-		// + "\nPassivity: " + this.passivity
-		// + " Assertiveness: " + this.assertiveness + "\nMin Credibility: " +
-		// this.minCredibility + "\n");
-
-	}
-
-	public Map.Entry<String, Integer> calculateWrongBelief() {
-		
-		String candidate = null;
-		while(this.chiefOfStaffInfo.keySet().size()==0 && candidate == null){
-			
-		}
-		
-		candidate = this.chiefOfStaffInfo.get(this.chiefOfStaffInfo.keySet().toArray()[0]);
-		
-
-		if (chosenCandidate == null || !candidate.equals(this.chosenCandidate)) {
-
-			HashMap<String, Integer> beliefScores = new HashMap();
-
-			HashMap<String, Integer> candidateBeliefs = new HashMap();
-			candidateBeliefs = this.candidatesBeliefs.get(candidate);
-
-			for (Map.Entry<String, ArrayList<Integer>> entry : this.beliefs.entrySet()) {
-				String belief = entry.getKey();
-				int first_value = entry.getValue().get(0);
-				int second_value = entry.getValue().get(1);
-
-				int median = ((second_value - first_value) / 2) + first_value;
-				int score = Math.abs(median - candidateBeliefs.get(belief));
-
-				beliefScores.put(belief, score);
-				
-			}
-			
-			Map.Entry<String, Integer> maxEntry = null;
-
-			for (Map.Entry<String, Integer> entry : beliefScores.entrySet()) {
-				if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-					maxEntry = entry;
-				}
-			}
-			
-			int first_value = this.beliefs.get(maxEntry.getKey()).get(0);
-			int second_value = this.beliefs.get(maxEntry.getKey()).get(1);
-			int median = ((second_value - first_value) / 2) + first_value;
-
-			maxEntry.setValue(median);
-			return maxEntry;
-
-		} else {
-			return null;
-		}
-
 	}
 
 	public String getId() {
@@ -178,6 +124,22 @@ public class Voter extends Agent {
 		this.chosenCandidate = chosenCandidate;
 	}
 
+	public HashMap<String, Integer> getCandidatesCredibility() {
+		return candidatesCredibility;
+	}
+
+	public void setCandidatesCredibility(HashMap<String, Integer> candidatesCredibility) {
+		this.candidatesCredibility = candidatesCredibility;
+	}
+
+	public HashMap<String, String> getChiefOfStaffInfo() {
+		return chiefOfStaffInfo;
+	}
+
+	public void setChiefOfStaffInfo(HashMap<String, String> chiefOfStaffInfo) {
+		this.chiefOfStaffInfo = chiefOfStaffInfo;
+	}
+
 	public void setup() {
 		register();
 		addBehaviour(new VoterListenChiefQuestion(this));
@@ -187,6 +149,7 @@ public class Voter extends Agent {
 		addBehaviour(chooseCandidateAndBeliefs);
 	}
 
+	// regista nas paginas amarelas
 	public void register() {
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType(this.state);
@@ -202,18 +165,25 @@ public class Voter extends Agent {
 		}
 	}
 
-	public void takeDown() {
-		System.out.println(getLocalName() + ": You won, Frank.");
-	}
-
-
+	// escolhe o candidato de acordo com as suas beliefs
 	public void chooseCandidate() {
 
-		// System.out.println(" - VOTER: " + this.getLocalName() + " CANDIDATES
-		// BELIEFS: " + this.candidatesBeliefs);
-
 		ArrayList<String> possibleCandidates = new ArrayList<String>();
-		int minBeliefs = (int) Math.ceil(beliefs.size() / 2.0);
+		int maxWrongBeliefs = (int) Math.ceil(beliefs.size() / 2.0); // maximo
+																		// de
+																		// beliefs
+																		// que o
+																		// candidato
+																		// pode
+																		// ter
+																		// que
+																		// nao
+																		// estão
+																		// dentro
+																		// dos
+																		// intervalos
+																		// do
+																		// voter
 
 		for (Map.Entry<String, HashMap<String, Integer>> entry : this.candidatesBeliefs.entrySet()) {
 			String candidate = entry.getKey();
@@ -229,15 +199,11 @@ public class Voter extends Agent {
 					wrongBeliefs++;
 
 			}
-			// System.out.println("VOTER: " + this.getLocalName() + " CANDIDATE:
-			// " + candidate + " WRONG BELIIEFS: " + wrongBeliefs);
-			if (wrongBeliefs <= minBeliefs && this.candidatesCredibility.get(candidate) > this.minCredibility)
+
+			if (wrongBeliefs <= maxWrongBeliefs && this.candidatesCredibility.get(candidate) > this.minCredibility)
 				possibleCandidates.add(candidate);
 
 		}
-
-		// System.out.println(" - VOTER: " + this.getLocalName() + " POSSIBLE
-		// CANDIDATES: " + possibleCandidates);
 
 		if (possibleCandidates.size() != 0) {
 			Random rnd = new Random();
@@ -247,24 +213,56 @@ public class Voter extends Agent {
 			this.chosenCandidate = null;
 		}
 
-		//System.out.println("         - VOTER: " + this.getLocalName() + " CHOSEN CANDIDATE: " + this.chosenCandidate);
-
 	}
 
-	public HashMap<String, Integer> getCandidatesCredibility() {
-		return candidatesCredibility;
-	}
+	// calcula a belief mais aquem do candidato do chief of stuff
+	public Map.Entry<String, Integer> calculateWrongBelief() {
 
-	public void setCandidatesCredibility(HashMap<String, Integer> candidatesCredibility) {
-		this.candidatesCredibility = candidatesCredibility;
-	}
+		String candidate = null;
+		while (this.chiefOfStaffInfo.keySet().size() == 0 && candidate == null) {
 
-	public HashMap<String, String> getChiefOfStaffInfo() {
-		return chiefOfStaffInfo;
-	}
+		}
 
-	public void setChiefOfStaffInfo(HashMap<String, String> chiefOfStaffInfo) {
-		this.chiefOfStaffInfo = chiefOfStaffInfo;
+		candidate = this.chiefOfStaffInfo.get(this.chiefOfStaffInfo.keySet().toArray()[0]);
+
+		if (chosenCandidate == null || !candidate.equals(this.chosenCandidate)) {
+
+			HashMap<String, Integer> beliefScores = new HashMap();
+
+			HashMap<String, Integer> candidateBeliefs = new HashMap();
+			candidateBeliefs = this.candidatesBeliefs.get(candidate);
+
+			for (Map.Entry<String, ArrayList<Integer>> entry : this.beliefs.entrySet()) {
+				String belief = entry.getKey();
+				int first_value = entry.getValue().get(0);
+				int second_value = entry.getValue().get(1);
+
+				int median = ((second_value - first_value) / 2) + first_value;
+				int score = Math.abs(median - candidateBeliefs.get(belief));
+
+				beliefScores.put(belief, score);
+
+			}
+
+			Map.Entry<String, Integer> maxEntry = null;
+
+			for (Map.Entry<String, Integer> entry : beliefScores.entrySet()) {
+				if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
+					maxEntry = entry;
+				}
+			}
+
+			int first_value = this.beliefs.get(maxEntry.getKey()).get(0);
+			int second_value = this.beliefs.get(maxEntry.getKey()).get(1);
+			int median = ((second_value - first_value) / 2) + first_value;
+
+			maxEntry.setValue(median);
+			return maxEntry;
+
+		} else {
+			return null;
+		}
+
 	}
 
 }
