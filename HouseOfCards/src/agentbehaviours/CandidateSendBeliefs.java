@@ -28,9 +28,9 @@ public class CandidateSendBeliefs extends Behaviour {
 		this.candidate = a;
 		this.cycle = cycle;
 		
-		this.candidate.logger.info("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS: "
+		this.candidate.logger.info("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " STUBBORNNESS: " + this.candidate.getStubbornness() + " BELIEFS: "
 				+ this.candidate.getBeliefs());
-		System.out.println("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS: "
+		System.out.println("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " STUBBORNNESS: " + this.candidate.getStubbornness() + " BELIEFS: "
 				+ this.candidate.getBeliefs());
 		
 		this.candidate.setBeliefToChangePopulation(new HashMap<>());

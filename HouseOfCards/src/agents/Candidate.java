@@ -26,6 +26,7 @@ public class Candidate extends Agent {
 	public Logger logger;
 	private String id;
 	private int credibility = 100;
+	private int stubbornness;
 	private ArrayList<String> states = new ArrayList<String>();
 	private HashMap<String, Integer> beliefs = new HashMap<>();
 	private ArrayList<String> chiefsOfStaff = new ArrayList<>();
@@ -41,6 +42,9 @@ public class Candidate extends Agent {
 			int value = rnd.nextInt(100) + 1;
 			this.beliefs.put(beliefs.get(i), value);
 		}
+		
+		Random rnd = new Random();
+		this.setStubbornness(rnd.nextInt(100) + 1);
 		setupLogger();
 	}
 
@@ -132,12 +136,12 @@ public class Candidate extends Agent {
 		System.out.println(this.getLocalName() + " was taken down.");
 	}
 
-	// atualiza as beliefs conforme a informação dada pelo chief of staff
+	// atualiza as beliefs conforme a informaï¿½ï¿½o dada pelo chief of staff
 	public void changeBeliefs() {
 
 		if (this.beliefToChangePopulation.size() != 0 && this.beliefToChangeValue.size() != 0) {
 			Map.Entry<String, Integer> maxEntry = null; // belief com mais
-														// população
+														// populaï¿½ï¿½o
 			for (Map.Entry<String, Integer> entry : this.beliefToChangePopulation.entrySet()) {
 				if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
 					maxEntry = entry;
@@ -160,7 +164,7 @@ public class Candidate extends Agent {
 
 			int diffCre = (int) Math.ceil(diff / 4.0); // credibilidade perde um
 														// quarto do valor da
-														// mudança da crença
+														// mudanï¿½a da crenï¿½a
 			// System.out.println("DIFF CRED: " + diffCre);
 
 			this.credibility = this.credibility - diffCre;
@@ -182,6 +186,14 @@ public class Candidate extends Agent {
 		}
 		
 		this.addBehaviour(new CandidateSendBeliefs(this, 2));
+	}
+
+	public int getStubbornness() {
+		return stubbornness;
+	}
+
+	public void setStubbornness(int stubbornness) {
+		this.stubbornness = stubbornness;
 	}
 
 }
