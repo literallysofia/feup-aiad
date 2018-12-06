@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.FileHandler;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -32,6 +33,7 @@ public class Candidate extends Agent {
 	private ArrayList<String> chiefsOfStaff = new ArrayList<>();
 	private HashMap<String, Integer> beliefToChangePopulation = new HashMap<>();
 	private HashMap<String, Integer> beliefToChangeValue = new HashMap<>();
+	private boolean won = false;
 
 	public Candidate(String id, ArrayList<String> states, ArrayList<String> beliefs) {
 		this.id = id;
@@ -46,6 +48,14 @@ public class Candidate extends Agent {
 		Random rnd = new Random();
 		this.setStubbornness(rnd.nextInt(100) + 1);
 		setupLogger();
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public ArrayList<String> getStates() {
@@ -95,6 +105,14 @@ public class Candidate extends Agent {
 	public void setBeliefToChangeValue(HashMap<String, Integer> beliefToChangeValue) {
 		this.beliefToChangeValue = beliefToChangeValue;
 	}
+	
+	public boolean isWon() {
+		return won;
+	}
+
+	public void setWon(boolean won) {
+		this.won = won;
+	}
 
 	public void setupLogger() {
 
@@ -106,8 +124,8 @@ public class Candidate extends Agent {
 			File logDir = new File("logs/");
 			if (!(logDir.exists()))
 				logDir.mkdir();
-
-			fh = new FileHandler("logs/" + this.id + ".log");
+			long time = System.currentTimeMillis();
+			fh = new FileHandler("logs/" + time + "_" + this.id + ".log");
 			this.logger.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
@@ -133,6 +151,7 @@ public class Candidate extends Agent {
 	}
 
 	public void takeDown() {
+		LogManager.getLogManager().reset();
 		System.out.println(this.getLocalName() + " was taken down.");
 	}
 

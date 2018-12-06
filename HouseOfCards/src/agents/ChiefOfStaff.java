@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.FileHandler;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
@@ -114,7 +115,8 @@ public class ChiefOfStaff extends Agent {
 			if (!(logDir.exists()))
 				logDir.mkdir();
 
-			fh = new FileHandler("logs/" + this.id + ".log");
+			long time = System.currentTimeMillis();
+			fh = new FileHandler("logs/" + time + "_" + this.id + ".log");
 			this.logger.addHandler(fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fh.setFormatter(formatter);
@@ -137,6 +139,7 @@ public class ChiefOfStaff extends Agent {
 	}
 	
 	public void takeDown() {
+		LogManager.getLogManager().reset();
 		System.out.println(this.getLocalName() + " was taken down.");
 	}
 

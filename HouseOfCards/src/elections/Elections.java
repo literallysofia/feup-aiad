@@ -4,10 +4,17 @@ import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import agents.Candidate;
 import agents.ChiefOfStaff;
@@ -25,6 +32,7 @@ public class Elections {
 	private ArrayList<String> states = new ArrayList<String>();
 	private ArrayList<String> beliefs = new ArrayList<String>();
 	private ArrayList<Voter> voters = new ArrayList();
+	private ArrayList<Candidate> candidates = new ArrayList();
 	private Runtime rt;
 	private Profile p;
 	private ContainerController cc;
@@ -60,7 +68,7 @@ public class Elections {
 		this.rt = Runtime.instance();
 		this.p = new ProfileImpl(true);
 		this.cc = rt.createMainContainer(p);
-
+		
 		try {
 			createVotersPerState();
 			createCandidatesAndChiefs();
@@ -96,19 +104,18 @@ public class Elections {
 	// min_state_population, max_state_population, nr_candidates
 	public static void main(String args[]) throws StaleProxyException {
 		int x =0;
-		while(x < 500){
-			System.setProperty("java.util.logging.SimpleFormatter.format",
-					"[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
-	
-			Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),
-					Integer.parseInt(args[2]));
-			
+		while(x < 10){
+			System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
+			System.out.println("TIME: " +  x);
+			Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),Integer.parseInt(args[2]));
 			elections.getVotes();
+			elections.cc.kill();
 			x++;
 		}
 		System.exit(0);
 	}
 
+	
 	public void createVotersPerState() throws StaleProxyException {
 
 		int total = 0;
@@ -148,6 +155,7 @@ public class Elections {
 			AgentController ac = this.cc.acceptNewAgent(id, candidate);
 			ac.start();
 			candidates.add(candidate);
+			this.candidates.add(candidate);
 		}
 
 		for (int id_chief = 0; id_chief < this.states.size(); id_chief++) {
@@ -193,7 +201,61 @@ public class Elections {
 		
 		//System.out.println(counts);
 		System.out.println("> WINNER: " + winner.getKey() + " VOTES: " + winner.getValue());
+		
+		try {
+			dataAnalysisLogger(winner.getKey());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	
+	}
+	
+	
+	public void dataAnalysisLogger(String winner) throws IOException{
+		
+		File file1= new File ("logs/chiefsData.csv");
+		FileWriter fw1;
+		if (file1.exists()){
+		 fw1 = new FileWriter(file1,true);//if file exists append to file. Works fine.
+		}
+		else{
+		   file1.createNewFile();
+		   fw1 = new FileWriter(file1);
+		}
+		
+		File file2= new File ("logs/stubData.csv");
+		FileWriter fw2;
+		if (file2.exists()){
+			fw2 = new FileWriter(file2,true);//if file exists append to file. Works fine.
+		}
+		else{
+			file2.createNewFile();
+			fw2 = new FileWriter(file2);
+		}
+		
+	    PrintWriter printWriterChiefs = new PrintWriter(fw1);
+	    //printWriterChiefs.printf("number_chiefs, won\n");
+	    
+	    PrintWriter printWriterStub = new PrintWriter(fw2);
+	    //printWriterStub.printf("stubornness, won\n");
+	    
+	    for(int i=0; i<this.candidates.size(); i++){
+	    	int number_chiefs = this.candidates.get(i).getChiefsOfStaff().size();
+	    	int stubbornness =  this.candidates.get(i).getStubbornness();
+	    	int won;
+	    	if(this.candidates.get(i).getLocalName().equals(winner))
+	    		won = 1;
+	    	else
+	    		won = 0;
+	    	
+	    	printWriterChiefs.printf("%d, %d\n", number_chiefs , won);
+	    	printWriterStub.printf("%d, %d\n", stubbornness , won);
+	    }
+	    
+	    
+	    printWriterChiefs.close();
+	    printWriterStub.close();
+
 	}
 
 }
