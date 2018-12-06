@@ -39,7 +39,7 @@ public class Elections {
 		this.states.add("California");
 		this.states.add("Florida");
 		this.states.add("Hawaii");
-		this.states.add("Kansas");
+		// this.states.add("Kansas");
 		// this.states.add("Montana");
 		// this.states.add("New Jersey");
 		// this.states.add("New York");
@@ -95,13 +95,17 @@ public class Elections {
 
 	// min_state_population, max_state_population, nr_candidates
 	public static void main(String args[]) throws StaleProxyException {
-		System.setProperty("java.util.logging.SimpleFormatter.format",
-				"[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
-
-		Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),
-				Integer.parseInt(args[2]));
-		
-		elections.getVotes();
+		int x =0;
+		while(x < 500){
+			System.setProperty("java.util.logging.SimpleFormatter.format",
+					"[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
+	
+			Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),
+					Integer.parseInt(args[2]));
+			
+			elections.getVotes();
+			x++;
+		}
 		System.exit(0);
 	}
 
