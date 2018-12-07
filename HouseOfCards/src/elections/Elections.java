@@ -18,6 +18,7 @@ import java.util.logging.SimpleFormatter;
 
 import agents.Candidate;
 import agents.ChiefOfStaff;
+import agents.State;
 import agents.Voter;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -30,6 +31,7 @@ public class Elections {
 
 	private int minPopulation, maxPopulation, nrCandidates;
 	private ArrayList<String> states = new ArrayList<String>();
+	private HashMap<String, State> statesObjects =  new HashMap();
 	private ArrayList<String> beliefs = new ArrayList<String>();
 	private ArrayList<Voter> voters = new ArrayList();
 	private ArrayList<Candidate> candidates = new ArrayList();
@@ -47,12 +49,18 @@ public class Elections {
 		this.states.add("California");
 		this.states.add("Florida");
 		this.states.add("Hawaii");
-		// this.states.add("Kansas");
+		this.states.add("Kansas");
 		// this.states.add("Montana");
 		// this.states.add("New Jersey");
 		// this.states.add("New York");
 		// this.states.add("Washington");
 		// this.states.add("Texas");
+		
+		State state;
+		for(int i=0; i < this.states.size(); i++){
+			state = new State (this.states.get(i));
+			this.statesObjects.put(this.states.get(i), state);
+		}
 
 		this.beliefs.add("Liberalism");
 		this.beliefs.add("Conservatism");
@@ -104,7 +112,7 @@ public class Elections {
 	// min_state_population, max_state_population, nr_candidates
 	public static void main(String args[]) throws StaleProxyException {
 		int x =0;
-		while(x < 20){
+		while(x < 10){
 			System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
 			System.out.println("TIME: " +  x);
 			Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),Integer.parseInt(args[2]));
@@ -210,34 +218,76 @@ public class Elections {
 	
 	}
 	
+	public void fillStatesObjects(){
+		for(int i=0; i < this.voters.size(); i++){
+			State state = this.statesObjects.get(this.voters.get(i).getStateElection());
+			String candidate = this.voters.get(i).getChosenCandidate();
+			state.addVote(candidate);
+			state.addBeliefs(this.voters.get(i).getBeliefs());
+		}
+		
+		for (Map.Entry<String, State> entry : this.statesObjects.entrySet()) {
+		    entry.getValue().calculateWinner();
+		    entry.getValue().calculateBelief();
+		}
+	}
+	
 	
 	public void dataAnalysisLogger(String winner) throws IOException{
+		fillStatesObjects();
 		
 		File file= new File ("logs/rapidData.csv");
 		FileWriter fw;
 		if (file.exists()){
-		 fw = new FileWriter(file,true);//if file exists append to file. Works fine.
+			fw = new FileWriter(file,true);
 		}
 		else{
-		   file.createNewFile();
-		   fw = new FileWriter(file);
+			file.createNewFile();
+			fw = new FileWriter(file);
 		}
 		
 	    PrintWriter printWriter = new PrintWriter(fw);
 	    
 	    for(int i=0; i<this.candidates.size(); i++){
-	    	int number_chiefs = this.candidates.get(i).getChiefsOfStaff().size();
+	    	String candidateId = this.candidates.get(i).getLocalName();
+	    	int credibility = this.candidates.get(i).getCredibility();
 	    	int stubbornness =  this.candidates.get(i).getStubbornness();
-	    	int won;
-	    	if(this.candidates.get(i).getLocalName().equals(winner))
-	    		won = 1;
-	    	else
-	    		won = 0;
 	    	
-	    	printWriter.printf("%d, %d, %d\n", number_chiefs, stubbornness, won);
+	    	boolean won = false;
+	    	if(this.candidates.get(i).getLocalName().equals(winner))
+	    		won = true;
+	    	
+	    	Map.Entry<String, Integer> maxBelief = null;
+			for (Map.Entry<String, Integer> entry : this.candidates.get(i).getBeliefs().entrySet())
+			{
+			    if (maxBelief == null || entry.getValue().compareTo(maxBelief.getValue()) > 0)
+			        maxBelief = entry;
+			}
+			String mainCandidateBelief =  maxBelief.getKey();
+			
+	    	for(int j=0; j<this.states.size();j++){
+	    		boolean foundChief = false;
+	    		String[] chiefsStatesArray = this.candidates.get(i).getChiefsStates().toArray(new String[this.candidates.get(i).getChiefsStates().size()]);
+	    		for(int k=0; k < chiefsStatesArray.length; k++){
+	   			String ChiefsState = chiefsStatesArray[k];    			
+	    			if(ChiefsState.equals(this.states.get(j))){
+	    				foundChief = true;
+	    				break;
+	    			}
+	    		}
+	  
+	    		boolean wonState=false;  		
+	    		String stateWinner = this.statesObjects.get(this.states.get(j)).getWinner();
+	    		if(stateWinner != null && stateWinner.equals(candidateId))
+	    			wonState=true;
+	    		
+	    		int population = this.statesObjects.get(this.states.get(j)).getPopulation();
+	    		
+	    		String mainStateBelief =  this.statesObjects.get(this.states.get(j)).getMainBelief();
+	    		printWriter.printf("%s, %s, %b, %d, %s, %b, %d, %d, %s, %b\n", candidateId, this.states.get(j), foundChief, population, mainStateBelief, wonState, credibility, stubbornness, mainCandidateBelief, won);
+	    		
+	    	}	    	
 	    }
-	    
-	    
 	    printWriter.close();
 	}
 

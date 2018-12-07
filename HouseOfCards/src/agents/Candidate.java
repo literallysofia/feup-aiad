@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.logging.FileHandler;
@@ -31,6 +32,7 @@ public class Candidate extends Agent {
 	private ArrayList<String> states = new ArrayList<String>();
 	private HashMap<String, Integer> beliefs = new HashMap<>();
 	private ArrayList<String> chiefsOfStaff = new ArrayList<>();
+	private HashSet<String> chiefsStates =  new HashSet<String>();
 	private HashMap<String, Integer> beliefToChangePopulation = new HashMap<>();
 	private HashMap<String, Integer> beliefToChangeValue = new HashMap<>();
 	private boolean won = false;
@@ -46,7 +48,8 @@ public class Candidate extends Agent {
 		}
 
 		Random rnd = new Random();
-		this.setStubbornness(rnd.nextInt(100) + 1);
+		this.stubbornness = rnd.nextInt(100) + 1;
+		this.credibility = rnd.nextInt(20) + 80;
 		setupLogger();
 	}
 
@@ -106,12 +109,28 @@ public class Candidate extends Agent {
 		this.beliefToChangeValue = beliefToChangeValue;
 	}
 	
+	public int getStubbornness() {
+		return stubbornness;
+	}
+
+	public void setStubbornness(int stubbornness) {
+		this.stubbornness = stubbornness;
+	}
+	
 	public boolean isWon() {
 		return won;
 	}
 
 	public void setWon(boolean won) {
 		this.won = won;
+	}
+	
+	public HashSet<String> getChiefsStates() {
+		return chiefsStates;
+	}
+
+	public void setChiefsStates(HashSet<String> chiefsStates) {
+		this.chiefsStates = chiefsStates;
 	}
 
 	public void setupLogger() {
@@ -213,14 +232,6 @@ public class Candidate extends Agent {
 		}
 
 		this.addBehaviour(new CandidateSendBeliefs(this, 2));
-	}
-
-	public int getStubbornness() {
-		return stubbornness;
-	}
-
-	public void setStubbornness(int stubbornness) {
-		this.stubbornness = stubbornness;
 	}
 
 }

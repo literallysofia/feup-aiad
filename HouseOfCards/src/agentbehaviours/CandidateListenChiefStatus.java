@@ -57,6 +57,7 @@ public class CandidateListenChiefStatus extends ContractNetInitiator {
 
 			if (parseResponse.get(0).equals("Losing in ")) {
 				String state = parseResponse.get(1);
+				this.candidate.getChiefsStates().add(state);
 				String belief = parseResponse.get(3);
 				int value = Integer.parseInt(parseResponse.get(5));
 				int population = getStatePopulation(state);
@@ -74,6 +75,10 @@ public class CandidateListenChiefStatus extends ContractNetInitiator {
 					this.candidate.getBeliefToChangeValue().put(belief, value);
 				}
 
+			}
+			else{
+				String state = parseResponse.get(1);
+				this.candidate.getChiefsStates().add(state);
 			}
 
 		}

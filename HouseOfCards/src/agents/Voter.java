@@ -30,7 +30,7 @@ import jade.domain.FIPAException;
 public class Voter extends Agent {
 	public Logger logger;
 	private String id;
-	private String state;
+	private String stateElection;
 	private int minCredibility;
 	private HashMap<String, ArrayList<Integer>> beliefs = new HashMap<>();
 	private int candidatesSize;
@@ -44,7 +44,7 @@ public class Voter extends Agent {
 
 	public Voter(String id, String state, ArrayList<String> beliefs, int candidatesSize) {
 		this.id = id;
-		this.state = state;
+		this.stateElection = state;
 		Random rnd = new Random();
 
 		for (int i = 0; i < beliefs.size(); i++) {
@@ -134,6 +134,14 @@ public class Voter extends Agent {
 	public void setReadyToVote(boolean readyToVote) {
 		this.readyToVote = readyToVote;
 	}
+	
+	public String getStateElection() {
+		return stateElection;
+	}
+
+	public void setStateElection(String state) {
+		this.stateElection = state;
+	}
 
 	public void setupLogger() {
 
@@ -176,7 +184,7 @@ public class Voter extends Agent {
 	// regista nas paginas amarelas
 	public void register() {
 		ServiceDescription sd = new ServiceDescription();
-		sd.setType(this.state);
+		sd.setType(this.stateElection);
 		sd.setName(getLocalName());
 
 		this.dfd = new DFAgentDescription();
