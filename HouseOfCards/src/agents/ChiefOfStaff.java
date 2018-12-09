@@ -21,7 +21,7 @@ import jade.lang.acl.MessageTemplate;
 
 public class ChiefOfStaff extends Agent {
 
-	public Logger logger;
+	//public Logger logger;
 	private String id;
 	private Candidate boss;
 	private String state;
@@ -37,7 +37,7 @@ public class ChiefOfStaff extends Agent {
 		this.boss = candidate;
 		this.state = state;
 
-		setupLogger();
+		//setupLogger();
 	}
 
 	public Candidate getBoss() {
@@ -104,7 +104,7 @@ public class ChiefOfStaff extends Agent {
 		this.chosenValue = chosenValue;
 	}
 
-	public void setupLogger() {
+	/*public void setupLogger() {
 
 		this.logger = Logger.getLogger(this.id);
 		FileHandler fh = null;
@@ -127,7 +127,7 @@ public class ChiefOfStaff extends Agent {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 	public void setup() {
 		
@@ -139,8 +139,8 @@ public class ChiefOfStaff extends Agent {
 	}
 	
 	public void takeDown() {
-		LogManager.getLogManager().reset();
-		System.out.println(this.getLocalName() + " was taken down.");
+		//LogManager.getLogManager().reset();
+		//System.out.println(this.getLocalName() + " was taken down.");
 	}
 
 	// calcula o candidato escolhido pelos voters do seu estado

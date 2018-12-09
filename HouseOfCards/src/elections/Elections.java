@@ -50,11 +50,11 @@ public class Elections {
 		this.states.add("Florida");
 		this.states.add("Hawaii");
 		this.states.add("Kansas");
-		// this.states.add("Montana");
-		// this.states.add("New Jersey");
-		// this.states.add("New York");
-		// this.states.add("Washington");
-		// this.states.add("Texas");
+		//this.states.add("Montana");
+		//this.states.add("New Jersey");
+		//this.states.add("New York");
+		//this.states.add("Washington");
+		//this.states.add("Texas");
 		
 		State state;
 		for(int i=0; i < this.states.size(); i++){
@@ -110,14 +110,17 @@ public class Elections {
 	}
 
 	// min_state_population, max_state_population, nr_candidates
-	public static void main(String args[]) throws StaleProxyException {
+	public static void main(String args[]) throws StaleProxyException, InterruptedException {
 		int x =0;
-		while(x < 10){
+		Elections elections;
+		while(x < 50){
 			System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
 			System.out.println("TIME: " +  x);
-			Elections elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),Integer.parseInt(args[2]));
+			elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),Integer.parseInt(args[2]));
 			elections.getVotes();
 			elections.cc.kill();
+			elections.rt.shutDown();
+			//Thread.sleep(1000);
 			x++;
 		}
 		System.exit(0);
@@ -265,6 +268,22 @@ public class Elections {
 			}
 			String mainCandidateBelief =  maxBelief.getKey();
 			
+			int nChiefs = this.candidates.get(i).getChiefsOfStaff().size();
+	    	int candidatePopulation = 0;
+			for(int j=0; j<this.states.size();j++){
+	    		String[] chiefsStatesArray = this.candidates.get(i).getChiefsStates().toArray(new String[this.candidates.get(i).getChiefsStates().size()]);
+	    		for(int k=0; k < chiefsStatesArray.length; k++){
+	   			String ChiefsState = chiefsStatesArray[k];    			
+	    			if(ChiefsState.equals(this.states.get(j))){
+	    				candidatePopulation = candidatePopulation + this.statesObjects.get(this.states.get(j)).getPopulation();
+	    				break;
+	    			}
+	    		}
+			}
+			
+			int totalPopulation = this.voters.size();
+			int percentageCandidatePopulation = (int) (candidatePopulation*100)/totalPopulation;
+			
 	    	for(int j=0; j<this.states.size();j++){
 	    		boolean foundChief = false;
 	    		String[] chiefsStatesArray = this.candidates.get(i).getChiefsStates().toArray(new String[this.candidates.get(i).getChiefsStates().size()]);
@@ -283,8 +302,21 @@ public class Elections {
 	    		
 	    		int population = this.statesObjects.get(this.states.get(j)).getPopulation();
 	    		
+	    		
+	    		boolean changedBelief = false;
+	    		String candidateChangedBelief = this.candidates.get(i).getChangedBelief();
+	    		String stateBeliefToChange =  this.candidates.get(i).getStateBeliefToChange().get(this.states.get(j));
+	    		
+	    		if(candidateChangedBelief==null && stateBeliefToChange==null)
+	    			changedBelief = true;
+	    		else if(candidateChangedBelief != null && stateBeliefToChange != null && candidateChangedBelief.equals(stateBeliefToChange))
+	    			changedBelief = true;
+	    		
 	    		String mainStateBelief =  this.statesObjects.get(this.states.get(j)).getMainBelief();
-	    		printWriter.printf("%s, %s, %b, %d, %s, %b, %d, %d, %s, %b\n", candidateId, this.states.get(j), foundChief, population, mainStateBelief, wonState, credibility, stubbornness, mainCandidateBelief, won);
+	    		boolean sameBelief = false;
+	    		if(mainStateBelief.equals(mainCandidateBelief))
+	    			sameBelief = true;
+	    		printWriter.printf("%s, %s, %b, %d, %b, %d, %d, %b, %b, %b, %d, %d, %d\n", candidateId, this.states.get(j), foundChief, population, wonState, credibility, stubbornness,  won, changedBelief, sameBelief, nChiefs, candidatePopulation, percentageCandidatePopulation);
 	    		
 	    	}	    	
 	    }

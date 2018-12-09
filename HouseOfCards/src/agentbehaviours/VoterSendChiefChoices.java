@@ -58,12 +58,12 @@ public class VoterSendChiefChoices extends SimpleBehaviour {
 		msg.addReceiver(dest);
 		this.voter.send(msg);
 		
-		try {
-			this.voter.logger.info("SENT:      " + msg.getContentObject() + " TO: " + dest.getLocalName());
-		} catch (UnreadableException e1) {
+		//try {
+			//this.voter.logger.info("SENT:      " + msg.getContentObject() + " TO: " + dest.getLocalName());
+		//} catch (UnreadableException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			//e1.printStackTrace();
+		//}
 
 		/*try {
 			System.out.println("            - VOTER: " + this.voter.getLocalName() + " " + msg.getContentObject());

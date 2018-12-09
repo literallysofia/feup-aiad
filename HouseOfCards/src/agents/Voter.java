@@ -28,7 +28,7 @@ import jade.lang.acl.ACLMessage;
 import jade.domain.FIPAException;
 
 public class Voter extends Agent {
-	public Logger logger;
+	//public Logger logger;
 	private String id;
 	private String stateElection;
 	private int minCredibility;
@@ -67,7 +67,7 @@ public class Voter extends Agent {
 		this.minCredibility = rnd.nextInt(100) + 1;
 		this.setCandidatesSize(candidatesSize);
 
-		setupLogger();
+		//setupLogger();
 
 	}
 
@@ -126,7 +126,7 @@ public class Voter extends Agent {
 	public void setChiefOfStaffInfo(HashMap<String, String> chiefOfStaffInfo) {
 		this.chiefOfStaffInfo = chiefOfStaffInfo;
 	}
-	
+
 	public boolean isReadyToVote() {
 		return readyToVote;
 	}
@@ -134,7 +134,7 @@ public class Voter extends Agent {
 	public void setReadyToVote(boolean readyToVote) {
 		this.readyToVote = readyToVote;
 	}
-	
+
 	public String getStateElection() {
 		return stateElection;
 	}
@@ -143,7 +143,7 @@ public class Voter extends Agent {
 		this.stateElection = state;
 	}
 
-	public void setupLogger() {
+	/*public void setupLogger() {
 
 		this.logger = Logger.getLogger(this.id);
 		FileHandler fh = null;
@@ -166,19 +166,19 @@ public class Voter extends Agent {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 	public void setup() {
-		register();	
+		register();
 		SequentialBehaviour loop = new SequentialBehaviour();
 				loop.addSubBehaviour(new VoterListenCandidateAndChief(this,1));
 				loop.addSubBehaviour(new VoterSendChiefChoices(this));
 		addBehaviour(loop);
 	}
-	
+
 	public void takeDown() {
-		LogManager.getLogManager().reset();
-		System.out.println(this.getLocalName() + " was taken down.");
+		//LogManager.getLogManager().reset();
+		//System.out.println(this.getLocalName() + " was taken down.");
 	}
 
 	// regista nas paginas amarelas
@@ -210,7 +210,7 @@ public class Voter extends Agent {
 																		// ter
 																		// que
 																		// nao
-																		// estão
+																		// estï¿½o
 																		// dentro
 																		// dos
 																		// intervalos
@@ -244,9 +244,9 @@ public class Voter extends Agent {
 		} else {
 			this.chosenCandidate = null;
 		}
-		
-		this.logger.info("> INFO:    CHOSEN CANDIDATE: " + this.chosenCandidate);
-		System.out.println("> INFO:    ID: " + this.getLocalName() + " CHOSEN CANDIDATE: " + this.chosenCandidate);
+
+		//this.logger.info("> INFO:    CHOSEN CANDIDATE: " + this.chosenCandidate);
+		//System.out.println("> INFO:    ID: " + this.getLocalName() + " CHOSEN CANDIDATE: " + this.chosenCandidate);
 
 	}
 

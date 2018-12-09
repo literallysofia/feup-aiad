@@ -27,7 +27,7 @@ public class ChiefSendVoterQuestion extends Behaviour {
 
 	public void action() {
 		
-		this.chiefOfStaff.logger.info("> INFO:    ID: " +  this.chiefOfStaff.getLocalName() + " STATE: " + this.chiefOfStaff.getStateName() + " BOSS: " + this.chiefOfStaff.getBoss().getLocalName());
+		//this.chiefOfStaff.logger.info("> INFO:    ID: " +  this.chiefOfStaff.getLocalName() + " STATE: " + this.chiefOfStaff.getStateName() + " BOSS: " + this.chiefOfStaff.getBoss().getLocalName());
 		System.out.println("> INFO:    ID: " +  this.chiefOfStaff.getLocalName() + " STATE: " + this.chiefOfStaff.getStateName() + " BOSS: " + this.chiefOfStaff.getBoss().getLocalName());
 		
 
@@ -55,14 +55,14 @@ public class ChiefSendVoterQuestion extends Behaviour {
 				AID dest = result[j].getName();
 				msg.addReceiver(dest);
 				this.chiefOfStaff.send(msg);
-				this.chiefOfStaff.logger.info("SENT:      " + msg.getContentObject() + " TO: " + dest.getLocalName());
+				//this.chiefOfStaff.logger.info("SENT:      " + msg.getContentObject() + " TO: " + dest.getLocalName());
 			}
 		} catch (FIPAException e) {
 			e.printStackTrace();
-		} catch (UnreadableException e) {
+		} /*catch (UnreadableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		this.finished = true;
 

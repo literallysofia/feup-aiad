@@ -27,19 +27,19 @@ public class CandidateSendBeliefs extends Behaviour {
 	public CandidateSendBeliefs(Candidate a, int cycle) {
 		this.candidate = a;
 		this.cycle = cycle;
-		
-		this.candidate.logger.info("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " STUBBORNNESS: " + this.candidate.getStubbornness() + " BELIEFS: "
-				+ this.candidate.getBeliefs());
-		System.out.println("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " STUBBORNNESS: " + this.candidate.getStubbornness() + " BELIEFS: "
-				+ this.candidate.getBeliefs());
-		
+
+		//this.candidate.logger.info("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " STUBBORNNESS: " + this.candidate.getStubbornness() + " BELIEFS: "
+			//	+ this.candidate.getBeliefs());
+		//System.out.println("> INFO:    ID: " + this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " STUBBORNNESS: " + this.candidate.getStubbornness() + " BELIEFS: "
+			// 	+ this.candidate.getBeliefs());
+
 		this.candidate.setBeliefToChangePopulation(new HashMap<>());
 		this.candidate.setBeliefToChangeValue(new HashMap<>());
 	}
 
 	public void action() {
-		
-		//System.out.println("ID: " +  this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS:" + this.candidate.getBeliefs());  
+
+		//System.out.println("ID: " +  this.candidate.getLocalName() + " CREDIBILITY: " + this.candidate.getCredibility() + " BELIEFS:" + this.candidate.getBeliefs());
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		try {
 			ArrayList<HashMap<String, Integer>> profile = new ArrayList();
@@ -66,13 +66,13 @@ public class CandidateSendBeliefs extends Behaviour {
 					AID dest = result[j].getName();
 					msg.addReceiver(dest);
 					this.candidate.send(msg);
-					this.candidate.logger.info("SENT:      " + msg.getContentObject() + " TO: " + dest.getLocalName());
+					//this.candidate.logger.info("SENT:      " + msg.getContentObject() + " TO: " + dest.getLocalName());
 				}
 			} catch (FIPAException e) {
 				e.printStackTrace();
-			} catch (UnreadableException e) {
+			}/* catch (UnreadableException e) {
 				e.printStackTrace();
-			}
+			}*/
 
 		}
 		this.finished = true;

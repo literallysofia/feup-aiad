@@ -28,7 +28,7 @@ public class CandidateListenChiefStatus extends ContractNetInitiator {
 		cfp.setContent("What should i change?");
 		for (int i = 0; i < candidate.getChiefsOfStaff().size(); i++) {
 			cfp.addReceiver(new AID(candidate.getChiefsOfStaff().get(i), false));
-			this.candidate.logger.info("SENT:      " + cfp.getContent() + " TO: " + candidate.getChiefsOfStaff().get(i));
+			//this.candidate.logger.info("SENT:      " + cfp.getContent() + " TO: " + candidate.getChiefsOfStaff().get(i));
 		}
 		v.add(cfp);
 
@@ -45,7 +45,7 @@ public class CandidateListenChiefStatus extends ContractNetInitiator {
 			ArrayList<String> parseResponse = new ArrayList<>();
 			try {
 				parseResponse = (ArrayList<String>) msg.getContentObject();
-				this.candidate.logger.info("RECEIVED:  " + parseResponse + " FROM: " + msg.getSender().getLocalName());
+				//this.candidate.logger.info("RECEIVED:  " + parseResponse + " FROM: " + msg.getSender().getLocalName());
 				
 				//this.candidate.logger.info("RECEIVED MSG: " + parseResponse);
 			} catch (UnreadableException e) {
@@ -54,13 +54,14 @@ public class CandidateListenChiefStatus extends ContractNetInitiator {
 
 			/*System.out.println("                     - CANDIDATE: " + this.candidate.getLocalName() + " WHAT TO CHANGE: "
 					+ parseResponse);*/
-
+			//System.out.println(this.candidate.getLocalName() + "  " +  msg.getSender().getLocalName());
 			if (parseResponse.get(0).equals("Losing in ")) {
 				String state = parseResponse.get(1);
 				this.candidate.getChiefsStates().add(state);
 				String belief = parseResponse.get(3);
 				int value = Integer.parseInt(parseResponse.get(5));
 				int population = getStatePopulation(state);
+				this.candidate.getStateBeliefToChange().put(state,belief);
 
 				if (candidate.getBeliefToChangePopulation() != null
 						&& candidate.getBeliefToChangePopulation().get(belief) != null) {
