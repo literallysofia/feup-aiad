@@ -21,8 +21,8 @@ public class VoterListenCandidateAndChief extends SimpleBehaviour {
 		this.voter = voter;
 		this.cycle = cycle;
 
-		//this.voter.logger.info("> INFO:    ID: " + this.voter.getLocalName() + " BELIEFS: " + this.voter.getBeliefs() + " MIN CREDIBILITY: "
-			//	+ this.voter.getMinCredibility());
+		this.voter.logger.info("> INFO:    ID: " + this.voter.getLocalName() + " BELIEFS: " + this.voter.getBeliefs() + " MIN CREDIBILITY: "
+				+ this.voter.getMinCredibility());
 		//System.out.println("> INFO:    ID: " + this.voter.getLocalName() + " BELIEFS: " + this.voter.getBeliefs() + " MIN CREDIBILITY: "
 			//	+ this.voter.getMinCredibility());
 
@@ -39,8 +39,8 @@ public class VoterListenCandidateAndChief extends SimpleBehaviour {
 			try {
 				if (msg.getSender().getLocalName().substring(0, 9).equals("candidate")) {
 
-					//this.voter.logger
-						//	.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
+					this.voter.logger
+							.info("RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
 					String candidate = msg.getSender().getLocalName();
 					HashMap<String, Integer> beliefs = new HashMap<String, Integer>();
 					HashMap<String, Integer> credibility = new HashMap<String, Integer>();
@@ -53,8 +53,8 @@ public class VoterListenCandidateAndChief extends SimpleBehaviour {
 				} else if (msg != null && msg.getSender().getLocalName().substring(0, 9).equals("chiefofst")) {
 
 					try {
-						//this.voter.logger.info(
-							//	"RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
+						this.voter.logger.info(
+								"RECEIVED:  " + msg.getContentObject() + " FROM: " + msg.getSender().getLocalName());
 						ArrayList<String> message = (ArrayList) msg.getContentObject();
 						String candidate = message.get(1);
 						this.voter.getChiefOfStaffInfo().put(msg.getSender().getLocalName(), candidate);

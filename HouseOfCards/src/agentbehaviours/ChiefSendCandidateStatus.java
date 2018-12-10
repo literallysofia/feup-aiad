@@ -27,7 +27,7 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 		ACLMessage reply = cfp.createReply();
 		reply.setPerformative(ACLMessage.PROPOSE);
 		
-		//this.chiefOfStaff.logger.info("> INFO:    CANDIDATE " +  chiefOfStaff.getChosenCandidate() + " IS WINNING IN " + this.chiefOfStaff.getStateName());
+		this.chiefOfStaff.logger.info("> INFO:    CANDIDATE " +  chiefOfStaff.getChosenCandidate() + " IS WINNING IN " + this.chiefOfStaff.getStateName());
 		//System.out.println("> INFO:    ID: " + this.chiefOfStaff.getLocalName() + " CANDIDATE " +  chiefOfStaff.getChosenCandidate() + " IS WINNING IN " + this.chiefOfStaff.getStateName());
 		
 		if (this.chiefOfStaff.getChosenCandidate() != null) {
@@ -75,11 +75,11 @@ public class ChiefSendCandidateStatus extends ContractNetResponder {
 
 		}
 		
-		/*try {
+		try {
 			this.chiefOfStaff.logger.info("SENT:      " + reply.getContentObject() + " TO: " + cfp.getSender().getLocalName());
 		} catch (UnreadableException e) {
 			e.printStackTrace();
-		}*/
+		}
 		return reply;
 	}
 

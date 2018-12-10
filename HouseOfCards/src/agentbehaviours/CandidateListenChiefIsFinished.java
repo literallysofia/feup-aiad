@@ -30,14 +30,14 @@ public class CandidateListenChiefIsFinished extends SimpleBehaviour {
 		ACLMessage msg = this.candidate.blockingReceive();
 		if (msg != null) {
 			
-			if (msg.getSender().getLocalName().substring(0, 5).equals("chief")) {
+			if (msg.getSender().getLocalName().length() > 5 && msg.getSender().getLocalName().substring(0, 5).equals("chief")) {
 				this.numberOfMessages++;
 				//System.out.println(this.candidate.getLocalName() + "  " +  this.numberOfMessages + " " + msg.getSender().getLocalName());
 				// System.out.println(" - CANDIDATE: " +
 				// this.candidate.getLocalName() + " FINISHED: " +
 				// msg.getSender().getLocalName());
-				//this.candidate.logger.info("RECEIVED MSG: " + msg.getContent());
-				//this.candidate.logger.info("RECEIVED:  " + msg.getContent() + " FROM: " + msg.getSender().getLocalName());
+				this.candidate.logger.info("RECEIVED MSG: " + msg.getContent());
+				this.candidate.logger.info("RECEIVED:  " + msg.getContent() + " FROM: " + msg.getSender().getLocalName());
 				
 			}
 		} else {

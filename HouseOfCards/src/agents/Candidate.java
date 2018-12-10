@@ -25,7 +25,7 @@ import agentbehaviours.CandidateSendBeliefs;
 import agentbehaviours.CandidateListenChiefStatus;
 
 public class Candidate extends Agent {
-	//public Logger logger;
+	public Logger logger;
 	private String id;
 	private int credibility = 100;
 	private int stubbornness;
@@ -36,7 +36,7 @@ public class Candidate extends Agent {
 	private HashMap<String, Integer> beliefToChangePopulation = new HashMap<>();
 	private HashMap<String, Integer> beliefToChangeValue = new HashMap<>();
 	private HashMap<String, String> stateBeliefToChange =  new HashMap<>();
-	private String changedBelief;
+	private String changedBelief = null;
 	private boolean won = false;
 
 	public Candidate(String id, ArrayList<String> states, ArrayList<String> beliefs) {
@@ -52,7 +52,7 @@ public class Candidate extends Agent {
 		Random rnd = new Random();
 		this.stubbornness = rnd.nextInt(100) + 1;
 		this.credibility = rnd.nextInt(20) + 80;
-		//setupLogger();
+		setupLogger();
 	}
 
 	public String getId() {
@@ -151,7 +151,7 @@ public class Candidate extends Agent {
 		this.stateBeliefToChange = stateBeliefToChange;
 	}
 
-	/*public void setupLogger() {
+	public void setupLogger() {
 
 		this.logger = Logger.getLogger(this.id);
 		FileHandler fh = null;
@@ -173,7 +173,7 @@ public class Candidate extends Agent {
 			e.printStackTrace();
 		}
 
-	}*/
+	}
 
 	public void setup() {
 
@@ -188,8 +188,8 @@ public class Candidate extends Agent {
 	}
 
 	public void takeDown() {
-		//LogManager.getLogManager().reset();
-		System.out.println(this.getLocalName() + " was taken down.");
+		LogManager.getLogManager().reset();
+		//System.out.println(this.getLocalName() + " was taken down.");
 	}
 
 	// atualiza as beliefs conforme a informa��o dada pelo chief of staff
@@ -229,8 +229,8 @@ public class Candidate extends Agent {
 				this.credibility = this.credibility - diffCre;
 				// System.out.println("NEW CREDIBILITY: " + this.credibility);
 
-				//this.logger.info("> INFO:    CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);
-				//this.logger.info("> INFO:    CHANGED credibility TO " + this.credibility + " BC macro: " + changeMacro);
+				this.logger.info("> INFO:    CHANGED BELIEF: " + maxEntry.getKey() + " TO " + value);
+				this.logger.info("> INFO:    CHANGED credibility TO " + this.credibility + " BC macro: " + changeMacro);
 				//System.out.println(
 					//	 "> INFO: ID: " + this.getLocalName() + " CHANGED BELIEF: " +
 						//		 maxEntry.getKey() + " TO " + value);
@@ -245,7 +245,7 @@ public class Candidate extends Agent {
 
 			}
 		} else {
-			//this.logger.info("> INFO:    DID NOT CHANGE BELIEFS BC macro: " + changeMacro);
+			this.logger.info("> INFO:    DID NOT CHANGE BELIEFS BC macro: " + changeMacro);
 		}
 
 		this.addBehaviour(new CandidateSendBeliefs(this, 2));

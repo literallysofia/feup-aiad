@@ -111,16 +111,16 @@ public class Elections {
 
 	// min_state_population, max_state_population, nr_candidates
 	public static void main(String args[]) throws StaleProxyException, InterruptedException {
-		int x =0;
+		int x=1;
 		Elections elections;
-		while(x < 50){
+		while(x<=200){
 			System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
 			System.out.println("TIME: " +  x);
 			elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),Integer.parseInt(args[2]));
 			elections.getVotes();
 			elections.cc.kill();
 			elections.rt.shutDown();
-			//Thread.sleep(1000);
+			//Thread.sleep(3000);
 			x++;
 		}
 		System.exit(0);
@@ -301,22 +301,28 @@ public class Elections {
 	    			wonState=true;
 	    		
 	    		int population = this.statesObjects.get(this.states.get(j)).getPopulation();
+	   
 	    		
-	    		
-	    		boolean changedBelief = false;
+	    		String changedBelief = null;
 	    		String candidateChangedBelief = this.candidates.get(i).getChangedBelief();
 	    		String stateBeliefToChange =  this.candidates.get(i).getStateBeliefToChange().get(this.states.get(j));
 	    		
-	    		if(candidateChangedBelief==null && stateBeliefToChange==null)
-	    			changedBelief = true;
-	    		else if(candidateChangedBelief != null && stateBeliefToChange != null && candidateChangedBelief.equals(stateBeliefToChange))
-	    			changedBelief = true;
+	    		if(!foundChief){
+	    			changedBelief = "unknown";
+	    		}else{
+	    			if(candidateChangedBelief==null && stateBeliefToChange==null)
+		    			changedBelief = "true";
+		    		else if(candidateChangedBelief != null && stateBeliefToChange != null && candidateChangedBelief.equals(stateBeliefToChange))
+		    			changedBelief = "true";
+		    		else
+		    			changedBelief = "false";
+	    		}
 	    		
 	    		String mainStateBelief =  this.statesObjects.get(this.states.get(j)).getMainBelief();
 	    		boolean sameBelief = false;
 	    		if(mainStateBelief.equals(mainCandidateBelief))
 	    			sameBelief = true;
-	    		printWriter.printf("%s, %s, %b, %d, %b, %d, %d, %b, %b, %b, %d, %d, %d\n", candidateId, this.states.get(j), foundChief, population, wonState, credibility, stubbornness,  won, changedBelief, sameBelief, nChiefs, candidatePopulation, percentageCandidatePopulation);
+	    		printWriter.printf("%s, %s, %b, %d, %b, %d, %d, %b, %s, %b, %d, %d, %d\n", candidateId, this.states.get(j), foundChief, population, wonState, credibility, stubbornness,  won, changedBelief, sameBelief, nChiefs, candidatePopulation, percentageCandidatePopulation);
 	    		
 	    	}	    	
 	    }

@@ -21,7 +21,7 @@ import jade.lang.acl.MessageTemplate;
 
 public class ChiefOfStaff extends Agent {
 
-	//public Logger logger;
+	public Logger logger;
 	private String id;
 	private Candidate boss;
 	private String state;
@@ -37,7 +37,7 @@ public class ChiefOfStaff extends Agent {
 		this.boss = candidate;
 		this.state = state;
 
-		//setupLogger();
+		setupLogger();
 	}
 
 	public Candidate getBoss() {
@@ -104,7 +104,7 @@ public class ChiefOfStaff extends Agent {
 		this.chosenValue = chosenValue;
 	}
 
-	/*public void setupLogger() {
+	public void setupLogger() {
 
 		this.logger = Logger.getLogger(this.id);
 		FileHandler fh = null;
@@ -127,7 +127,7 @@ public class ChiefOfStaff extends Agent {
 			e.printStackTrace();
 		}
 
-	}*/
+	}
 
 	public void setup() {
 		
@@ -139,7 +139,7 @@ public class ChiefOfStaff extends Agent {
 	}
 	
 	public void takeDown() {
-		//LogManager.getLogManager().reset();
+		LogManager.getLogManager().reset();
 		//System.out.println(this.getLocalName() + " was taken down.");
 	}
 
@@ -175,18 +175,21 @@ public class ChiefOfStaff extends Agent {
 
 		Map.Entry<String, Integer> maxEntry2 = null;
 		for (Map.Entry<String, Integer> entry : map2.entrySet()) {
-			if (maxEntry2 == null || entry.getValue().compareTo(maxEntry2.getValue()) > 0) {
-				maxEntry2 = entry;
-			} else if (entry.getValue().compareTo(maxEntry2.getValue()) == 0 && maxEntry2.getKey() == null) {
-				maxEntry2 = entry;
+			if(entry.getKey() != null){
+				if (maxEntry2 == null || entry.getValue().compareTo(maxEntry2.getValue()) > 0) {
+					maxEntry2 = entry;
+				} else if (entry.getValue().compareTo(maxEntry2.getValue()) == 0 && maxEntry2.getKey() == null) {
+					maxEntry2 = entry;
+				}
 			}
 		}
+		if(maxEntry2!=null){
+			ArrayList<Integer> values = this.stateChosenBeliefs.get(maxEntry2.getKey());
+			int average = (int) calculateAverage(values);
 
-		ArrayList<Integer> values = this.stateChosenBeliefs.get(maxEntry2.getKey());
-		int average = (int) calculateAverage(values);
-
-		this.chosenBelief = maxEntry2.getKey();
-		this.chosenValue = average;
+			this.chosenBelief = maxEntry2.getKey();
+			this.chosenValue = average;
+		}		
 	}
 
 	// calcula a média de um arraylist de ineteiros
