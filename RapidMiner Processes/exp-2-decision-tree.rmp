@@ -35,22 +35,25 @@
         <parameter key="encoding" value="UTF-8"/>
         <parameter key="read_all_values_as_polynominal" value="false"/>
         <list key="data_set_meta_data_information">
-          <parameter key="0" value="candidateId.false.polynominal.attribute"/>
-          <parameter key="1" value="stateId.false.polynominal.attribute"/>
+          <parameter key="0" value="candidateId.false.text.attribute"/>
+          <parameter key="1" value="stateId.false.text.attribute"/>
           <parameter key="2" value="hasChief.true.binominal.attribute"/>
           <parameter key="3" value="statePopulation.true.integer.attribute"/>
-          <parameter key="4" value="mainStateBelief.true.text.attribute"/>
-          <parameter key="5" value="wonState.true.binominal.label"/>
-          <parameter key="6" value="credibility.true.integer.attribute"/>
-          <parameter key="7" value="stubbornness.true.integer.attribute"/>
-          <parameter key="8" value="mainCandidateBelief.true.text.attribute"/>
-          <parameter key="9" value="won.false.binominal.label"/>
+          <parameter key="4" value="wonState.true.binominal.label"/>
+          <parameter key="5" value="credibility.true.integer.attribute"/>
+          <parameter key="6" value="stubbornness.true.integer.attribute"/>
+          <parameter key="7" value="won.false.binominal.attribute"/>
+          <parameter key="8" value="changedBelief.true.polynominal.attribute"/>
+          <parameter key="9" value="sameBelief.true.binominal.attribute"/>
+          <parameter key="10" value="nChiefs.false.integer.attribute"/>
+          <parameter key="11" value="candidatePopulation.false.integer.attribute"/>
+          <parameter key="12" value="percentageCandidatePopulation.false.integer.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="false"/>
         <parameter key="datamanagement" value="double_array"/>
         <parameter key="data_management" value="auto"/>
       </operator>
-      <operator activated="true" class="concurrency:parallel_decision_tree" compatibility="9.0.003" expanded="true" height="103" name="Decision Tree" width="90" x="246" y="34">
+      <operator activated="true" class="concurrency:parallel_decision_tree" compatibility="9.0.003" expanded="true" height="103" name="Decision Tree" width="90" x="179" y="34">
         <parameter key="criterion" value="gain_ratio"/>
         <parameter key="maximal_depth" value="10"/>
         <parameter key="apply_pruning" value="true"/>
