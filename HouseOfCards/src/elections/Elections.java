@@ -113,7 +113,7 @@ public class Elections {
 	public static void main(String args[]) throws StaleProxyException, InterruptedException {
 		int x=1;
 		Elections elections;
-		while(x<=200){
+		while(x<=1000){
 			System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] %5$s%6$s%n");
 			System.out.println("TIME: " +  x);
 			elections = new Elections(Integer.parseInt(args[0]), Integer.parseInt(args[1]),Integer.parseInt(args[2]));
@@ -214,7 +214,7 @@ public class Elections {
 		System.out.println("> WINNER: " + winner.getKey() + " VOTES: " + winner.getValue());
 		
 		try {
-			dataAnalysisLogger(winner.getKey());
+			dataAnalysisLogger(winner.getKey(), winner.getValue());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -236,7 +236,7 @@ public class Elections {
 	}
 	
 	
-	public void dataAnalysisLogger(String winner) throws IOException{
+	public void dataAnalysisLogger(String winner, int votes) throws IOException{
 		fillStatesObjects();
 		
 		File file= new File ("logs/rapidData.csv");
@@ -255,10 +255,12 @@ public class Elections {
 	    	String candidateId = this.candidates.get(i).getLocalName();
 	    	int credibility = this.candidates.get(i).getCredibility();
 	    	int stubbornness =  this.candidates.get(i).getStubbornness();
+	    	int totalPopulation = this.voters.size();
 	    	
 	    	boolean won = false;
 	    	if(this.candidates.get(i).getLocalName().equals(winner))
 	    		won = true;
+	    	int percentageVotes = (int) (votes*100)/totalPopulation;
 	    	
 	    	Map.Entry<String, Integer> maxBelief = null;
 			for (Map.Entry<String, Integer> entry : this.candidates.get(i).getBeliefs().entrySet())
@@ -281,7 +283,6 @@ public class Elections {
 	    		}
 			}
 			
-			int totalPopulation = this.voters.size();
 			int percentageCandidatePopulation = (int) (candidatePopulation*100)/totalPopulation;
 			
 	    	for(int j=0; j<this.states.size();j++){
@@ -294,13 +295,23 @@ public class Elections {
 	    				break;
 	    			}
 	    		}
+	    		
+	    		int population = this.statesObjects.get(this.states.get(j)).getPopulation();
+	    		int percentagePopulation = (int) (population*100)/totalPopulation;
 	  
 	    		boolean wonState=false;  		
 	    		String stateWinner = this.statesObjects.get(this.states.get(j)).getWinner();
+	    		
 	    		if(stateWinner != null && stateWinner.equals(candidateId))
 	    			wonState=true;
 	    		
-	    		int population = this.statesObjects.get(this.states.get(j)).getPopulation();
+	    		int percentageStateVotes;
+	    		if(this.statesObjects.get(this.states.get(j)).getVotes().get(candidateId)!=null){
+	    			int stateVotes = this.statesObjects.get(this.states.get(j)).getVotes().get(candidateId);
+		    		percentageStateVotes = (int) (stateVotes*100)/population;
+	    		}else{
+	    			percentageStateVotes = 0;
+	    		}
 	   
 	    		
 	    		String changedBelief = null;
@@ -322,7 +333,7 @@ public class Elections {
 	    		boolean sameBelief = false;
 	    		if(mainStateBelief.equals(mainCandidateBelief))
 	    			sameBelief = true;
-	    		printWriter.printf("%s, %s, %b, %d, %b, %d, %d, %b, %s, %b, %d, %d, %d\n", candidateId, this.states.get(j), foundChief, population, wonState, credibility, stubbornness,  won, changedBelief, sameBelief, nChiefs, candidatePopulation, percentageCandidatePopulation);
+	    		printWriter.printf("%s, %s, %b, %d, %b, %d, %d, %d, %b, %d, %s, %b, %d, %d,\n", candidateId, this.states.get(j), foundChief, percentagePopulation, wonState, percentageStateVotes, credibility, stubbornness,  won, percentageVotes, changedBelief, sameBelief, nChiefs, percentageCandidatePopulation);
 	    		
 	    	}	    	
 	    }

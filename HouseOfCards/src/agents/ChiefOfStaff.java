@@ -192,7 +192,7 @@ public class ChiefOfStaff extends Agent {
 		}		
 	}
 
-	// calcula a média de um arraylist de ineteiros
+	// calcula a média de um arraylist de inteiros
 	private double calculateAverage(List<Integer> marks) {
 		Integer sum = 0;
 		if (!marks.isEmpty()) {
