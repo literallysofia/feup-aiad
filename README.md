@@ -1,7 +1,16 @@
 # feup-aiad
 
-Tanto os candidatos como os eleitores possuem crenÁas polÌticas. No caso dos candidatos este conjunto representa a sua estratÈgia que poder· mudar ao longo do processo eleitoral, contudo se a alterarem em demasia, v„o sofrer perdas no que toca ao fator de credibilidade. Cada candidato teria uma equipa de campanha que o aconselharia nos diferentes temas relativos ‡s crenÁas.
+Projects for the Agents and Distributed Artificial Intelligence (AIAD) class of the Master in Informatics and Computer Engineering (MIEIC) at the Faculty of Engineering of the University of Porto (FEUP).
 
-Os eleitorados s„o caracterizados por dois fatores relativos ‡ influÍncia: assertividade e passividade. Assertividade corresponde ‡ capacidade de persuas„o da restante populaÁ„o do seu estado e passividade o qu„o influenci·vel È por estas mesmas pessoas.
+Made in colaboration with [Julieta Frade](https://github.com/julietafrade97) and [Ventura Pereira](https://github.com/VenturaPereira).
 
-Face ao fator de credibilidade de cada candidato, o eleitor exigir· um valor mÌnimo de credibilidade por parte destes, caso nenhum tenha atingido este nÌvel a pessoa abster-se-·. Se nenhum candidato tiver em pelo menos metade das crenÁas o nÌvel mÌnimo requerido pelo eleitor, este tambÈm poder· exercer o seu direito de abstinÍncia.
+**Completed in 16/12/2018.**
+
+## Summary
+Tanto os **candidatos** como os **eleitores** possuem **cren√ßas pol√≠ticas**. No caso dos candidatos este conjunto representa a sua **estrat√©gia** que poder√° mudar ao longo do processo eleitoral, contudo se a alterarem em demasia, v√£o sofrer perdas no que toca ao fator de **credibilidade**.
+
+Cada candidato tem uma **equipa de campanha** composta por **chefes de estado**. Cada elemento desta equipa √© respons√°vel por fazer sondagens √† popula√ß√£o do estado que lhe foi atribu√≠do e seguidamente **aconselhar** o seu candidato em rela√ß√£o √† pr√≥xima mudan√ßa de estrat√©gia. O candidato decide se altera ou n√£o a cren√ßa de acordo com a sua **teimosia**.
+
+Face ao fator de credibilidade de cada candidato, o eleitor exige um valor m√≠nimo de credibilidade por parte destes, caso nenhum tenha atingido este n√≠vel a pessoa abster-se-√°. Se nenhum candidato tiver em pelo menos metade das cren√ßas o n√≠vel m√≠nimo requerido pelo eleitor, este tamb√©m poder√° exercer o seu direito de **abstin√™ncia**.
+
+(sorry for the portuguese)
